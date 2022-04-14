@@ -1,3 +1,5 @@
 export const PATH_HOME = '/';
-export const PATH_EXAMPLE = '/example';
+export const PATH_LOGIN = '/users/login';
+export const PATH_SIGNUP = '/users/signup';
+export const PATH_SIGNUP_COMPLETE = '/users/signup/complete';
 export const PATH_NOT_FOUND = '/*';
