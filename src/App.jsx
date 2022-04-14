@@ -15,7 +15,7 @@ import {
 } from '@/constants';
 
 const App = () => {
-  return (`
+  return (
     <Provider store={store}>
       <ThemeProvider theme={Theme}>
         <GlobalStyle />
