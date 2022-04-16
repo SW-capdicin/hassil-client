@@ -21,10 +21,7 @@ const Login = () => {
   );
 };
 
-const Container = styled.div`
-  position: absolute;
-  top: 30%;
-`;
+const Container = styled.div``;
 
 const SubContainer = styled.div`
   display: flex;
