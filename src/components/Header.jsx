@@ -1,15 +1,29 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import logo from '@/img/logo.png';
 
 const Header = () => {
-  const count = useSelector((state) => state.counter.value);
-  return <Container>This is Header {count}</Container>;
+  return (
+    <Container>
+      <LogoImg></LogoImg>
+    </Container>
+  );
 };
 
 const Container = styled.header`
-  color: ${({ theme }) => theme.color.blue};
-  margin-bottom: 8px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const LogoImg = styled.div`
+  background-image: url(${logo});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 20rem;
+  height: 6rem;
 `;
 
 export default Header;
