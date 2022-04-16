@@ -19,8 +19,8 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={Theme}>
         <GlobalStyle />
-        <Header />
         <BrowserRouter>
+          <Header />
           <Routes>
             <Route path={PATH_HOME} element={<Home />} />
             <Route path={PATH_LOGIN} element={<Login />} />

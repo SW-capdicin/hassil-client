@@ -1,31 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '@/img/logo1.png';
 import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
   return (
     <Container>
-      <Logo>
-        <Text>Study All - in -One Platform</Text>
-        <LogoImg />
+      <SubContainer>
+        <Text>간편하게 로그인하고</Text>
+        <Text>다양한 서비스를 이용해보세요.</Text>
         <LoginBtn>
           <FcGoogle />
           <BtnText>Google로 계속</BtnText>
         </LoginBtn>
-      </Logo>
+        <GrayText>
+          계정 생성 시 HASSIL의 개인정보 처리방침 및 이용약관 (마케팅 정보
+          수신동의 포함)에 동의하게 됩니다.
+        </GrayText>
+      </SubContainer>
     </Container>
   );
 };
 
-const Container = styled.div`
-  background-color: ${({ theme }) => theme.color.blue};
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-`;
+const Container = styled.div``;
 
-const Logo = styled.div`
+const SubContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -35,16 +33,8 @@ const Logo = styled.div`
 `;
 
 const Text = styled.div`
-  color: ${({ theme }) => theme.color.white};
-`;
-
-const LogoImg = styled.div`
-  background-image: url(${logo});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  width: 300px;
-  height: 100px;
+  color: ${({ theme }) => theme.color.black};
+  font-weight: bold;
 `;
 
 const LoginBtn = styled.div`
@@ -56,12 +46,22 @@ const LoginBtn = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 20px;
   cursor: pointer;
+  border: 1px solid;
+  border-color: ${({ theme }) => theme.color.gray};
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 `;
 
 const BtnText = styled.div`
   margin-left: 5px;
+`;
+
+const GrayText = styled.div`
+  font-size: 0.6rem;
+  color: ${({ theme }) => theme.color.gray};
+  width: 60%;
 `;
 
 export default Login;
