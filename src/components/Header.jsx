@@ -1,12 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { PATH_HOME } from '@/constants';
 import logo from '@/img/logo.png';
 import { CgProfile } from 'react-icons/cg';
 
 const Header = () => {
   return (
     <Container>
-      <LogoImg />
+      <Link to={PATH_HOME}>
+        <LogoImg />
+      </Link>
       {false && <CgProfile size={30} />}
     </Container>
   );
