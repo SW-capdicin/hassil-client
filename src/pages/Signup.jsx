@@ -28,6 +28,11 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('이름 : ', { name });
+    console.log('닉네임 : ', { nickname });
+    console.log('전번 : ', { phoneNumber });
+    console.log('은행 : ', { bank });
+    console.log('계좌번호 : ', { bankAccount });
     setInputs({
       name: '',
       nickname: '',
@@ -96,7 +101,7 @@ const Signup = () => {
           placeholder="계좌번호"
         />
       </InputContainer>
-      <SignupBtn type="submit">
+      <SignupBtn type="submit" onClick={handleSubmit}>
         <BtnText>가입하기</BtnText>
       </SignupBtn>
     </Container>
@@ -132,7 +137,7 @@ const Select = styled.select`
 `;
 
 const SignupBtn = styled.button`
-  background-color: #2164e8;
+  background-color: ${({ theme }) => theme.color.blue};
   border: 0;
   outline: 0;
   width: 14rem;
