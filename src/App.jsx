@@ -4,7 +4,14 @@ import { ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
 import { GlobalStyle, Theme } from '@/style';
-import { Home, Login, Signup, SignupComplete, NotFound } from '@/pages';
+import {
+  Home,
+  Login,
+  Signup,
+  SignupComplete,
+  NotFound,
+  CreateStudy,
+} from '@/pages';
 import { Header } from '@/components';
 import {
   PATH_HOME,
@@ -12,6 +19,7 @@ import {
   PATH_SIGNUP,
   PATH_SIGNUP_COMPLETE,
   PATH_NOT_FOUND,
+  PATH_CREATE_STUDY,
 } from '@/constants';
 
 const App = () => {
@@ -26,6 +34,7 @@ const App = () => {
             <Route path={PATH_LOGIN} element={<Login />} />
             <Route path={PATH_SIGNUP} element={<Signup />} />
             <Route path={PATH_SIGNUP_COMPLETE} element={<SignupComplete />} />
+            <Route path={PATH_CREATE_STUDY} element={<CreateStudy />} />
             <Route path={PATH_NOT_FOUND} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
