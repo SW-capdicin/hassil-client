@@ -10,7 +10,7 @@ import {
   Signup,
   SignupComplete,
   NotFound,
-  CreateStudy,
+  StudyCreate,
 } from '@/pages';
 import { Header } from '@/components';
 import {
@@ -19,7 +19,7 @@ import {
   PATH_SIGNUP,
   PATH_SIGNUP_COMPLETE,
   PATH_NOT_FOUND,
-  PATH_CREATE_STUDY,
+  PATH_STUDY_CREATE,
 } from '@/constants';
 
 const App = () => {
@@ -34,7 +34,7 @@ const App = () => {
             <Route path={PATH_LOGIN} element={<Login />} />
             <Route path={PATH_SIGNUP} element={<Signup />} />
             <Route path={PATH_SIGNUP_COMPLETE} element={<SignupComplete />} />
-            <Route path={PATH_CREATE_STUDY} element={<CreateStudy />} />
+            <Route path={PATH_STUDY_CREATE} element={<StudyCreate />} />
             <Route path={PATH_NOT_FOUND} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
