@@ -8,7 +8,7 @@ const Login = () => {
       <SubContainer>
         <Text>간편하게 로그인하고</Text>
         <Text>다양한 서비스를 이용해보세요.</Text>
-        <LoginBtn>
+        <LoginBtn href="http://localhost:8080/users/google">
           <FcGoogle />
           <BtnText>Google로 계속</BtnText>
         </LoginBtn>
@@ -37,7 +37,7 @@ const Text = styled.div`
   font-weight: bold;
 `;
 
-const LoginBtn = styled.div`
+const LoginBtn = styled.a`
   background-color: #ffffff;
   width: 200px;
   height: 30px;
