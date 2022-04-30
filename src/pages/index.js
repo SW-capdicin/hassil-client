@@ -4,3 +4,4 @@ export { default as Signup } from './Signup.jsx';
 export { default as SignupComplete } from './SignupComplete.jsx';
 export { default as NotFound } from './NotFound.jsx';
 export { default as StudyCreate } from './StudyCreate.jsx';
+export { default as Payment } from './Payment';

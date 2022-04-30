@@ -11,6 +11,7 @@ import {
   SignupComplete,
   NotFound,
   StudyCreate,
+  Payment,
 } from '@/pages';
 import { Header } from '@/components';
 import {
@@ -20,6 +21,7 @@ import {
   PATH_SIGNUP_COMPLETE,
   PATH_NOT_FOUND,
   PATH_STUDY_CREATE,
+  PATH_PAYMENT,
 } from '@/constants';
 
 const App = () => {
@@ -35,6 +37,7 @@ const App = () => {
             <Route path={PATH_SIGNUP} element={<Signup />} />
             <Route path={PATH_SIGNUP_COMPLETE} element={<SignupComplete />} />
             <Route path={PATH_STUDY_CREATE} element={<StudyCreate />} />
+            <Route path={PATH_PAYMENT} element={<Payment />} />
             <Route path={PATH_NOT_FOUND} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
