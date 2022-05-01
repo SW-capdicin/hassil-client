@@ -2,13 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
 
+import { useSetShowUserIcon } from '@/hooks';
+
+const { VITE_GOOGLE_LOGIN } = import.meta.env;
+
 const Login = () => {
+  useSetShowUserIcon(false);
+
   return (
     <Container>
       <SubContainer>
         <Text>간편하게 로그인하고</Text>
         <Text>다양한 서비스를 이용해보세요.</Text>
-        <LoginBtn href="http://localhost:8080/users/google">
+        <LoginBtn href={VITE_GOOGLE_LOGIN}>
           <FcGoogle />
           <BtnText>Google로 계속</BtnText>
         </LoginBtn>

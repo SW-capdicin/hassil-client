@@ -1,17 +1,64 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { PATH_HOME } from '@/constants';
+import { PATH_HOME, PATH_LOGIN, PATH_MYPAGE } from '@/constants';
 import logo from '@/img/logo.png';
-import { CgProfile } from 'react-icons/cg';
+import profile from '@/img/profile.png';
+import { getUserInfo } from '@/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { userActions } from '@/store/actions';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state.user);
+  const headerState = useSelector((state) => state.header);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userState.isLoggedIn && !userState.isSignup) {
+      navigate('/users/signup');
+    }
+  });
+
+  useEffect(() => {
+    getUserInfo().then((userInfo) => {
+      if (userInfo.id) {
+        userInfo.nickname
+          ? dispatch(
+              userActions.setUserInfo({
+                id: userInfo.id,
+                isLoggedIn: true,
+                isSignup: true,
+                nickname: userInfo.nickname,
+              }),
+            )
+          : dispatch(
+              userActions.setUserInfo({
+                id: userInfo.id,
+                isLoggedIn: true,
+                isSignup: false,
+              }),
+            );
+      } else {
+        dispatch(userActions.setUserInfo({ isLoggedIn: false }));
+      }
+    });
+  }, []);
+
   return (
-    <Container>
-      <Link to={PATH_HOME}>
+    <Container showUserIcon={headerState.showUserIcon}>
+      {userState.isLoggedIn && !userState.isSignup ? (
         <LogoImg />
-      </Link>
-      {false && <CgProfile size={30} />}
+      ) : (
+        <Link to={PATH_HOME}>
+          <LogoImg />
+        </Link>
+      )}
+      {headerState.showUserIcon && (
+        <Link to={userState.isLoggedIn ? PATH_MYPAGE : PATH_LOGIN}>
+          <ProfileImg />
+        </Link>
+      )}
     </Container>
   );
 };
@@ -22,7 +69,8 @@ const Container = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: ${(props) =>
+    props.showUserIcon ? 'space-between' : 'center'};
   margin-bottom: 2rem;
 `;
 
@@ -31,6 +79,14 @@ const LogoImg = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   width: 10rem;
+  height: 3rem;
+`;
+
+const ProfileImg = styled.div`
+  background-image: url(${profile});
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 3rem;
   height: 3rem;
 `;
 
