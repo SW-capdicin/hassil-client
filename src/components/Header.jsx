@@ -18,7 +18,7 @@ const Header = () => {
     if (userState.isLoggedIn && !userState.isSignup) {
       navigate('/users/signup');
     }
-  }, []);
+  }, [navigate, userState]);
 
   useEffect(() => {
     getUserInfo().then((userInfo) => {
@@ -47,13 +47,9 @@ const Header = () => {
 
   return (
     <Container showUserIcon={headerState.showUserIcon}>
-      {userState.isLoggedIn && !userState.isSignup ? (
+      <Link to={PATH_HOME}>
         <LogoImg />
-      ) : (
-        <Link to={PATH_HOME}>
-          <LogoImg />
-        </Link>
-      )}
+      </Link>
       {headerState.showUserIcon && (
         <Link to={userState.isLoggedIn ? PATH_MYPAGE : PATH_LOGIN}>
           <ProfileImg />
