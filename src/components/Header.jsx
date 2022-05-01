@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { PATH_HOME } from '@/constants';
+import { PATH_HOME, PATH_LOGIN, PATH_MYPAGE } from '@/constants';
 import logo from '@/img/logo.png';
 import profile from '@/img/profile.png';
 import { getUserInfo } from '@/api';
@@ -39,7 +39,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Container>
+    <Container showUserIcon={headerState.showUserIcon}>
       {userState.isLoggedIn && !userState.isSignup ? (
         <LogoImg />
       ) : (
@@ -47,7 +47,11 @@ const Header = () => {
           <LogoImg />
         </Link>
       )}
-      {headerState.showUserIcon && <ProfileImg />}
+      {headerState.showUserIcon && (
+        <Link to={userState.isLoggedIn ? PATH_MYPAGE : PATH_LOGIN}>
+          <ProfileImg />
+        </Link>
+      )}
     </Container>
   );
 };
@@ -58,7 +62,8 @@ const Container = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.showUserIcon ? 'space-between' : 'center'};
   margin-bottom: 2rem;
 `;
 
