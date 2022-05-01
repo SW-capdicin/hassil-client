@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '@/img/check_circle_fill.png';
-import { useSetShowUserIcon } from '@/hooks';
 import { Link } from 'react-router-dom';
 import { PATH_HOME } from '@/constants';
 
 const SignupComplete = () => {
-  useSetShowUserIcon(false);
-
   return (
     <Container>
       <SignupLogo />

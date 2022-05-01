@@ -17,6 +17,7 @@
     "prefer-arrow-callback": "off",
     "no-console": "warn",
     "no-var": "warn",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "react/prop-types": 0
   }
 }
