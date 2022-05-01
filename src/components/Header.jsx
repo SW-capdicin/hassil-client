@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { PATH_HOME } from '@/constants';
 import logo from '@/img/logo.png';
-import { CgProfile } from 'react-icons/cg';
+import profile from '@/img/profile.png';
 import { getUserInfo } from '@/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '@/store/actions';
@@ -47,7 +47,7 @@ const Header = () => {
           <LogoImg />
         </Link>
       )}
-      {headerState.showUserIcon && <CgProfile size={30} />}
+      {headerState.showUserIcon && <ProfileImg />}
     </Container>
   );
 };
@@ -58,7 +58,7 @@ const Container = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 2rem;
 `;
 
@@ -67,6 +67,14 @@ const LogoImg = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   width: 10rem;
+  height: 3rem;
+`;
+
+const ProfileImg = styled.div`
+  background-image: url(${profile});
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 3rem;
   height: 3rem;
 `;
 
