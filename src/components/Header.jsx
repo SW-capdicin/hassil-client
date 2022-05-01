@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { PATH_HOME, PATH_LOGIN, PATH_MYPAGE } from '@/constants';
 import logo from '@/img/logo.png';
@@ -12,6 +12,13 @@ const Header = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const headerState = useSelector((state) => state.header);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userState.isLoggedIn && !userState.isSignup) {
+      navigate('/users/signup');
+    }
+  });
 
   useEffect(() => {
     getUserInfo().then((userInfo) => {
