@@ -18,7 +18,7 @@ const Header = () => {
     if (userState.isLoggedIn && !userState.isSignup) {
       navigate('/users/signup');
     }
-  });
+  }, []);
 
   useEffect(() => {
     getUserInfo().then((userInfo) => {
