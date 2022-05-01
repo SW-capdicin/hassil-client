@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import logo_man from '@/img/man.png';
 import logo_woman from '@/img/woman.png';
+import { useSetShowUserIcon } from '@/hooks';
 
 const Signup = () => {
+  useSetShowUserIcon(false);
   const [inputs, setInputs] = useState({
     needToSelect: 1,
     userType: '',

@@ -1,14 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '@/img/check_circle_fill.png';
+import { useSetShowUserIcon } from '@/hooks';
+import { Link } from 'react-router-dom';
+import { PATH_HOME } from '@/constants';
 
 const SignupComplete = () => {
+  useSetShowUserIcon(false);
+
   return (
     <Container>
       <SignupLogo />
       <Title>회원 가입 완료</Title>
-      <StartBtn type="submit">
-        <BtnText>스터디 시작하기</BtnText>
+      <StartBtn>
+        <Link to={PATH_HOME}>
+          <BtnText>스터디 시작하기</BtnText>
+        </Link>
       </StartBtn>
     </Container>
   );
@@ -49,6 +56,9 @@ const StartBtn = styled.button`
   border-radius: 20px;
   align-self: center;
   cursor: pointer;
+  a {
+    text-decoration: none;
+  }
 `;
 
 const BtnText = styled.div`

@@ -1,8 +1,10 @@
+import { useSetShowUserIcon } from '@/hooks';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Home = () => {
+  useSetShowUserIcon();
+
   return (
     <Container>
       <Title>This is Home</Title>

@@ -10,13 +10,28 @@ import { userActions } from '@/store/actions';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.user);
+  const userState = useSelector((state) => state.user);
+  const headerState = useSelector((state) => state.header);
+
   useEffect(() => {
     getUserInfo().then((userInfo) => {
       if (userInfo.id) {
-        dispatch(
-          userActions.setUserInfo({ isLoggedIn: true, id: userInfo.id }),
-        );
+        userInfo.nickname
+          ? dispatch(
+              userActions.setUserInfo({
+                id: userInfo.id,
+                isLoggedIn: true,
+                isSignup: true,
+                nickname: userInfo.nickname,
+              }),
+            )
+          : dispatch(
+              userActions.setUserInfo({
+                id: userInfo.id,
+                isLoggedIn: true,
+                isSignup: false,
+              }),
+            );
       } else {
         dispatch(userActions.setUserInfo({ isLoggedIn: false }));
       }
@@ -25,10 +40,14 @@ const Header = () => {
 
   return (
     <Container>
-      <Link to={PATH_HOME}>
+      {userState.isLoggedIn && !userState.isSignup ? (
         <LogoImg />
-      </Link>
-      {userInfo.isLoggedIn && <CgProfile size={30} />}
+      ) : (
+        <Link to={PATH_HOME}>
+          <LogoImg />
+        </Link>
+      )}
+      {headerState.showUserIcon && <CgProfile size={30} />}
     </Container>
   );
 };
