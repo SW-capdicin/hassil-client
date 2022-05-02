@@ -8,6 +8,7 @@ const PrivateRoute = ({ element: Element, showUserIcon = true }) => {
   useSetShowUserIcon(showUserIcon);
   const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!userState.isLoggedIn) {
       navigate(PATH_LOGIN);
