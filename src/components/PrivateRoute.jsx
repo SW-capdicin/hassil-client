@@ -7,8 +7,8 @@ import { useSetShowUserIcon } from '@/hooks';
 const PrivateRoute = ({ element: Element, showUserIcon = true }) => {
   useSetShowUserIcon(showUserIcon);
   const userState = useSelector((state) => state.user);
+  const navigate = useNavigate();
   useEffect(() => {
-    const navigate = useNavigate();
     if (!userState.isLoggedIn) {
       navigate(PATH_LOGIN);
     } else if (!userState.isSignup) {
