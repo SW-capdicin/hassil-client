@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { PATH_HOME, PATH_LOGIN, PATH_MYPAGE } from '@/constants';
+import { PATH_HOME, PATH_MYPAGE } from '@/constants';
 import logo from '@/img/logo.png';
 import profile from '@/img/profile.png';
 import { getUserInfo } from '@/api';
@@ -10,15 +10,7 @@ import { userActions } from '@/store/actions';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const userState = useSelector((state) => state.user);
   const headerState = useSelector((state) => state.header);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (userState.isLoggedIn && !userState.isSignup) {
-      navigate('/users/signup');
-    }
-  }, [navigate, userState]);
 
   useEffect(() => {
     getUserInfo().then((userInfo) => {
@@ -51,7 +43,7 @@ const Header = () => {
         <LogoImg />
       </Link>
       {headerState.showUserIcon && (
-        <Link to={userState.isLoggedIn ? PATH_MYPAGE : PATH_LOGIN}>
+        <Link to={PATH_MYPAGE}>
           <ProfileImg />
         </Link>
       )}

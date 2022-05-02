@@ -2,10 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiMessageError } from 'react-icons/bi';
-import { useSetShowUserIcon } from '@/hooks';
 
 const NotFound = () => {
-  useSetShowUserIcon(false);
   return (
     <Container>
       <BiMessageError size="90" />

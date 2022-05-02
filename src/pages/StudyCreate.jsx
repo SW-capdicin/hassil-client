@@ -4,10 +4,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import emptyimg from '@/img/emptyimg.png';
-import { useSetShowUserIcon } from '@/hooks';
-const CreateStudy = () => {
-  useSetShowUserIcon();
 
+const CreateStudy = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [inputs, setInputs] = useState({

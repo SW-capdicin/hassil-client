@@ -14,7 +14,7 @@ import {
   Payment,
   MyPage,
 } from '@/pages';
-import { Header } from '@/components';
+import { Header, PublicRoute, PrivateRoute } from '@/components';
 import {
   PATH_HOME,
   PATH_LOGIN,
@@ -34,14 +34,37 @@ const App = () => {
         <BrowserRouter>
           <Header />
           <Routes>
-            <Route path={PATH_HOME} element={<Home />} />
-            <Route path={PATH_LOGIN} element={<Login />} />
-            <Route path={PATH_SIGNUP} element={<Signup />} />
-            <Route path={PATH_SIGNUP_COMPLETE} element={<SignupComplete />} />
-            <Route path={PATH_MYPAGE} element={<MyPage />} />
-            <Route path={PATH_STUDY_CREATE} element={<StudyCreate />} />
-            <Route path={PATH_PAYMENT} element={<Payment />} />
-            <Route path={PATH_NOT_FOUND} element={<NotFound />} />
+            <Route path={PATH_HOME} element={<PublicRoute element={Home} />} />
+            <Route
+              path={PATH_LOGIN}
+              element={<PublicRoute element={Login} showUserIcon={false} />}
+            />
+            <Route
+              path={PATH_SIGNUP}
+              element={<PrivateRoute element={Signup} showUserIcon={false} />}
+            />
+            <Route
+              path={PATH_SIGNUP_COMPLETE}
+              element={
+                <PrivateRoute element={SignupComplete} showUserIcon={false} />
+              }
+            />
+            <Route
+              path={PATH_MYPAGE}
+              element={<PrivateRoute element={MyPage} />}
+            />
+            <Route
+              path={PATH_STUDY_CREATE}
+              element={<PrivateRoute element={StudyCreate} />}
+            />
+            <Route
+              path={PATH_PAYMENT}
+              element={<PrivateRoute element={Payment} />}
+            />
+            <Route
+              path={PATH_NOT_FOUND}
+              element={<PublicRoute element={NotFound} showUserIcon={false} />}
+            />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

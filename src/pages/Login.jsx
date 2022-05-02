@@ -1,14 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
-
-import { useSetShowUserIcon } from '@/hooks';
-
 const { VITE_GOOGLE_LOGIN } = import.meta.env;
 
 const Login = () => {
-  useSetShowUserIcon(false);
-
   return (
     <Container>
       <SubContainer>
