@@ -1,28 +1,20 @@
 import React, { useState } from 'react';
-import { loadTossPayments } from '@tosspayments/payment-sdk';
-import { v4 } from 'uuid';
 import styled from 'styled-components';
-const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
 
-const Payment = () => {
+const Refund = () => {
   const [amount, setAmount] = useState(0);
-  const handleSubmit = async (event) => {
-    const tossPayments = await loadTossPayments(clientKey);
-    await tossPayments
-      .requestPayment('카드', {
-        amount,
-        orderId: v4(),
-        orderName: '포인트 충전',
-        customerName: 'aaa',
-        successUrl: 'http://localhost:8080/api/payment/success',
-        // successUrl: window.location.origin + '/payment-success',
-        failUrl: window.location.origin + '/payment-fail',
-      })
-      .catch(function (error) {
-        if (error.code === 'USER_CANCEL') {
-          alert('결제취소');
-        }
-      });
+  const [maxRefund] = useState(30000);
+  const handleSubmit = (event) => {
+    // eslint-disable-next-line no-undef
+    const tossPayments = TossPayments('test_ck_OEP59LybZ8Bdv6A1JxkV6GYo7pRe');
+    tossPayments.requestPayment('카드', {
+      amount,
+      orderId: 'aaa',
+      orderName: '포인트 충전',
+      customerName: 'aaa',
+      successUrl: window.location.origin + '/success',
+      failUrl: window.location.origin + '/fail',
+    });
   };
   const handleChange = (event) => {
     setAmount(event.target.value);
@@ -30,16 +22,16 @@ const Payment = () => {
 
   return (
     <Container>
-      <Text>충전할 포인트를 </Text>
+      <Text>환급할 포인트를 </Text>
       <Text>입력해주세요.</Text>
       <SubContainer>
         <InputContainer>
           <Input type="number" onChange={handleChange} />
-          <Label>최소 충전 가능액 : {leastPayment}</Label>
+          <Label>최대 환급 가능액 : {maxRefund}</Label>
         </InputContainer>
         <BtnContainer>
           <SubmitBtn onClick={handleSubmit}>
-            <BtnText>충전</BtnText>
+            <BtnText>환급</BtnText>
           </SubmitBtn>
         </BtnContainer>
       </SubContainer>
@@ -119,4 +111,4 @@ const BtnText = styled.div`
   font-weight: bold;
 `;
 
-export default Payment;
+export default Refund;
