@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
+import { loadTossPayments } from '@tosspayments/payment-sdk';
+import { v4 } from 'uuid';
 import styled from 'styled-components';
+const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
 
 const Payment = () => {
   const [amount, setAmount] = useState(0);
-  const handleSubmit = (event) => {
-    // eslint-disable-next-line no-undef
-    const tossPayments = TossPayments('test_ck_OEP59LybZ8Bdv6A1JxkV6GYo7pRe');
-    tossPayments.requestPayment('카드', {
-      amount,
-      orderId: 'aaa',
-      orderName: '포인트 충전',
-      customerName: 'aaa',
-      successUrl: window.location.origin + '/success',
-      failUrl: window.location.origin + '/fail',
-    });
+  const handleSubmit = async (event) => {
+    const tossPayments = await loadTossPayments(clientKey);
+    await tossPayments
+      .requestPayment('카드', {
+        amount,
+        orderId: v4(),
+        orderName: '포인트 충전',
+        customerName: 'aaa',
+        successUrl: 'http://localhost:8080/api/payment/success',
+        // successUrl: window.location.origin + '/payment-success',
+        failUrl: window.location.origin + '/payment-fail',
+      })
+      .catch(function (error) {
+        if (error.code === 'USER_CANCEL') {
+          alert('결제취소');
+        }
+      });
   };
   const handleChange = (event) => {
     setAmount(event.target.value);
