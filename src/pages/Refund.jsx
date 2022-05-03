@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const Payment = () => {
+const Refund = () => {
   const [amount, setAmount] = useState(0);
-  const [leastPayment] = useState(1000);
+  const [maxRefund] = useState(30000);
   const handleSubmit = (event) => {
     // eslint-disable-next-line no-undef
     const tossPayments = TossPayments('test_ck_OEP59LybZ8Bdv6A1JxkV6GYo7pRe');
@@ -22,16 +22,16 @@ const Payment = () => {
 
   return (
     <Container>
-      <Text>충전할 포인트를 </Text>
+      <Text>환급할 포인트를 </Text>
       <Text>입력해주세요.</Text>
       <SubContainer>
         <InputContainer>
           <Input type="number" onChange={handleChange} />
-          <Label>최소 충전 가능액 : {leastPayment}</Label>
+          <Label>최대 환급 가능액 : {maxRefund}</Label>
         </InputContainer>
         <BtnContainer>
           <SubmitBtn onClick={handleSubmit}>
-            <BtnText>충전</BtnText>
+            <BtnText>환급</BtnText>
           </SubmitBtn>
         </BtnContainer>
       </SubContainer>
@@ -111,4 +111,4 @@ const BtnText = styled.div`
   font-weight: bold;
 `;
 
-export default Payment;
+export default Refund;

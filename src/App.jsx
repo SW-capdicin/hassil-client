@@ -12,6 +12,7 @@ import {
   NotFound,
   StudyCreate,
   Payment,
+  Refund,
   MyPage,
 } from '@/pages';
 import { Header, PublicRoute, PrivateRoute } from '@/components';
@@ -23,6 +24,7 @@ import {
   PATH_NOT_FOUND,
   PATH_STUDY_CREATE,
   PATH_PAYMENT,
+  PATH_REFUND,
   PATH_MYPAGE,
 } from '@/constants';
 
@@ -60,6 +62,10 @@ const App = () => {
             <Route
               path={PATH_PAYMENT}
               element={<PrivateRoute element={Payment} />}
+            />
+            <Route
+              path={PATH_REFUND}
+              element={<PrivateRoute element={Refund} />}
             />
             <Route
               path={PATH_NOT_FOUND}
