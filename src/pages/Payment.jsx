@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
+import { v4 } from 'uuid';
+import QueryString from 'qs';
+import { paymentSuccess } from '@/api';
+import { loadTossPayments } from '@tosspayments/payment-sdk';
+
+const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+
 const Payment = () => {
+  const location = useLocation();
+  const queryData = QueryString.parse(location.search, { ignoreQueryPrefix: true });
+
   const [amount, setAmount] = useState(0);
   const [leastPayment] = useState(1000);
-  const handleSubmit = (event) => {
-    // eslint-disable-next-line no-undef
-    const tossPayments = TossPayments('test_ck_OEP59LybZ8Bdv6A1JxkV6GYo7pRe');
-    tossPayments.requestPayment('카드', {
-      amount,
-      orderId: 'aaa',
-      orderName: '포인트 충전',
-      customerName: 'aaa',
-      successUrl: window.location.origin + '/success',
-      failUrl: window.location.origin + '/fail',
+  const [isPaid] = useState(!!queryData.paymentKey);
+  
+  const paymentSubmit = async (event) => {
+    await paymentSuccess({
+      ...queryData
     });
+  }
+
+  const handleSubmit = async (event) => {
+    const tossPayments = await loadTossPayments(clientKey);
+    await tossPayments
+      .requestPayment('카드', {
+        amount,
+        orderId: v4(),
+        orderName: '포인트 충전',
+        customerName: 'aaa',
+        successUrl: window.location.origin + '/payment',
+        failUrl: window.location.origin + '/payment',
+      })
+      .catch(function (error) {
+        if (error.code === 'USER_CANCEL') {
+          alert('결제취소');
+        }
+      });
   };
+
   const handleChange = (event) => {
     setAmount(event.target.value);
   };
@@ -33,6 +58,13 @@ const Payment = () => {
           <SubmitBtn onClick={handleSubmit}>
             <BtnText>충전</BtnText>
           </SubmitBtn>
+        </BtnContainer>
+        <BtnContainer>
+          {isPaid && (
+            <SubmitBtn onClick={paymentSubmit}>
+              <BtnText>결제완료</BtnText>
+            </SubmitBtn>
+          )}
         </BtnContainer>
       </SubContainer>
     </Container>
