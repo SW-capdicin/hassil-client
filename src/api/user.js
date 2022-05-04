@@ -11,7 +11,6 @@ export const patchUserInfo = async (userInfo) => {
 };
 
 export const logout = async () => {
-  console.log('Here');
-  // const response = await axios.post('/api/users/logout');
-  // return response.data;
+  const response = await axios.post('/api/users/logout');
+  return response.status;
 };

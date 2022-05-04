@@ -1,12 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
 import { logout } from '@/api';
 
 const MyPage = () => {
+  const navigate = useNavigate();
   const logoutHandler = async () => {
-    await logout();
+    const responseStatus = await logout();
+    if (responseStatus === 200) {
+      navigate('/');
+    }
   };
 
   return (
@@ -136,6 +141,6 @@ const InputContainer = styled.div`
 `;
 const StudyList = styled.div``;
 const EditInformation = styled.div``;
-const Logout = styled.div``;
+const Logout = styled.button``;
 
 export default MyPage;
