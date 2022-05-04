@@ -15,7 +15,7 @@ import {
   Refund,
   MyPage,
 } from '@/pages';
-import { Header, PublicRoute, PrivateRoute } from '@/components';
+import { Header, PublicRoute } from '@/components';
 import {
   PATH_HOME,
   PATH_LOGIN,
@@ -43,25 +43,25 @@ const App = () => {
             />
             <Route
               path={PATH_SIGNUP}
-              element={<PrivateRoute element={Signup} showUserIcon={false} />}
+              element={<PublicRoute element={Signup} showUserIcon={false} />}
             />
             <Route
               path={PATH_SIGNUP_COMPLETE}
               element={
-                <PrivateRoute element={SignupComplete} showUserIcon={false} />
+                <PublicRoute element={SignupComplete} showUserIcon={false} />
               }
             />
             <Route
               path={PATH_MYPAGE}
-              element={<PrivateRoute element={MyPage} />}
+              element={<PublicRoute element={MyPage} />}
             />
             <Route
               path={PATH_STUDY_CREATE}
-              element={<PrivateRoute element={StudyCreate} />}
+              element={<PublicRoute element={StudyCreate} />}
             />
             <Route
               path={PATH_PAYMENT}
-              element={<PrivateRoute element={Payment} />}
+              element={<PublicRoute element={Payment} />}
             />
             <Route
               path={PATH_REFUND}
