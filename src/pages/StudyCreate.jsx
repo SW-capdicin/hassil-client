@@ -1,21 +1,33 @@
+import 'react-datepicker/dist/react-datepicker.css';
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PATH_HOME } from '@/constants';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import emptyimg from '@/img/emptyimg.png';
+import { createStudy } from '@/api';
 
 const CreateStudy = () => {
+  const navigate = useNavigate();
+
+  const [src, setFiles] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [inputs, setInputs] = useState({
-    title: '',
-    deposit: 0,
+    name: '',
+    depositPerPerson: 0,
     category: '',
-    operating_time: '',
+    operationTime: '',
+    info: '',
+    absentFee: 0,
+    lateFee: 0,
+    maxPerson: 0,
+    minPerson: 0,
   });
-  const { title, deposit, category, operating_time } = inputs;
+  const { name, depositPerPerson, category, operationTime } = inputs;
   const selectList = [
+    // 나중에 category 조회로 불러올 것
     '관심 분야를 고르세요',
     '코딩',
     '영어',
@@ -30,25 +42,23 @@ const CreateStudy = () => {
     };
     setInputs(nextInputs);
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('제목 : ', { title });
-    console.log('보증금 : ', { deposit });
-    console.log('시작날짜 : ', { startDate });
-    console.log('종료날짜 : ', { endDate });
-    console.log('카테고리 : ', { category });
-    console.log('운영시간 : ', { operating_time });
-    console.log('이미지 : ', { files });
-    setInputs({
-      title: '',
-      deposit: 0,
-      category: '',
-      operating_time: '',
-    });
+  const handleSubmit = async (e) => {
+    try {
+      await createStudy({
+        ...inputs,
+        startDate,
+        endDate,
+        src,
+      });
+      alert("스터디 생성 완료");
+      navigate(PATH_HOME);
+    } catch (e) {
+      console.log(e);
+      alert('에러 발생');
+    }
   };
 
   const imgInput = useRef();
-  const [files, setFiles] = useState('');
   const onLoadFile = (e) => {
     const file = e.target.files[0];
     setFiles(file);
@@ -59,7 +69,7 @@ const CreateStudy = () => {
       <SubContainer>
         <Label>대표 이미지 등록</Label>
         <SelectImg onClick={() => imgInput.current.click()}>
-          <Img src={files ? URL.createObjectURL(files) : emptyimg}></Img>
+          <Img src={src ? URL.createObjectURL(src) : emptyimg}></Img>
         </SelectImg>
         <Input
           type="file"
@@ -72,18 +82,26 @@ const CreateStudy = () => {
       <InputContainer>
         <Label>제목</Label>
         <Input
-          name="title"
-          value={title}
+          name="name"
+          value={name}
           placeholder="STUDY WITH ME"
           onChange={handleChange}
         />
       </InputContainer>
       <InputContainer>
-        <Label>보증금</Label>
+        <Label>내용</Label>
         <Input
-          name="deposit"
+          name="info"
+          placeholder="description"
+          onChange={handleChange}
+        />
+      </InputContainer>
+      <InputContainer>
+        <Label>인당 보증금</Label>
+        <Input
+          name="depositPerPerson"
           type="number"
-          defaultValue={deposit ? deposit : ''}
+          defaultValue={depositPerPerson ? depositPerPerson : ''}
           onChange={handleChange}
         />
       </InputContainer>
@@ -120,8 +138,8 @@ const CreateStudy = () => {
       <InputContainer>
         <Label>카테고리</Label>
         <Select name="category" value={category} onChange={handleChange}>
-          {selectList.map((item) => (
-            <option key={item} value={item}>
+          {selectList.map((item, i) => (
+            <option key={item} value={i}>
               {item}
             </option>
           ))}
@@ -130,8 +148,40 @@ const CreateStudy = () => {
       <InputContainer>
         <Label>운영시간</Label>
         <Input
-          name="operating_time"
-          value={operating_time}
+          name="operationTime"
+          value={operationTime}
+          onChange={handleChange}
+        />
+      </InputContainer>
+      <InputContainer>
+        <Label>최소 인원</Label>
+        <Input
+          name="minPerson"
+          type="number"
+          onChange={handleChange}
+        />
+      </InputContainer>
+      <InputContainer>
+        <Label>최대 인원</Label>
+        <Input
+          name="maxPerson"
+          type="number"
+          onChange={handleChange}
+        />
+      </InputContainer>
+      <InputContainer>
+        <Label>결석 벌금</Label>
+        <Input
+          name="absentFee"
+          type="number"
+          onChange={handleChange}
+        />
+      </InputContainer>
+      <InputContainer>
+        <Label>지각 벌금</Label>
+        <Input
+          name="lateFee"
+          type="number"
           onChange={handleChange}
         />
       </InputContainer>

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PATH_STUDY_CREATE } from '@/constants';
 import styled from 'styled-components';
 import studyimg from '@/img/study.png';
 import emptyimg from '@/img/emptyimg.png';
@@ -70,12 +72,17 @@ const Example = [
 const Category = ['전체', '코딩', '중국어', '영어'];
 
 const Home = () => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('전체');
   const handleChange = (e) => {
     const studyName = e.target.value;
     setSearch(studyName);
   };
+
+  const btnClickCreateStudy = (e) => {
+    navigate(PATH_STUDY_CREATE);
+  }
 
   const tabClickHandler = (item) => {
     setActiveTab(item);
@@ -154,7 +161,7 @@ const Home = () => {
                     );
                   },
                 ))}
-          <CuIoMdAddCircle />
+          <CuIoMdAddCircle onClick={btnClickCreateStudy} />
         </TabContentContainer>
       </TabContainer>
     </Container>
