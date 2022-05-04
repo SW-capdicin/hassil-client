@@ -48,8 +48,10 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     console.log('유저 타입 : ', { userType });
-    console.log('이름 : ', { name });
+    console.log('이름 : ', name);
+    console.log('name : ', { name });
     console.log('닉네임 : ', { nickname });
     console.log('전번 : ', { phoneNumber });
     console.log('은행 : ', { bank });
