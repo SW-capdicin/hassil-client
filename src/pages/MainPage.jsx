@@ -70,7 +70,7 @@ const Example = [
 ];
 const Category = ['전체', '코딩', '중국어', '영어'];
 
-const Main = () => {
+const MainPage = () => {
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('전체');
   const handleChange = (e) => {
@@ -282,4 +282,4 @@ const CuIoMdAddCircle = styled(IoMdAddCircle)`
 
   /* right: 50%; */
 `;
-export default Main;
+export default MainPage;

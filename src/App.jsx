@@ -14,7 +14,7 @@ import {
   Payment,
   Refund,
   MyPage,
-  Main,
+  MainPage,
 } from '@/pages';
 import { Header, PublicRoute, PrivateRoute } from '@/components';
 import {
@@ -27,7 +27,7 @@ import {
   PATH_PAYMENT,
   PATH_REFUND,
   PATH_MYPAGE,
-  PATH_MAIN,
+  PATH_MAINPAGE,
 } from '@/constants';
 
 const App = () => {
@@ -54,8 +54,8 @@ const App = () => {
               }
             />
             <Route
-              path={PATH_MAIN}
-              element={<PrivateRoute element={Main} showUserIcon={false} />}
+              path={PATH_MAINPAGE}
+              element={<PrivateRoute element={MainPage} showUserIcon={false} />}
             />
             <Route
               path={PATH_MYPAGE}
