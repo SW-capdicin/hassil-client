@@ -11,6 +11,7 @@ import { userActions } from '@/store/actions';
 const Header = () => {
   const dispatch = useDispatch();
   const headerState = useSelector((state) => state.header);
+  const userState = useSelector((state) => state.user);
 
   useEffect(() => {
     getUserInfo().then((userInfo) => {
@@ -42,6 +43,7 @@ const Header = () => {
       <Link to={PATH_HOME}>
         <LogoImg />
       </Link>
+      {userState.isLoggedIn ? <div>로그인 성공</div> : <div>로그인 전</div>}
       {headerState.showUserIcon && (
         <Link to={PATH_MYPAGE}>
           <ProfileImg />
