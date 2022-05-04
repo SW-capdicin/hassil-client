@@ -222,7 +222,10 @@ const StudyList = styled.li`
       ({ theme }) => theme.color.blue;
     }
   }};
-  color: ${(props) => (props.category === props.activeTab ? `blue` : `black`)};
+  color: ${(props) =>
+    props.category === props.activeTab
+      ? ({ theme }) => theme.color.blue
+      : ({ theme }) => theme.color.black};
 `;
 const TabContentContainer = styled.div`
   display: flex;
