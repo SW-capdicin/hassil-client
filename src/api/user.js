@@ -9,3 +9,9 @@ export const patchUserInfo = async (userInfo) => {
   const response = await axios.patch('/api/users', userInfo);
   return response.status;
 };
+
+export const logout = async () => {
+  console.log('Here');
+  // const response = await axios.post('/api/users/logout');
+  // return response.data;
+};

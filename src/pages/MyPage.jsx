@@ -2,10 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
-// const type = 'user';
-const money = 30000;
+import { logout } from '@/api';
 
 const MyPage = () => {
+  const logoutHandler = async () => {
+    await logout();
+  };
+
   return (
     <Container>
       <ProfileContainer>
@@ -20,7 +23,7 @@ const MyPage = () => {
         <PointContainer>
           <FirstBox>
             <div>보유 포인트</div>
-            <div>{money}원</div>
+            <div>30000원</div>
           </FirstBox>
           <SecondBox>
             <PointHistory>
@@ -42,7 +45,7 @@ const MyPage = () => {
           <BiChevronRight size={25} />
         </InputContainer>
         <InputContainer>
-          <Logout>로그아웃</Logout>
+          <Logout onClick={logoutHandler}>로그아웃</Logout>
           <BiChevronRight size={25} />
         </InputContainer>
       </InformationContainer>
