@@ -51,6 +51,7 @@ const App = () => {
                 <PublicRoute element={SignupComplete} showUserIcon={false} />
               }
             />
+
             <Route
               path={PATH_MYPAGE}
               element={<PublicRoute element={MyPage} />}

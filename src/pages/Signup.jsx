@@ -45,7 +45,6 @@ const Signup = () => {
     } else {
       alert('에러 발생');
     }
-  };
 
   return (
     <Container>
