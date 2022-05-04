@@ -65,7 +65,7 @@ const App = () => {
             />
             <Route
               path={PATH_REFUND}
-              element={<PrivateRoute element={Refund} />}
+              element={<PublicRoute element={Refund} />}
             />
             <Route
               path={PATH_NOT_FOUND}
