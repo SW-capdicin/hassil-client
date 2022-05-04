@@ -1,11 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
-// const type = 'user';
-const money = 30000;
+import { logout } from '@/api';
 
 const MyPage = () => {
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    const responseStatus = await logout();
+    if (responseStatus === 200) {
+      navigate('/');
+    }
+  };
+
   return (
     <Container>
       <ProfileContainer>
@@ -20,7 +28,7 @@ const MyPage = () => {
         <PointContainer>
           <FirstBox>
             <div>보유 포인트</div>
-            <div>{money}원</div>
+            <div>30000원</div>
           </FirstBox>
           <SecondBox>
             <PointHistory>
@@ -42,7 +50,7 @@ const MyPage = () => {
           <BiChevronRight size={25} />
         </InputContainer>
         <InputContainer>
-          <Logout>로그아웃</Logout>
+          <Logout onClick={logoutHandler}>로그아웃</Logout>
           <BiChevronRight size={25} />
         </InputContainer>
       </InformationContainer>
@@ -133,6 +141,6 @@ const InputContainer = styled.div`
 `;
 const StudyList = styled.div``;
 const EditInformation = styled.div``;
-const Logout = styled.div``;
+const Logout = styled.button``;
 
 export default MyPage;
