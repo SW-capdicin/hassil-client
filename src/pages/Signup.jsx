@@ -45,6 +45,7 @@ const Signup = () => {
     } else {
       alert('에러 발생');
     }
+  };
 
   return (
     <Container>
@@ -116,6 +117,7 @@ const Signup = () => {
     </Container>
   );
 };
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
