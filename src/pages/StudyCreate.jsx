@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import emptyimg from '@/img/emptyimg.png';
-import { createStudy } from '@/api';
+import { uploadOneImage, createStudy } from '@/api';
 
 const CreateStudy = () => {
   const navigate = useNavigate();
 
-  const [src, setFiles] = useState('');
+  const [src, setFiles] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [inputs, setInputs] = useState({
@@ -44,11 +44,20 @@ const CreateStudy = () => {
   };
   const handleSubmit = async (e) => {
     try {
+      let image = null;
+      if (src) {
+        //FormData 생성
+        const fd = new FormData();
+        //FormData에 key, value 추가
+        fd.append('image', src);
+        const srcUrl = await uploadOneImage(fd);
+        image = srcUrl;
+      }
       await createStudy({
         ...inputs,
         startDate,
         endDate,
-        src,
+        src: image || src,
       });
       alert("스터디 생성 완료");
       navigate(PATH_HOME);
