@@ -19,7 +19,6 @@ const Home = () => {
 
   const loadStudies = async _ => {
     const data = await getStudyList();
-    console.log(data);
     setStudies(_ => data);
   }
   useEffect(_ => {
