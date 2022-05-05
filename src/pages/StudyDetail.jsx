@@ -23,6 +23,18 @@ const CreateStudy = () => {
     return loadData;
   }, []);
 
+  const showImage = src => {
+    if (src.includes('http')) {
+      return src;
+    }
+    else if (src == '' || !src) {
+      return emptyimg;
+    }
+    else {
+      return URL.createObjectURL(src);
+    }
+  }
+
   const selectList = [
     // 나중에 category 조회로 불러올 것
     '관심 분야를 고르세요',
@@ -54,7 +66,7 @@ const CreateStudy = () => {
       <SubContainer>
         <Label>대표 이미지 등록</Label>
         <SelectImg onClick={() => imgInput.current.click()}>
-          <Img src={src ? URL.createObjectURL(src) : emptyimg}></Img>
+          <Img src={showImage(src)}></Img>
         </SelectImg>
         <LabelUnderLine
           type="file"

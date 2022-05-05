@@ -9,3 +9,8 @@ export const findStudy = async id => {
   const response = await axios.get('/api/studies/' + id);
   return response.data;
 };
+
+export const getStudyList = async _ => {
+  const response = await axios.get('/api/studies');
+  return response.data;
+};
