@@ -1,141 +1,115 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logo_man from '@/img/man.png';
-import logo_woman from '@/img/woman.png';
+import { Input } from '@/components';
+import { man, woman } from '@/img';
+import {
+  TYPE_USER_GENERAL,
+  TYPE_USER_CAFE_OWNER,
+  PATH_SIGNUP_COMPLETE,
+  TYPE_BANK,
+} from '@/constants';
+import { patchUserInfo } from '@/api';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    needToSelect: 1,
-    userType: '',
+    type: 0,
     name: '',
     nickname: '',
-    bank: '',
+    bankName: '',
     phoneNumber: '',
     bankAccount: '',
   });
-  const {
-    needToSelect,
-    userType,
-    name,
-    nickname,
-    phoneNumber,
-    bank,
-    bankAccount,
-  } = inputs;
-  const handleChange = (e) => {
-    const nextInputs = {
-      ...inputs,
-      [e.target.name]: e.target.value,
-    };
-    setInputs(nextInputs);
-  };
-  const handleClick = (e) => {
-    const nextInputs = {
-      ...inputs,
-      needToSelect: 0,
-      userType: e.target.innerText,
-    };
-    setInputs(nextInputs);
+  const { type, name, nickname, bankName, phoneNumber, bankAccount } = inputs;
+
+  const handleChange = (event) => {
+    setInputs((prevInputs) => ({
+      ...prevInputs,
+      [event.target.name]: event.target.value,
+    }));
   };
 
-  const selectList = [
-    '===== 은행선택 =====',
-    '국민은행',
-    '신한은행',
-    '농협은행',
-    '하나은행',
-  ];
+  const handleClick = (event) => {
+    setInputs((prevInputs) => ({
+      ...prevInputs,
+      type: event.target.dataset.type,
+    }));
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('유저 타입 : ', { userType });
-    console.log('이름 : ', { name });
-    console.log('닉네임 : ', { nickname });
-    console.log('전번 : ', { phoneNumber });
-    console.log('은행 : ', { bank });
-    console.log('계좌번호 : ', { bankAccount });
-    setInputs({
-      name: '',
-      nickname: '',
-      bank: '',
-      phoneNumber: '',
-      bankAccount: '',
-    });
+  const handleSubmit = async () => {
+    const responseStatus = await patchUserInfo(inputs);
+    if (responseStatus === 200) {
+      // userState update 하는 로직 추가 필요
+      navigate(PATH_SIGNUP_COMPLETE);
+    } else {
+      alert('에러 발생');
+    }
   };
 
   return (
     <Container>
-      {needToSelect ? (
-        <>
-          <UserTypeContainer>
-            <UserType gender={0} onClick={handleClick}>
-              <UserText>카페 사장님</UserText>
-            </UserType>
-            <UserType gender={1} onClick={handleClick}>
-              <UserText>스터디 이용자</UserText>
-            </UserType>
-          </UserTypeContainer>
-        </>
+      {!type ? (
+        <UserTypeContainer>
+          <UserType
+            data-type={TYPE_USER_GENERAL}
+            type={TYPE_USER_GENERAL}
+            onClick={handleClick}
+          >
+            <UserText>스터디 이용자</UserText>
+          </UserType>
+          <UserType
+            data-type={TYPE_USER_CAFE_OWNER}
+            type={TYPE_USER_CAFE_OWNER}
+            onClick={handleClick}
+          >
+            <UserText>카페 사장님</UserText>
+          </UserType>
+        </UserTypeContainer>
       ) : (
         <>
-          <InputContainer>
-            <Label>이름</Label>
-            <Input
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleChange}
-              placeholder="이름"
-              id="inputName"
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>닉네임</Label>
-            <Input
-              type="text"
-              name="nickname"
-              value={nickname}
-              onChange={handleChange}
-              placeholder="닉네임"
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>연락처</Label>
-            <Input
-              type="text"
-              name="phoneNumber"
-              value={phoneNumber}
-              onChange={handleChange}
-              placeholder="010-1234-1234"
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>은행</Label>
-            <Select
-              className="box"
-              name="bank"
-              onChange={handleChange}
-              value={bank}
-            >
-              {selectList.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </Select>
-          </InputContainer>
-          <InputContainer>
-            <Label>계좌번호</Label>
-            <Input
-              className="box"
-              type="text"
-              name="bankAccount"
-              value={bankAccount}
-              onChange={handleChange}
-              placeholder="계좌번호"
-            />
-          </InputContainer>
-          <SignupBtn type="submit" onClick={handleSubmit}>
+          <Input
+            type="text"
+            name="name"
+            label="이름"
+            placeholder="이름을 입력하세요"
+            value={name}
+            onChange={handleChange}
+          />
+          <Input
+            type="text"
+            name="nickname"
+            label="닉네임"
+            placeholder="닉네임을 입력하세요"
+            value={nickname}
+            onChange={handleChange}
+          />
+          <Input
+            type="tel"
+            name="phoneNumber"
+            label="연락처"
+            placeholder="010-1234-1234"
+            value={phoneNumber}
+            onChange={handleChange}
+          />
+          <Input
+            type="sel"
+            name="bankName"
+            label="은행"
+            value={bankName}
+            onChange={handleChange}
+            defaultText="은행을 선택하세요"
+            selectOptions={TYPE_BANK}
+          />
+          <Input
+            type="text"
+            name="bankAccount"
+            label="계좌번호"
+            placeholder="계좌번호를 입력하세요"
+            value={bankAccount}
+            onChange={handleChange}
+          />
+          <SignupBtn onClick={handleSubmit}>
             <BtnText>가입하기</BtnText>
           </SignupBtn>
         </>
@@ -143,6 +117,7 @@ const Signup = () => {
     </Container>
   );
 };
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -159,12 +134,11 @@ const UserTypeContainer = styled.div`
 const UserType = styled.div`
   display: flex;
   background-image: ${(props) =>
-    props.gender === 0 ? `url(${logo_man})` : `url(${logo_woman})`};
+    props.type === 1 ? `url(${man})` : `url(${woman})`};
   background-repeat: no-repeat;
   background-position: center;
   width: 8rem;
   height: 12rem;
-  /* flex-direction: column-reverse; */
   align-items: flex-end;
   justify-content: center;
   border-style: solid solid solid solid;
@@ -183,27 +157,6 @@ const UserText = styled.div`
   justify-content: center;
   outline: 0;
   border: 0;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const Label = styled.label`
-  color: ${({ theme }) => theme.color.gray};
-`;
-
-const Input = styled.input`
-  width: 12rem;
-  border-style: none none solid none;
-  padding-left: 5px;
-`;
-
-const Select = styled.select`
-  width: 12rem;
-  padding-left: 5px;
 `;
 
 const SignupBtn = styled.button`
