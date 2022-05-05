@@ -35,6 +35,10 @@ const CreateStudy = () => {
     }
   }
 
+  const getDate = date => {
+    return date && date.split('T')[0]
+  }
+
   const selectList = [
     // 나중에 category 조회로 불러올 것
     '관심 분야를 고르세요',
@@ -74,16 +78,6 @@ const CreateStudy = () => {
           ref={imgInput}
           onChange={onLoadFile}
         />
-      <InputContainer>
-        <Label>기간</Label>
-        <LabelContents>{
-          inputs.startDate &&
-          inputs.startDate.split('T')[0]
-        } ~ {
-          inputs.endDate &&
-          inputs.endDate.split('T')[0]
-        }</LabelContents>
-      </InputContainer>
         <TitleContainer>
           <Title>{inputs.name}</Title>
         </TitleContainer>
@@ -92,6 +86,10 @@ const CreateStudy = () => {
         <InputContainer>
           <Label>인당 보증금</Label>
           <LabelContents>{inputs.depositPerPerson}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>기간</Label>
+          <LabelContents>{getDate(inputs.startDate)} ~ {getDate(inputs.endDate)}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>운영시간</Label>
