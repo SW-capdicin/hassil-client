@@ -17,11 +17,22 @@ const Payment = () => {
   const [leastPayment] = useState(1000);
   const [isPaid] = useState(!!queryData.paymentKey);
   
-  const paymentSubmit = async (event) => {
-    await paymentSuccess({
-      ...queryData
-    });
-  }
+  useEffect(_ => {
+    return async _ => {
+      try {
+        if (!!queryData.paymentKey) {
+          await paymentSuccess({
+            ...queryData
+          });
+          alert('결제 완료');
+          // 페이지 이동
+        }
+      } catch (e) {
+        alert('error');
+        // 페이지 이동
+      }
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     const tossPayments = await loadTossPayments(clientKey);
@@ -58,13 +69,6 @@ const Payment = () => {
           <SubmitBtn onClick={handleSubmit}>
             <BtnText>충전</BtnText>
           </SubmitBtn>
-        </BtnContainer>
-        <BtnContainer>
-          {isPaid && (
-            <SubmitBtn onClick={paymentSubmit}>
-              <BtnText>결제완료</BtnText>
-            </SubmitBtn>
-          )}
         </BtnContainer>
       </SubContainer>
     </Container>
