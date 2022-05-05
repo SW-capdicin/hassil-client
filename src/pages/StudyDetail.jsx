@@ -1,31 +1,40 @@
 import 'react-datepicker/dist/react-datepicker.css';
-import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PATH_HOME } from '@/constants';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
-import { ko } from 'date-fns/esm/locale';
 import emptyimg from '@/img/emptyimg.png';
-import { createStudy } from '@/api';
+import { findStudy } from '@/api';
 
 const CreateStudy = () => {
   const navigate = useNavigate();
+  const params = useParams();
 
   const [src, setFiles] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [inputs, setInputs] = useState({
-    name: '',
-    depositPerPerson: 0,
-    category: '',
-    operationTime: '',
-    info: '',
-    absentFee: 0,
-    lateFee: 0,
-    maxPerson: 0,
-    minPerson: 0,
-  });
-  const { name, depositPerPerson, category, operationTime } = inputs;
+  const [inputs, setInputs] = useState({});
+
+  const loadData = async _ => {
+    const data = await findStudy(params.id);
+    setInputs(_ => data);
+    setFiles(_ => data.src);
+  }
+  
+  useEffect(_ => {
+    return loadData;
+  }, []);
+
+  const showImage = src => {
+    if (src.includes('http')) {
+      return src;
+    }
+    else if (src == '' || !src) {
+      return emptyimg;
+    }
+    else {
+      return URL.createObjectURL(src);
+    }
+  }
+
   const selectList = [
     // 나중에 category 조회로 불러올 것
     '관심 분야를 고르세요',
@@ -35,23 +44,11 @@ const CreateStudy = () => {
     '수학',
     'NCS',
   ];
-  const handleChange = (e) => {
-    const nextInputs = {
-      ...inputs,
-      [e.target.name]: e.target.value,
-    };
-    setInputs(nextInputs);
-  };
-  const handleSubmit = async (e) => {
+
+  const joinStudy = async (e) => {
     try {
-      await createStudy({
-        ...inputs,
-        startDate,
-        endDate,
-        src,
-      });
-      alert("스터디 생성 완료");
-      navigate(PATH_HOME);
+      alert("스터디 참가하기");
+      // 스터디 참가 로직 필요
     } catch (e) {
       console.log(e);
       alert('에러 발생');
@@ -69,9 +66,9 @@ const CreateStudy = () => {
       <SubContainer>
         <Label>대표 이미지 등록</Label>
         <SelectImg onClick={() => imgInput.current.click()}>
-          <Img src={src ? URL.createObjectURL(src) : emptyimg}></Img>
+          <Img src={showImage(src)}></Img>
         </SelectImg>
-        <Input
+        <LabelUnderLine
           type="file"
           accept="image/*"
           style={{ display: 'none' }}
@@ -81,112 +78,56 @@ const CreateStudy = () => {
       </SubContainer>
       <InputContainer>
         <Label>제목</Label>
-        <Input
-          name="name"
-          value={name}
-          placeholder="STUDY WITH ME"
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.name}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>내용</Label>
-        <Input
-          name="info"
-          placeholder="description"
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.info}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>인당 보증금</Label>
-        <Input
-          name="depositPerPerson"
-          type="number"
-          defaultValue={depositPerPerson ? depositPerPerson : ''}
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.depositPerPerson}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>시작 날짜</Label>
-        <SDatePickerContainer>
-          <SDatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            locale={ko}
-            minDate={new Date()}
-            dateFormat="yyyy년 MM월 dd일"
-          />
-        </SDatePickerContainer>
+        <LabelUnderLine>{
+          inputs.startDate &&
+          inputs.startDate.split('T')[0]
+        }</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>종료 날짜</Label>
-        <SDatePickerContainer>
-          <SDatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            locale={ko}
-            dateFormat="yyyy년 MM월 dd일"
-          />
-        </SDatePickerContainer>
+        <LabelUnderLine>{
+          inputs.endDate &&
+          inputs.endDate.split('T')[0]
+        }</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>카테고리</Label>
-        <Select name="category" value={category} onChange={handleChange}>
-          {selectList.map((item, i) => (
-            <option key={item} value={i}>
-              {item}
-            </option>
-          ))}
-        </Select>
+        <LabelUnderLine>{selectList[inputs.categoryId || 0]}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>운영시간</Label>
-        <Input
-          name="operationTime"
-          value={operationTime}
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.operationTime}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>최소 인원</Label>
-        <Input
-          name="minPerson"
-          type="number"
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.minPerson}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>최대 인원</Label>
-        <Input
-          name="maxPerson"
-          type="number"
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.maxPerson}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>결석 벌금</Label>
-        <Input
-          name="absentFee"
-          type="number"
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.absentFee}</LabelUnderLine>
       </InputContainer>
       <InputContainer>
         <Label>지각 벌금</Label>
-        <Input
-          name="lateFee"
-          type="number"
-          onChange={handleChange}
-        />
+        <LabelUnderLine>{inputs.lateFee}</LabelUnderLine>
       </InputContainer>
-      <CreateBtn onClick={handleSubmit}>
-        <BtnText>스터디 생성하기</BtnText>
+      <CreateBtn onClick={joinStudy}>
+        <BtnText>스터디 참가하기</BtnText>
       </CreateBtn>
     </Container>
   );
@@ -213,7 +154,8 @@ const InputContainer = styled.div`
 const Label = styled.label`
   color: ${({ theme }) => theme.color.gray};
 `;
-const Input = styled.input`
+const Input = styled.input``;
+const LabelUnderLine = styled.label`
   border-style: none none solid none;
   font-weight: bold;
   color: ${({ theme }) => theme.color.black};

@@ -1,81 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PATH_STUDY_CREATE, PATH_STUDY_DETAIL } from '@/constants';
 import styled from 'styled-components';
 import studyimg from '@/img/study.png';
 import emptyimg from '@/img/emptyimg.png';
 import { GoSearch } from 'react-icons/go';
 import { IoMdAddCircle } from 'react-icons/io';
+import { getStudyList } from '@/api';
+
 const Date = 2;
-const Example = [
-  {
-    name: '아주대 모각코',
-    img: studyimg,
-    category: '코딩',
-  },
-  {
-    name: '아주대 랭스',
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    category: '코딩',
-  },
-  {
-    name: '투썸',
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    category: '중국어',
-  },
-  {
-    name: '스벅',
-    img: '',
-    category: '영어',
-  },
-  {
-    name: '유메야',
-    img: '',
-    category: '영어',
-  },
-  {
-    name: '아주대 키뮤',
-    img: studyimg,
-    category: '코딩',
-  },
-  {
-    name: '아주대 맨즈',
-    img: studyimg,
-    category: '코딩',
-  },
-  {
-    name: '아주대 우맨즈',
-    img: studyimg,
-    category: '코딩',
-  },
-  {
-    name: '아주대 카페3',
-    img: studyimg,
-    category: '코딩',
-  },
-  {
-    name: '카페4',
-    img: studyimg,
-    category: '코딩',
-  },
-  {
-    name: '카페5',
-    img: studyimg,
-    category: '코딩',
-  },
-  {
-    name: '아주대 골목커피',
-    img: studyimg,
-    category: '코딩',
-  },
-];
 const Category = ['전체', '코딩', '중국어', '영어'];
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [studies, setStudies] = useState([]);
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('전체');
+
+  const loadStudies = async _ => {
+    const data = await getStudyList();
+    setStudies(_ => data);
+  }
+  useEffect(_ => {
+    return loadStudies;
+  }, []);
+
   const handleChange = (e) => {
     const studyName = e.target.value;
     setSearch(studyName);
   };
+
+  const btnClickCreateStudy = (e) => {
+    navigate(PATH_STUDY_CREATE);
+  }
+
+  const btnClickDetailStudy = (id, e) => {
+    // 이부분부터 작업
+    navigate(`${PATH_STUDY_DETAIL}/${id}`);
+  }
 
   const tabClickHandler = (item) => {
     setActiveTab(item);
@@ -107,7 +69,7 @@ const Home = () => {
         </TabTitle>
         <Line />
         <TabContentContainer>
-          {Example.filter((val) => {
+          {studies.filter((val) => {
             if (
               search != '' &&
               val.name.toLowerCase().includes(search.toLowerCase())
@@ -116,7 +78,7 @@ const Home = () => {
             }
           }).map((data, index) => {
             return (
-              <TabContent key={index}>
+              <TabContent key={index} onClick={e => btnClickDetailStudy(data.id, e)}>
                 <TextContainer>
                   <Text>{data.name}</Text>
                   <DateText>{Date}일뒤 시작</DateText>
@@ -126,11 +88,11 @@ const Home = () => {
           })}
           {search == '' &&
             (activeTab === '전체'
-              ? Example.map((item, index) => {
+              ? studies.map((item, index) => {
                   return (
-                    <TabContent key={index}>
-                      {item.img ? (
-                        <Img src={`${item.img}`} />
+                    <TabContent key={index} onClick={e => btnClickDetailStudy(item.id, e)}>
+                      {item.src ? (
+                        <Img src={`${item.src}`} />
                       ) : (
                         <Img src={emptyimg} />
                       )}
@@ -141,11 +103,11 @@ const Home = () => {
                     </TabContent>
                   );
                 })
-              : Example.filter((item) => item.category == activeTab).map(
+              : studies.filter((item) => item.category == activeTab).map(
                   (item, index) => {
                     return (
-                      <TabContent key={index}>
-                        <Img src={`${item.img}`} />
+                      <TabContent key={index} onClick={e => btnClickDetailStudy(item.id, e)}>
+                        <Img src={`${item.src}`} />
                         <TextContainer>
                           <Text>{item.name}</Text>
                           <DateText>{Date}일뒤 시작</DateText>
@@ -154,7 +116,7 @@ const Home = () => {
                     );
                   },
                 ))}
-          <CuIoMdAddCircle />
+          <CuIoMdAddCircle onClick={btnClickCreateStudy} />
         </TabContentContainer>
       </TabContainer>
     </Container>
