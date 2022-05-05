@@ -199,6 +199,7 @@ const CreateStudy = () => {
 
 const contentWidth = '16rem';
 const bottomMargin = '15px';
+const labelForVerticalCenter = `padding-top: 3px;`;
 const getGray = ({ theme }) => theme.color.gray;
 const getBlack = ({ theme }) => theme.color.black;
 
@@ -231,6 +232,7 @@ const Label = styled.label`
   margin: auto;
   margin-left: 0px;
   font-size: 15px;
+  ${labelForVerticalCenter}
 `;
 const Input = styled.input`
   border-style: none;

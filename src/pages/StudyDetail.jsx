@@ -136,7 +136,8 @@ const CreateStudy = () => {
 };
 
 const contentWidth = '16rem';
-const bottomMargin = '15px';
+const bottomMargin = '12px';
+const labelForVerticalCenter = `padding-top: 3px;`;
 const getGray = ({ theme }) => theme.color.gray;
 const getBlack = ({ theme }) => theme.color.black;
 
@@ -192,12 +193,12 @@ const Label = styled.label`
   margin: auto;
   margin-left: 0px;
   font-size: 15px;
+  ${labelForVerticalCenter}
 `;
 const LabelContents = styled.label`
   color: ${getBlack};
   text-align: left;
   width: ${contentWidth};
-  height: 2rem;
   padding-left: 5px;
   font-size: 15px;
 `;
