@@ -11,6 +11,7 @@ import {
   SignupComplete,
   NotFound,
   StudyCreate,
+  StudyDetail,
   Payment,
   Refund,
   MyPage,
@@ -23,6 +24,7 @@ import {
   PATH_SIGNUP_COMPLETE,
   PATH_NOT_FOUND,
   PATH_STUDY_CREATE,
+  PATH_STUDY_DETAIL,
   PATH_PAYMENT,
   PATH_REFUND,
   PATH_MYPAGE,
@@ -59,6 +61,10 @@ const App = () => {
             <Route
               path={PATH_STUDY_CREATE}
               element={<PublicRoute element={StudyCreate} />}
+            />
+            <Route
+              path={PATH_STUDY_DETAIL+'/:id'}
+              element={<PublicRoute element={StudyDetail} />}
             />
             <Route
               path={PATH_PAYMENT}
