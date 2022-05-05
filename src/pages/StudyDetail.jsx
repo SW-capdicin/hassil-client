@@ -63,10 +63,7 @@ const CreateStudy = () => {
 
   return (
     <Container>
-      <SubContainer>
-        <InputContainer>
-          <Label>대표 이미지 등록</Label>
-        </InputContainer>
+      <FullWidthContainer>
         <SelectImg onClick={() => imgInput.current.click()}>
           <Img src={showImage(src)}></Img>
         </SelectImg>
@@ -77,15 +74,6 @@ const CreateStudy = () => {
           ref={imgInput}
           onChange={onLoadFile}
         />
-      </SubContainer>
-      <InputContainer>
-        <Label>제목</Label>
-        <LabelContents>{inputs.name}</LabelContents>
-      </InputContainer>
-      <InputContainer>
-        <Label>인당 보증금</Label>
-        <LabelContents>{inputs.depositPerPerson}</LabelContents>
-      </InputContainer>
       <InputContainer>
         <Label>기간</Label>
         <LabelContents>{
@@ -96,39 +84,50 @@ const CreateStudy = () => {
           inputs.endDate.split('T')[0]
         }</LabelContents>
       </InputContainer>
-      <InputContainer>
-        <Label>카테고리</Label>
-        <LabelContents>{selectList[inputs.categoryId || 0]}</LabelContents>
-      </InputContainer>
-      <InputContainer>
-        <Label>운영시간</Label>
-        <LabelContents>{inputs.operationTime}</LabelContents>
-      </InputContainer>
-      <InputContainer>
-        <Label>최소 인원</Label>
-        <LabelContents>{inputs.minPerson}</LabelContents>
-      </InputContainer>
-      <InputContainer>
-        <Label>최대 인원</Label>
-        <LabelContents>{inputs.maxPerson}</LabelContents>
-      </InputContainer>
-      <InputContainer>
-        <Label>결석 벌금</Label>
-        <LabelContents>{inputs.absentFee}</LabelContents>
-      </InputContainer>
-      <InputContainer>
-        <Label>지각 벌금</Label>
-        <LabelContents>{inputs.lateFee}</LabelContents>
-      </InputContainer>
-      <SubContainer>
+        <TitleContainer>
+          <Title>{inputs.name}</Title>
+        </TitleContainer>
+      </FullWidthContainer>
+      <ContentsContainer>
         <InputContainer>
-          <Label>상세 정보</Label>
+          <Label>인당 보증금</Label>
+          <LabelContents>{inputs.depositPerPerson}</LabelContents>
         </InputContainer>
-        <TextArea
-          readOnly={true}
-          value={inputs.info}
-        />
-      </SubContainer>
+        <InputContainer>
+          <Label>운영시간</Label>
+          <LabelContents>{inputs.operationTime}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>최소 인원</Label>
+          <LabelContents>{inputs.minPerson}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>최대 인원</Label>
+          <LabelContents>{inputs.maxPerson}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>분야</Label>
+          <LabelContents>{selectList[inputs.categoryId || 0]}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>결석 벌금</Label>
+          <LabelContents>{inputs.absentFee}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>지각 벌금</Label>
+          <LabelContents>{inputs.lateFee}</LabelContents>
+        </InputContainer>
+        <SubContainer>
+          <InputContainer>
+            <Label>상세 정보</Label>
+          </InputContainer>
+          <TextArea
+            readOnly={true}
+            value={inputs.info}
+          />
+        </SubContainer>
+      </ContentsContainer>
+      
       <FixedDiv>
         <CreateBtn onClick={joinStudy}>
           <BtnText>스터디 참가하기</BtnText>
@@ -138,7 +137,7 @@ const CreateStudy = () => {
   );
 };
 
-const contentWidth = '14rem';
+const contentWidth = '16rem';
 const bottomMargin = '15px';
 const getGray = ({ theme }) => theme.color.gray;
 const getBlack = ({ theme }) => theme.color.black;
@@ -148,15 +147,38 @@ const Container = styled.div`
   flex-direction: column;
   height: 37.4rem;
   width: 100%;
-  padding-left: 10%;
-  padding-right: 10%;
   overflow: auto;
 `;
+const ContentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 37.4rem;
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
+`;
 const SubContainer = styled.div``;
+const FullWidthContainer = styled.div`
+  width: 100%;
+  left: 0;
+`;
+const TitleContainer = styled.div`
+  margin: 3% 10%;
+  height: 3rem;
+  display: flex;
+`;
+const Title = styled.label`
+  display: flex;
+  margin: auto;
+  margin-left: 0px;
+  font-size: 20px;
+  font-weight: 700;
+  color: ${getBlack};
+`;
 const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
-  width: 22rem;
+  width: 100%;
   margin: auto;
   margin-bottom: ${bottomMargin};
 `;
@@ -171,13 +193,15 @@ const Label = styled.label`
   display: flex;
   margin: auto;
   margin-left: 0px;
+  font-size: 15px;
 `;
 const LabelContents = styled.label`
   color: ${getBlack};
-  text-align: center;
+  text-align: left;
   width: ${contentWidth};
   height: 2rem;
   padding-left: 5px;
+  font-size: 15px;
 `;
 
 const FixedDiv = styled.div`

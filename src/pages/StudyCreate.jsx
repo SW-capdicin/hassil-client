@@ -130,7 +130,7 @@ const CreateStudy = () => {
         </SDatePickerContainer>
       </InputContainer>
       <InputContainer>
-        <Label>카테고리</Label>
+        <Label>분야</Label>
         <Select name="category" value={category} onChange={handleChange}>
           {selectList.map((item, i) => (
             <option key={item} value={i}>
@@ -197,7 +197,7 @@ const CreateStudy = () => {
   );
 };
 
-const contentWidth = '14rem';
+const contentWidth = '16rem';
 const bottomMargin = '15px';
 const getGray = ({ theme }) => theme.color.gray;
 const getBlack = ({ theme }) => theme.color.black;
@@ -230,15 +230,17 @@ const Label = styled.label`
   display: flex;
   margin: auto;
   margin-left: 0px;
+  font-size: 15px;
 `;
 const Input = styled.input`
   border-style: none;
   border-bottom: 1px solid ${getGray};
   color: ${getBlack};
-  text-align: center;
+  text-align: left;
   width: ${contentWidth};
   padding-left: 5px;
   height: 2rem;
+  font-size: 15px;
 `;
 const SDatePickerContainer = styled.div`
   width: ${contentWidth};
@@ -252,6 +254,7 @@ const SDatePicker = styled(DatePicker)`
   border-color: ${getGray};
   border-radius: 20px;
   height: 2rem;
+  font-size: 15px;
 `;
 
 const Select = styled.select`
@@ -260,6 +263,7 @@ const Select = styled.select`
   text-align: center;
   height: 2rem;
   border-color: ${getGray};
+  font-size: 15px;
 `;
 
 const FixedDiv = styled.div`
