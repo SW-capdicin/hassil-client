@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PATH_STUDY_CREATE } from '@/constants';
+import { PATH_STUDY_CREATE, PATH_STUDY_DETAIL } from '@/constants';
 import styled from 'styled-components';
 import studyimg from '@/img/study.png';
 import emptyimg from '@/img/emptyimg.png';
@@ -84,6 +84,11 @@ const Home = () => {
     navigate(PATH_STUDY_CREATE);
   }
 
+  const btnClickDetailStudy = (id, e) => {
+    // 이부분부터 작업
+    navigate(`${PATH_STUDY_DETAIL}/${id}`);
+  }
+
   const tabClickHandler = (item) => {
     setActiveTab(item);
   };
@@ -123,7 +128,7 @@ const Home = () => {
             }
           }).map((data, index) => {
             return (
-              <TabContent key={index}>
+              <TabContent key={index} onClick={e => btnClickDetailStudy(index, e)}>
                 <TextContainer>
                   <Text>{data.name}</Text>
                   <DateText>{Date}일뒤 시작</DateText>
@@ -135,7 +140,7 @@ const Home = () => {
             (activeTab === '전체'
               ? Example.map((item, index) => {
                   return (
-                    <TabContent key={index}>
+                    <TabContent key={index} onClick={e => btnClickDetailStudy(index, e)}>
                       {item.img ? (
                         <Img src={`${item.img}`} />
                       ) : (
@@ -151,7 +156,7 @@ const Home = () => {
               : Example.filter((item) => item.category == activeTab).map(
                   (item, index) => {
                     return (
-                      <TabContent key={index}>
+                      <TabContent key={index} onClick={e => btnClickDetailStudy(index, e)}>
                         <Img src={`${item.img}`} />
                         <TextContainer>
                           <Text>{item.name}</Text>
