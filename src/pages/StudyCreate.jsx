@@ -179,13 +179,15 @@ const CreateStudy = () => {
           onChange={handleChange}
         />
       </InputContainer>
-      <InputContainer>
-        <Label>내용</Label>
+      <SubContainer>
+        <InputContainer>
+          <Label>상세 정보</Label>
+        </InputContainer>
         <TextArea
           name="info"
           onChange={handleChange}
         />
-      </InputContainer>
+      </SubContainer>
       <FixedDiv>
         <CreateBtn onClick={handleSubmit}>
           <BtnText>스터디 생성하기</BtnText>
@@ -198,6 +200,7 @@ const CreateStudy = () => {
 const contentWidth = '14rem';
 const bottomMargin = '15px';
 const getGray = ({ theme }) => theme.color.gray;
+const getBlack = ({ theme }) => theme.color.black;
 
 const Container = styled.div`
   display: flex;
@@ -231,8 +234,7 @@ const Label = styled.label`
 const Input = styled.input`
   border-style: none;
   border-bottom: 1px solid ${getGray};
-  font-weight: bold;
-  color: ${getGray};
+  color: ${getBlack};
   text-align: center;
   width: ${contentWidth};
   padding-left: 5px;
@@ -290,11 +292,13 @@ const BtnText = styled.div`
 `;
 
 const TextArea = styled.textarea`
-  width: ${contentWidth};
+  width: 100%;
   height: 5rem;
   resize: vertical;
   border-color: ${getGray};
   border-radius: 5px;
+  padding: 5px;
+  margin-bottom: ${bottomMargin};
 `;
 
 export default CreateStudy;

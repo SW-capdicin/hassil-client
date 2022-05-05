@@ -87,15 +87,11 @@ const CreateStudy = () => {
         <LabelContents>{inputs.depositPerPerson}</LabelContents>
       </InputContainer>
       <InputContainer>
-        <Label>시작 날짜</Label>
+        <Label>기간</Label>
         <LabelContents>{
           inputs.startDate &&
           inputs.startDate.split('T')[0]
-        }</LabelContents>
-      </InputContainer>
-      <InputContainer>
-        <Label>종료 날짜</Label>
-        <LabelContents>{
+        } ~ {
           inputs.endDate &&
           inputs.endDate.split('T')[0]
         }</LabelContents>
@@ -124,13 +120,15 @@ const CreateStudy = () => {
         <Label>지각 벌금</Label>
         <LabelContents>{inputs.lateFee}</LabelContents>
       </InputContainer>
-      <InputContainer>
-        <Label>내용</Label>
+      <SubContainer>
+        <InputContainer>
+          <Label>상세 정보</Label>
+        </InputContainer>
         <TextArea
           readOnly={true}
           value={inputs.info}
         />
-      </InputContainer>
+      </SubContainer>
       <FixedDiv>
         <CreateBtn onClick={joinStudy}>
           <BtnText>스터디 참가하기</BtnText>
@@ -212,11 +210,13 @@ const BtnText = styled.div`
 `;
 
 const TextArea = styled.textarea`
-  width: ${contentWidth};
+  width: 100%;
   height: 5rem;
   resize: vertical;
   border-color: ${getGray};
   border-radius: 5px;
+  padding: 5px;
+  margin-bottom: ${bottomMargin};
 `;
 
 
