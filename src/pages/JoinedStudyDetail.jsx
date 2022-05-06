@@ -162,8 +162,8 @@ const Title = styled.label`
 const Img = styled.img`
   display: flex;
   width: 100%;
+  object-fit: cover;
   margin: auto;
-  margin-bottom: ${bottomMargin};
 `;
 const InputContainer = styled.div`
   display: flex;
