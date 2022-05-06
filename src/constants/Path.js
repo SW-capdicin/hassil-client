@@ -4,6 +4,7 @@ export const PATH_SIGNUP = '/users/signup';
 export const PATH_SIGNUP_COMPLETE = '/users/signup/complete';
 export const PATH_MYPAGE = '/users/mypage';
 export const PATH_STUDY_CREATE = '/studies/create';
+export const PATH_STUDY_DETAIL = '/studies';
 export const PATH_PAYMENT = '/payment';
 export const PATH_REFUND = '/refund';
 export const PATH_NOT_FOUND = '/*';
