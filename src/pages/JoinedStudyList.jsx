@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import emptyimg from '@/img/emptyimg.png';
 // 가입된 스터디 목록 api 나오면 그 api로 교체
 import { getStudyList } from '@/api';
+import { PATH_JOINED_STUDY_DETAIL } from '@/constants';
 
 const JoinedStudyList = () => {
   const navigate = useNavigate();
@@ -34,12 +35,16 @@ const JoinedStudyList = () => {
     return parseInt((now.getTime() - start.getTime()) / rate);
   }
 
+  const goDetail = (id) => {
+    navigate(`${PATH_JOINED_STUDY_DETAIL}/${id}`);
+  }
+
   return (
     <Container>
       {
         studies.map((item) => {
           return (
-            <StudyContainer key={item.id}>
+            <StudyContainer key={item.id} onClick={() => goDetail(item.id)}>
               <Img src={showImage(item.src)}></Img>
               <Title>{item.name}</Title>
               <ProgressBarContainer>
@@ -60,7 +65,6 @@ const JoinedStudyList = () => {
   )
 }
 
-const contentWidth = '16rem';
 const outerContentsMargin = '50px';
 const innerContentsMargin = '7px';
 const prgressRadius = '5px';

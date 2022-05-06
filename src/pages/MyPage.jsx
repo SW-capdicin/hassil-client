@@ -48,7 +48,7 @@ const MyPage = () => {
           </SecondBox>
         </PointContainer>
         <InputContainer>
-          <StudyList>가입한 스터디 목록</StudyList>
+          <StudyList onClick={goJoinedStudyList}>가입한 스터디 목록</StudyList>
           <BiChevronRight size={25} />
         </InputContainer>
         <InputContainer>

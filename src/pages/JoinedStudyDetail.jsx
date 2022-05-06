@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
 
-const CreateStudy = () => {
+const JoinedStudyDetail = () => {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -48,10 +48,10 @@ const CreateStudy = () => {
     'NCS',
   ];
 
-  const joinStudy = async (e) => {
+  const attendStudy = async (e) => {
     try {
-      alert("스터디 참가하기");
-      // 스터디 참가 로직 필요
+      alert("스터디 출석하기");
+      // 스터디 출석 로직 필요
     } catch (e) {
       console.log(e);
       alert('에러 발생');
@@ -111,8 +111,8 @@ const CreateStudy = () => {
       </ContentsContainer>
       
       <FixedDiv>
-        <CreateBtn onClick={joinStudy}>
-          <BtnText>스터디 참가하기</BtnText>
+        <CreateBtn onClick={attendStudy}>
+          <BtnText>출석하기</BtnText>
         </CreateBtn>
       </FixedDiv>
     </Container>
@@ -146,16 +146,17 @@ const FullWidthContainer = styled.div`
   left: 0;
 `;
 const TitleContainer = styled.div`
-  margin: 3% 10%;
+  margin: 3% 5%;
   height: 3rem;
   display: flex;
+  margin-bottom: 27px;
 `;
 const Title = styled.label`
   display: flex;
   margin: auto;
   margin-left: 0px;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
   color: ${getBlack};
 `;
 const Img = styled.img`
@@ -226,4 +227,4 @@ const TextArea = styled.textarea`
 `;
 
 
-export default CreateStudy;
+export default JoinedStudyDetail;

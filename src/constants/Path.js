@@ -6,6 +6,7 @@ export const PATH_MYPAGE = '/users/mypage';
 export const PATH_STUDY_CREATE = '/studies/create';
 export const PATH_STUDY_DETAIL = '/studies'; // :id
 export const PATH_JOINED_STUDY_LIST = '/users/studies';
+export const PATH_JOINED_STUDY_DETAIL = '/users/studies'; // :id
 export const PATH_PAYMENT = '/payment';
 export const PATH_REFUND = '/refund';
 export const PATH_NOT_FOUND = '/*';
