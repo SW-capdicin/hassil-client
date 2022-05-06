@@ -146,7 +146,7 @@ const FullWidthContainer = styled.div`
   left: 0;
 `;
 const TitleContainer = styled.div`
-  margin: 3% 10%;
+  margin: 3% 5%;
   height: 3rem;
   display: flex;
 `;
