@@ -35,6 +35,10 @@ const CreateStudy = () => {
     }
   }
 
+  const getDate = date => {
+    return date && date.split('T')[0]
+  }
+
   const selectList = [
     // 나중에 category 조회로 불러올 것
     '관심 분야를 고르세요',
@@ -63,128 +67,158 @@ const CreateStudy = () => {
 
   return (
     <Container>
-      <SubContainer>
-        <Label>대표 이미지 등록</Label>
+      <FullWidthContainer>
         <SelectImg onClick={() => imgInput.current.click()}>
           <Img src={showImage(src)}></Img>
         </SelectImg>
-        <LabelUnderLine
+        <LabelContents
           type="file"
           accept="image/*"
           style={{ display: 'none' }}
           ref={imgInput}
           onChange={onLoadFile}
         />
-      </SubContainer>
-      <InputContainer>
-        <Label>제목</Label>
-        <LabelUnderLine>{inputs.name}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>내용</Label>
-        <LabelUnderLine>{inputs.info}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>인당 보증금</Label>
-        <LabelUnderLine>{inputs.depositPerPerson}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>시작 날짜</Label>
-        <LabelUnderLine>{
-          inputs.startDate &&
-          inputs.startDate.split('T')[0]
-        }</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>종료 날짜</Label>
-        <LabelUnderLine>{
-          inputs.endDate &&
-          inputs.endDate.split('T')[0]
-        }</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>카테고리</Label>
-        <LabelUnderLine>{selectList[inputs.categoryId || 0]}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>운영시간</Label>
-        <LabelUnderLine>{inputs.operationTime}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>최소 인원</Label>
-        <LabelUnderLine>{inputs.minPerson}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>최대 인원</Label>
-        <LabelUnderLine>{inputs.maxPerson}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>결석 벌금</Label>
-        <LabelUnderLine>{inputs.absentFee}</LabelUnderLine>
-      </InputContainer>
-      <InputContainer>
-        <Label>지각 벌금</Label>
-        <LabelUnderLine>{inputs.lateFee}</LabelUnderLine>
-      </InputContainer>
-      <CreateBtn onClick={joinStudy}>
-        <BtnText>스터디 참가하기</BtnText>
-      </CreateBtn>
+        <TitleContainer>
+          <Title>{inputs.name}</Title>
+        </TitleContainer>
+      </FullWidthContainer>
+      <ContentsContainer>
+        <InputContainer>
+          <Label>인당 보증금</Label>
+          <LabelContents>{inputs.depositPerPerson}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>기간</Label>
+          <LabelContents>{getDate(inputs.startDate)} ~ {getDate(inputs.endDate)}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>운영시간</Label>
+          <LabelContents>{inputs.operationTime}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>최소 인원</Label>
+          <LabelContents>{inputs.minPerson}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>최대 인원</Label>
+          <LabelContents>{inputs.maxPerson}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>분야</Label>
+          <LabelContents>{selectList[inputs.categoryId || 0]}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>결석 벌금</Label>
+          <LabelContents>{inputs.absentFee}</LabelContents>
+        </InputContainer>
+        <InputContainer>
+          <Label>지각 벌금</Label>
+          <LabelContents>{inputs.lateFee}</LabelContents>
+        </InputContainer>
+        <SubContainer>
+          <InputContainer>
+            <Label>상세 정보</Label>
+          </InputContainer>
+          <TextArea
+            readOnly={true}
+            value={inputs.info}
+          />
+        </SubContainer>
+      </ContentsContainer>
+      
+      <FixedDiv>
+        <CreateBtn onClick={joinStudy}>
+          <BtnText>스터디 참가하기</BtnText>
+        </CreateBtn>
+      </FixedDiv>
     </Container>
   );
 };
 
+const contentWidth = '16rem';
+const bottomMargin = '12px';
+const labelForVerticalCenter = `padding-top: 3px;`;
+const getGray = ({ theme }) => theme.color.gray;
+const getBlack = ({ theme }) => theme.color.black;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 35rem;
-  width: 18rem;
-  justify-content: space-around;
+  height: 37.4rem;
+  width: 100%;
+  overflow: auto;
+`;
+const ContentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 37.4rem;
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
 `;
 const SubContainer = styled.div``;
+const FullWidthContainer = styled.div`
+  width: 100%;
+  left: 0;
+`;
+const TitleContainer = styled.div`
+  margin: 3% 10%;
+  height: 3rem;
+  display: flex;
+`;
+const Title = styled.label`
+  display: flex;
+  margin: auto;
+  margin-left: 0px;
+  font-size: 20px;
+  font-weight: 700;
+  color: ${getBlack};
+`;
 const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
-  width: 18rem;
+  width: 100%;
+  margin: auto;
+  margin-bottom: ${bottomMargin};
 `;
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: ${bottomMargin};
 `;
 const Label = styled.label`
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getGray};
+  display: flex;
+  margin: auto;
+  margin-left: 0px;
+  font-size: 15px;
+  ${labelForVerticalCenter}
 `;
-const Input = styled.input``;
-const LabelUnderLine = styled.label`
-  border-style: none none solid none;
-  font-weight: bold;
-  color: ${({ theme }) => theme.color.black};
-  text-align: center;
-  width: 12rem;
+const LabelContents = styled.label`
+  color: ${getBlack};
+  text-align: left;
+  width: ${contentWidth};
   padding-left: 5px;
-`;
-const SDatePickerContainer = styled.div`
-  width: 12rem;
-`;
-const SDatePicker = styled(DatePicker)`
-  align-items: center;
-  text-align: center;
-  width: 12rem;
-  padding-left: 5px;
-  border-radius: 20px;
+  font-size: 15px;
 `;
 
-const Select = styled.select`
-  width: 12rem;
-  padding-left: 5px;
-  text-align: center;
+const FixedDiv = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  border-top: 1px solid ${getGray};
 `;
+
 const CreateBtn = styled.button`
   background-color: ${({ theme }) => theme.color.blue};
   border: 0;
   outline: 0;
   width: 14rem;
-  height: 2rem;
+  height: 2.5rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -192,8 +226,21 @@ const CreateBtn = styled.button`
   align-self: center;
   border-radius: 20px;
   cursor: pointer;
+  margin: auto;
 `;
 const BtnText = styled.div`
   color: ${({ theme }) => theme.color.white};
 `;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 5rem;
+  resize: vertical;
+  border-color: ${getGray};
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: ${bottomMargin};
+`;
+
+
 export default CreateStudy;

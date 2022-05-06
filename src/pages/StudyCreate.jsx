@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import emptyimg from '@/img/emptyimg.png';
-import { createStudy } from '@/api';
+import { uploadOneImage, createStudy } from '@/api';
 
 const CreateStudy = () => {
   const navigate = useNavigate();
 
-  const [src, setFiles] = useState('');
+  const [src, setFiles] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [inputs, setInputs] = useState({
@@ -44,11 +44,20 @@ const CreateStudy = () => {
   };
   const handleSubmit = async (e) => {
     try {
+      let image = null;
+      if (src) {
+        //FormData 생성
+        const fd = new FormData();
+        //FormData에 key, value 추가
+        fd.append('image', src);
+        const srcUrl = await uploadOneImage(fd);
+        image = srcUrl;
+      }
       await createStudy({
         ...inputs,
         startDate,
         endDate,
-        src,
+        src: image || src,
       });
       alert("스터디 생성 완료");
       navigate(PATH_HOME);
@@ -67,7 +76,9 @@ const CreateStudy = () => {
   return (
     <Container>
       <SubContainer>
-        <Label>대표 이미지 등록</Label>
+        <InputContainer>
+          <Label>대표 이미지 등록</Label>
+        </InputContainer>
         <SelectImg onClick={() => imgInput.current.click()}>
           <Img src={src ? URL.createObjectURL(src) : emptyimg}></Img>
         </SelectImg>
@@ -85,14 +96,6 @@ const CreateStudy = () => {
           name="name"
           value={name}
           placeholder="STUDY WITH ME"
-          onChange={handleChange}
-        />
-      </InputContainer>
-      <InputContainer>
-        <Label>내용</Label>
-        <Input
-          name="info"
-          placeholder="description"
           onChange={handleChange}
         />
       </InputContainer>
@@ -136,7 +139,7 @@ const CreateStudy = () => {
         </SDatePickerContainer>
       </InputContainer>
       <InputContainer>
-        <Label>카테고리</Label>
+        <Label>분야</Label>
         <Select name="category" value={category} onChange={handleChange}>
           {selectList.map((item, i) => (
             <option key={item} value={i}>
@@ -185,64 +188,111 @@ const CreateStudy = () => {
           onChange={handleChange}
         />
       </InputContainer>
-      <CreateBtn onClick={handleSubmit}>
-        <BtnText>스터디 생성하기</BtnText>
-      </CreateBtn>
+      <SubContainer>
+        <InputContainer>
+          <Label>상세 정보</Label>
+        </InputContainer>
+        <TextArea
+          name="info"
+          onChange={handleChange}
+        />
+      </SubContainer>
+      <FixedDiv>
+        <CreateBtn onClick={handleSubmit}>
+          <BtnText>스터디 생성하기</BtnText>
+        </CreateBtn>
+      </FixedDiv>
     </Container>
   );
 };
 
+const contentWidth = '16rem';
+const bottomMargin = '15px';
+const labelForVerticalCenter = `padding-top: 3px;`;
+const getGray = ({ theme }) => theme.color.gray;
+const getBlack = ({ theme }) => theme.color.black;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 35rem;
-  width: 18rem;
-  justify-content: space-around;
+  height: 37.4rem;
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
+  overflow: auto;
 `;
 const SubContainer = styled.div``;
 const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
-  width: 18rem;
+  width: 22rem;
+  margin: auto;
+  margin-bottom: ${bottomMargin};
 `;
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: ${bottomMargin};
 `;
 const Label = styled.label`
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getGray};
+  display: flex;
+  margin: auto;
+  margin-left: 0px;
+  font-size: 15px;
+  ${labelForVerticalCenter}
 `;
 const Input = styled.input`
-  border-style: none none solid none;
-  font-weight: bold;
-  color: ${({ theme }) => theme.color.black};
-  text-align: center;
-  width: 12rem;
+  border-style: none;
+  border-bottom: 1px solid ${getGray};
+  color: ${getBlack};
+  text-align: left;
+  width: ${contentWidth};
   padding-left: 5px;
+  height: 2rem;
+  font-size: 15px;
 `;
 const SDatePickerContainer = styled.div`
-  width: 12rem;
+  width: ${contentWidth};
 `;
 const SDatePicker = styled(DatePicker)`
   align-items: center;
   text-align: center;
-  width: 12rem;
+  width: ${contentWidth};
   padding-left: 5px;
+  border-style: solid;
+  border-color: ${getGray};
   border-radius: 20px;
+  height: 2rem;
+  font-size: 15px;
 `;
 
 const Select = styled.select`
-  width: 12rem;
+  width: ${contentWidth};
   padding-left: 5px;
   text-align: center;
+  height: 2rem;
+  border-color: ${getGray};
+  font-size: 15px;
 `;
+
+const FixedDiv = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  border-top: 1px solid ${getGray};
+`;
+
 const CreateBtn = styled.button`
   background-color: ${({ theme }) => theme.color.blue};
   border: 0;
   outline: 0;
   width: 14rem;
-  height: 2rem;
+  height: 2.5rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -250,8 +300,20 @@ const CreateBtn = styled.button`
   align-self: center;
   border-radius: 20px;
   cursor: pointer;
+  margin: auto;
 `;
 const BtnText = styled.div`
   color: ${({ theme }) => theme.color.white};
 `;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 5rem;
+  resize: vertical;
+  border-color: ${getGray};
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: ${bottomMargin};
+`;
+
 export default CreateStudy;
