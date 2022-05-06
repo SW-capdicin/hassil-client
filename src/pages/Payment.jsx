@@ -7,7 +7,7 @@ import QueryString from 'qs';
 import { paymentSuccess } from '@/api';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 
-const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+const clientKey = process.env.TOSS_CK;
 
 const Payment = () => {
   const location = useLocation();
@@ -15,7 +15,6 @@ const Payment = () => {
 
   const [amount, setAmount] = useState(0);
   const [leastPayment] = useState(1000);
-  const [isPaid] = useState(!!queryData.paymentKey);
   
   useEffect(_ => {
     return async _ => {
