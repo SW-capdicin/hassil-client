@@ -7,7 +7,9 @@ import QueryString from 'qs';
 import { paymentSuccess } from '@/api';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 
-const clientKey = process.env.TOSS_CK;
+const { TOSS_CK } = import.meta.env;
+
+const clientKey = TOSS_CK;
 
 const Payment = () => {
   const location = useLocation();
