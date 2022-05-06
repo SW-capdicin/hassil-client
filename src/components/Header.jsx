@@ -61,7 +61,6 @@ const Container = styled.header`
   align-items: center;
   justify-content: ${(props) =>
     props.showUserIcon ? 'space-between' : 'center'};
-  margin-bottom: 2rem;
 `;
 
 const LogoImg = styled.div`
