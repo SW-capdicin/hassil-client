@@ -12,6 +12,7 @@ import {
   NotFound,
   StudyCreate,
   StudyDetail,
+  JoinedStudyList,
   Payment,
   Refund,
   MyPage,

@@ -2,7 +2,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
 

@@ -4,9 +4,15 @@ import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
 import { logout } from '@/api';
+import { PATH_JOINED_STUDY_LIST } from '@/constants'
 
 const MyPage = () => {
   const navigate = useNavigate();
+
+  const goJoinedStudyList = () => {
+    navigate(PATH_JOINED_STUDY_LIST);
+  }
+
   const logoutHandler = async () => {
     const responseStatus = await logout();
     if (responseStatus === 200) {
