@@ -225,8 +225,7 @@ const SubContainer = styled.div``;
 const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
-  width: 22rem;
-  margin: auto;
+  width: 100%;
   margin-bottom: ${bottomMargin};
 `;
 const InputContainer = styled.div`
