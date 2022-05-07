@@ -15,6 +15,7 @@ import {
   Payment,
   Refund,
   MyPage,
+  PointHistory,
 } from '@/pages';
 import { Header, PublicRoute } from '@/components';
 import {
@@ -28,6 +29,7 @@ import {
   PATH_PAYMENT,
   PATH_REFUND,
   PATH_MYPAGE,
+  PATH_POINT_HISTORY,
 } from '@/constants';
 
 const App = () => {
@@ -53,17 +55,20 @@ const App = () => {
                 <PublicRoute element={SignupComplete} showUserIcon={false} />
               }
             />
-
             <Route
               path={PATH_MYPAGE}
               element={<PublicRoute element={MyPage} />}
+            />
+            <Route
+              path={PATH_POINT_HISTORY}
+              element={<PublicRoute element={PointHistory} />}
             />
             <Route
               path={PATH_STUDY_CREATE}
               element={<PublicRoute element={StudyCreate} />}
             />
             <Route
-              path={PATH_STUDY_DETAIL+'/:id'}
+              path={PATH_STUDY_DETAIL + '/:id'}
               element={<PublicRoute element={StudyDetail} />}
             />
             <Route
