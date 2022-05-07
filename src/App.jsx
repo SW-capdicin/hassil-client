@@ -63,7 +63,7 @@ const App = () => {
               element={<PublicRoute element={StudyCreate} />}
             />
             <Route
-              path={PATH_STUDY_DETAIL+'/:id'}
+              path={PATH_STUDY_DETAIL + '/:id'}
               element={<PublicRoute element={StudyDetail} />}
             />
             <Route
