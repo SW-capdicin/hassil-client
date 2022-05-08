@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
 import { logout } from '@/api';
+import { getColor } from '@/utils';
 
 const MyPage = () => {
   const navigate = useNavigate();

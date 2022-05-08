@@ -149,7 +149,7 @@ const UserType = styled.div`
 
 const UserText = styled.div`
   color: ${getColor('black')};
-  background-color: ${({ theme }) => theme.color.lightgray};
+  background-color: ${getColor('lightgray')};
   width: 8rem;
   height: 2.5rem;
   font-weight: bold;

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiMessageError } from 'react-icons/bi';
+import { getColor } from '@/utils';
 
 const NotFound = () => {
   return (

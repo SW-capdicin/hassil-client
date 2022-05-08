@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { getColor } from '@/utils';
 
 const Refund = () => {
   const [amount, setAmount] = useState(0);

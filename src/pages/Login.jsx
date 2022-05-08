@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
+import { getColor } from '@/utils';
 const { VITE_GOOGLE_LOGIN } = import.meta.env;
 
 const Login = () => {
