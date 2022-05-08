@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { PATH_PAYMENT, PATH_REFUND } from '@/constants';
+import { getColor } from '@/utils';
 
 const PointHistory = () => {
   const tempData = [
@@ -92,7 +93,7 @@ const Log = styled.p`
 const Line = styled.div`
   height: 1px;
   width: 100%;
-  background-color: ${({ theme }) => theme.color.gray};
+  background-color: ${getColor('gray')};
   position: absolute;
   left: 0;
 `;
