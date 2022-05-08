@@ -90,9 +90,10 @@ const App = () => {
               path={PATH_JOINED_STUDY_DETAIL+'/:id'}
               element={<PublicRoute element={JoinedStudyDetail} />}
             />
+            <Route
               path={PATH_STUDY_PARTICIPATION}
               element={<PublicRoute element={StudyParticipation} />}
-            
+            />
             <Route
               path={PATH_PAYMENT}
               element={<PublicRoute element={Payment} />}
