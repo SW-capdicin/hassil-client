@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
 import { getColor } from '@/utils';
-import { PATH_STUDY_DETAIL } from '@/constants';
 
 const StudyDetail = () => {
   const navigate = useNavigate();
@@ -52,7 +51,7 @@ const StudyDetail = () => {
   const joinStudy = async () => {
     try {
       alert('스터디 참가하기');
-      await navigate(PATH_STUDY_DETAIL + `/${inputs.id}/participation`);
+      await navigate(`${window.location.pathname}/participation`);
       // 스터디 참가 로직 필요
     } catch (e) {
       console.log(e);

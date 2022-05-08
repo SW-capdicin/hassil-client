@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BiCheckCircle } from 'react-icons/bi';
-import { findStudy, joinStudy } from '@/api';
+import { findStudy, joinStudy, getUserInfo } from '@/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATH_HOME } from '@/constants';
 
@@ -10,9 +10,12 @@ const StudyParticipation = () => {
   const params = useParams();
 
   const [deposit, setDeposit] = useState(0);
+  const [balance, setBalance] = useState(0);
   const loadData = async () => {
     const data = await findStudy(params.id);
+    const { point } = await getUserInfo();
     setDeposit(data.depositPerPerson);
+    setBalance(point);
   };
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const StudyParticipation = () => {
           <Price>결제할 금액</Price>
           <Payment>
             <Deposit>{deposit.toLocaleString()}원</Deposit>
-            <AmountAfterPay>결제 후 잔액: 11,000원</AmountAfterPay>
+            <AmountAfterPay>결제 후 잔액: {(balance - deposit).toLocaleString()}원</AmountAfterPay>
           </Payment>
         </PaymentContainer>
       </SubContainer>
