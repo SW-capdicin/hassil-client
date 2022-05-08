@@ -1,6 +1,7 @@
 export const PATH_HOME = '/';
 export const PATH_LOGIN = '/users/login';
 export const PATH_SIGNUP = '/users/signup';
+export const PATH_USER_EDIT = '/users/edit';
 export const PATH_SIGNUP_COMPLETE = '/users/signup/complete';
 export const PATH_MYPAGE = '/users/mypage';
 export const PATH_POINT_HISTORY = '/users/point-history';

@@ -1,10 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  id: undefined,
-  nickname: undefined,
-  isLoggedIn: true,
-  isSignup: true,
+  id: 0,
+  type: 0,
+  name: '',
+  nickname: '',
+  phoneNumber: '',
+  bankName: '',
+  bankAccount: '',
+  point: 0,
+  isLoggedIn: false,
+  isSignup: false,
 };
 
 const userSlice = createSlice({
@@ -12,11 +18,26 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action) => {
-      const { id, nickname, isLoggedIn, isSignup } = action.payload;
-      state.id = id;
-      state.nickname = nickname;
-      state.isLoggedIn = isLoggedIn;
-      state.isSignup = isSignup;
+      state.id = action.payload.id;
+      state.type = action.payload.type;
+      state.name = action.payload.name;
+      state.nickname = action.payload.nickname;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.point = action.payload.point;
+      state.bankName = action.payload.bankName;
+      state.bankAccount = action.payload.bankAccount;
+      state.isLoggedIn = action.payload.isLoggedIn;
+      state.isSignup = action.payload.isSignup;
+    },
+    updateUser: (state, action) => {
+      state.type = action.payload.type;
+      state.name = action.payload.name;
+      state.nickname = action.payload.nickname;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.bankName = action.payload.bankName;
+      state.bankAccount = action.payload.bankAccount;
+      state.isLoggedIn = action.payload.isLoggedIn;
+      state.isSignup = action.payload.isSignup;
     },
     logout: (state) => {
       state.isLoggedIn = false;
@@ -24,5 +45,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUserInfo, logout } = userSlice.actions;
+export const { setUserInfo, logout, updateUser } = userSlice.actions;
 export default userSlice.reducer;
