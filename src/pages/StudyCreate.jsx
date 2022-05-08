@@ -1,7 +1,7 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PATH_HOME } from '@/constants';
+import { PATH_HOME, TYPE_STUDY_CATEGORY } from '@/constants';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
@@ -18,7 +18,7 @@ const CreateStudy = () => {
   const [inputs, setInputs] = useState({
     name: '',
     depositPerPerson: 0,
-    category: '',
+    categoryId: 0,
     operationTime: '',
     info: '',
     absentFee: 0,
@@ -26,15 +26,10 @@ const CreateStudy = () => {
     maxPerson: 0,
     minPerson: 0,
   });
-  const { name, depositPerPerson, category, operationTime } = inputs;
+  const { name, depositPerPerson, categoryId, operationTime } = inputs;
   const selectList = [
     // 나중에 category 조회로 불러올 것
-    '관심 분야를 고르세요',
-    '코딩',
-    '영어',
-    '중국어',
-    '수학',
-    'NCS',
+    ...TYPE_STUDY_CATEGORY,
   ];
   const handleChange = (e) => {
     const nextInputs = {
@@ -60,7 +55,7 @@ const CreateStudy = () => {
         endDate,
         src: image || src,
       });
-      alert("스터디 생성 완료");
+      alert('스터디 생성 완료');
       navigate(PATH_HOME);
     } catch (e) {
       console.log(e);
@@ -141,10 +136,10 @@ const CreateStudy = () => {
       </InputContainer>
       <InputContainer>
         <Label>분야</Label>
-        <Select name="category" value={category} onChange={handleChange}>
-          {selectList.map((item, i) => (
-            <option key={item} value={i}>
-              {item}
+        <Select name="categoryId" value={categoryId} onChange={handleChange}>
+          {selectList.map((item) => (
+            <option key={item.name} value={item.id}>
+              {item.name}
             </option>
           ))}
         </Select>
@@ -159,44 +154,25 @@ const CreateStudy = () => {
       </InputContainer>
       <InputContainer>
         <Label>최소 인원</Label>
-        <Input
-          name="minPerson"
-          type="number"
-          onChange={handleChange}
-        />
+        <Input name="minPerson" type="number" onChange={handleChange} />
       </InputContainer>
       <InputContainer>
         <Label>최대 인원</Label>
-        <Input
-          name="maxPerson"
-          type="number"
-          onChange={handleChange}
-        />
+        <Input name="maxPerson" type="number" onChange={handleChange} />
       </InputContainer>
       <InputContainer>
         <Label>결석 벌금</Label>
-        <Input
-          name="absentFee"
-          type="number"
-          onChange={handleChange}
-        />
+        <Input name="absentFee" type="number" onChange={handleChange} />
       </InputContainer>
       <InputContainer>
         <Label>지각 벌금</Label>
-        <Input
-          name="lateFee"
-          type="number"
-          onChange={handleChange}
-        />
+        <Input name="lateFee" type="number" onChange={handleChange} />
       </InputContainer>
       <SubContainer>
         <InputContainer>
           <Label>상세 정보</Label>
         </InputContainer>
-        <TextArea
-          name="info"
-          onChange={handleChange}
-        />
+        <TextArea name="info" onChange={handleChange} />
       </SubContainer>
       <FixedDiv>
         <CreateBtn onClick={handleSubmit}>

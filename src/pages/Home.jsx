@@ -158,9 +158,7 @@ const Category = styled.li`
     }
   }};
   color: ${(props) =>
-    props.category === props.activeTab
-      ? getColor('blue')
-      : getColor('black')};
+    props.category === props.activeTab ? getColor('blue') : getColor('black')};
 `;
 
 const CuIoMdAddCircle = styled(IoMdAddCircle)`
