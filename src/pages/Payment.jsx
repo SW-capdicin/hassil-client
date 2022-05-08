@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 import QueryString from 'qs';
 import { paymentSuccess } from '@/api';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
+import { getColor } from '@/utils';
 
 const { TOSS_CK } = import.meta.env;
 
@@ -18,10 +19,10 @@ const Payment = () => {
   const [amount, setAmount] = useState(0);
   const [leastPayment] = useState(1000);
   
-  useEffect(_ => {
-    return async _ => {
+  useEffect(() => {
+    return async () => {
       try {
-        if (!!queryData.paymentKey) {
+        if (queryData.paymentKey) {
           await paymentSuccess({
             ...queryData
           });
@@ -35,7 +36,7 @@ const Payment = () => {
     }
   }, []);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     const tossPayments = await loadTossPayments(clientKey);
     await tossPayments
       .requestPayment('카드', {
@@ -103,7 +104,7 @@ const Input = styled.input`
   width: 90%;
 `;
 const Label = styled.div`
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getColor('gray')};
   font-size: small;
   margin-top: 10px;
   text-align: left;
@@ -111,7 +112,7 @@ const Label = styled.div`
 `;
 
 const Text = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   font-weight: bold;
   font-size: x-large;
   margin: 1rem;
@@ -128,7 +129,7 @@ const BtnContainer = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.gray};
+  background-color: ${getColor('gray')};
   border: 0;
   outline: 0;
   width: 3rem;
@@ -144,7 +145,7 @@ const SubmitBtn = styled.button`
 `;
 
 const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   font-weight: bold;
 `;
 

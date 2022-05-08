@@ -10,6 +10,7 @@ import { GoSearch } from 'react-icons/go';
 import { IoMdAddCircle } from 'react-icons/io';
 import { getStudyList } from '@/api';
 import emptyimg from '@/img/emptyimg.png';
+import { getColor } from '@/utils';
 
 const Date = 2;
 
@@ -142,7 +143,7 @@ const TabTitle = styled.ul`
 `;
 const Line = styled.hr`
   width: 100%;
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getColor('gray')};
   margin-bottom: 1rem;
 `;
 const Category = styled.li`
@@ -153,13 +154,13 @@ const Category = styled.li`
   font-size: medium;
   border-bottom-color: ${(props) => {
     if (props.category === props.activeTab) {
-      ({ theme }) => theme.color.blue;
+      getColor('blue');
     }
   }};
   color: ${(props) =>
     props.category === props.activeTab
-      ? ({ theme }) => theme.color.blue
-      : ({ theme }) => theme.color.black};
+      ? getColor('blue')
+      : getColor('black')};
 `;
 
 const CuIoMdAddCircle = styled(IoMdAddCircle)`
@@ -168,7 +169,7 @@ const CuIoMdAddCircle = styled(IoMdAddCircle)`
   height: 4rem;
   bottom: 5%;
   right: 5%;
-  color: ${({ theme }) => theme.color.blue};
+  color: ${getColor('blue')};
 `;
 
 const TabContentContainer = styled.div`
@@ -223,8 +224,8 @@ const DateText = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ theme }) => theme.color.black};
-  background-color: ${({ theme }) => theme.color.dimgray};
+  color: ${getColor('black')};
+  background-color: ${getColor('dimgray')};
 `;
 
 export default Home;

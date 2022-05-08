@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
 import { logout } from '@/api';
+import { getColor } from '@/utils';
 import { PATH_USER_EDIT } from '@/constants';
 
 const MyPage = () => {
@@ -72,7 +73,7 @@ const ProfileContainer = styled.div`
   align-items: center;
 `;
 const Nickname = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   margin-left: 10px;
   font-weight: bold;
   cursor: pointer;
@@ -109,7 +110,7 @@ const PointContainer = styled.div`
   border-style: solid;
   border-radius: 20px;
   border-width: 1px;
-  border-color: ${({ theme }) => theme.color.gray};
+  border-color: ${getColor('gray')};
 `;
 const FirstBox = styled.div`
   width: 15rem;
@@ -135,8 +136,7 @@ const BtnContainer = styled.div`
 const Btn = styled.button`
   border-radius: 20px;
   border-width: 0;
-  outline: none;
-  background-color: ${({ theme }) => theme.color.gray};
+  background-color: ${getColor('gray')};
   font-weight: bold;
   width: 45px;
   cursor: pointer;

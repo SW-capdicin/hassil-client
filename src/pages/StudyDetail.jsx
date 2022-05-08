@@ -2,9 +2,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
+import { getColor } from '@/utils';
+
 
 const CreateStudy = () => {
   const navigate = useNavigate();
@@ -138,8 +139,6 @@ const CreateStudy = () => {
 const contentWidth = '16rem';
 const bottomMargin = '12px';
 const labelForVerticalCenter = `padding-top: 3px;`;
-const getGray = ({ theme }) => theme.color.gray;
-const getBlack = ({ theme }) => theme.color.black;
 
 const Container = styled.div`
   display: flex;
@@ -172,7 +171,7 @@ const Title = styled.label`
   margin-left: 0px;
   font-size: 20px;
   font-weight: 700;
-  color: ${getBlack};
+  color: ${getColor('black')};
 `;
 const SelectImg = styled.div``;
 const Img = styled.img`
@@ -188,7 +187,7 @@ const InputContainer = styled.div`
   margin-bottom: ${bottomMargin};
 `;
 const Label = styled.label`
-  color: ${getGray};
+  color: ${getColor('gray')};
   display: flex;
   margin: auto;
   margin-left: 0px;
@@ -196,7 +195,7 @@ const Label = styled.label`
   ${labelForVerticalCenter}
 `;
 const LabelContents = styled.label`
-  color: ${getBlack};
+  color: ${getColor('black')};
   text-align: left;
   width: ${contentWidth};
   padding-left: 5px;
@@ -210,11 +209,11 @@ const FixedDiv = styled.div`
   width: 100%;
   height: 5rem;
   display: flex;
-  border-top: 1px solid ${getGray};
+  border-top: 1px solid ${getColor('gray')};
 `;
 
 const CreateBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.blue};
+  background-color: ${getColor('blue')};
   border: 0;
   outline: 0;
   width: 14rem;
@@ -229,14 +228,14 @@ const CreateBtn = styled.button`
   margin: auto;
 `;
 const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.white};
+  color: ${getColor('white')};
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
   height: 5rem;
   resize: vertical;
-  border-color: ${getGray};
+  border-color: ${getColor('gray')};
   border-radius: 5px;
   padding: 5px;
   margin-bottom: ${bottomMargin};
