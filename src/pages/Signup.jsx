@@ -10,6 +10,7 @@ import {
   TYPE_BANK,
 } from '@/constants';
 import { patchUserInfo } from '@/api';
+import { getColor } from '@/utils';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -143,11 +144,11 @@ const UserType = styled.div`
   justify-content: center;
   border-style: solid solid solid solid;
   border-width: 0.5px 0.5px 0 0.5px;
-  border-color: ${({ theme }) => theme.color.gray};
+  border-color: ${getColor('gray')};
 `;
 
 const UserText = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   background-color: ${({ theme }) => theme.color.lightgray};
   width: 8rem;
   height: 2.5rem;
@@ -160,7 +161,7 @@ const UserText = styled.div`
 `;
 
 const SignupBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.blue};
+  background-color: ${getColor('blue')};
   border: 0;
   outline: 0;
   width: 14rem;
@@ -176,7 +177,7 @@ const SignupBtn = styled.button`
 `;
 
 const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.white};
+  color: ${getColor('white')};
 `;
 
 export default Signup;

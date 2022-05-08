@@ -34,7 +34,7 @@ const SubContainer = styled.div`
 `;
 
 const Text = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   font-weight: bold;
 `;
 
@@ -50,7 +50,7 @@ const LoginBtn = styled.a`
   border-radius: 20px;
   cursor: pointer;
   border: 1px solid;
-  border-color: ${({ theme }) => theme.color.gray};
+  border-color: ${getColor('gray')};
   margin-top: 2rem;
   margin-bottom: 1rem;
 `;
@@ -61,7 +61,7 @@ const BtnText = styled.div`
 
 const GrayText = styled.div`
   font-size: 0.6rem;
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getColor('gray')};
   width: 60%;
 `;
 

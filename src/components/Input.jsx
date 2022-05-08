@@ -58,7 +58,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getColor('gray')};
 `;
 
 const InputField = styled.input`

@@ -42,13 +42,13 @@ const TextContainer = styled.div`
 `;
 
 const Text = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   font-weight: bold;
   margin: 2px;
   text-align: center;
 `;
 const HomeBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.blue};
+  background-color: ${getColor('blue')};
   border: 0;
   outline: 0;
   width: 14rem;
@@ -64,7 +64,7 @@ const HomeBtn = styled.button`
   margin: 2rem;
 `;
 const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.white};
+  color: ${getColor('white')};
 `;
 
 export default NotFound;

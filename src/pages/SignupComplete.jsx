@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import logo from '@/img/check_circle_fill.png';
 import { Link } from 'react-router-dom';
 import { PATH_HOME } from '@/constants';
+import { getColor } from '@/utils';
 
 const SignupComplete = () => {
   return (
@@ -36,11 +37,11 @@ const SignupLogo = styled.div`
 `;
 const Title = styled.h3`
   height: 5rem;
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
 `;
 
 const StartBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.blue};
+  background-color: ${getColor('blue')};
   border: 0;
   outline: 0;
   width: 14rem;
@@ -59,7 +60,7 @@ const StartBtn = styled.button`
 `;
 
 const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.white};
+  color: ${getColor('white')};
 `;
 
 export default SignupComplete;

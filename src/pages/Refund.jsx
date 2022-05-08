@@ -66,7 +66,7 @@ const Input = styled.input`
   width: 90%;
 `;
 const Label = styled.div`
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getColor('gray')};
   font-size: small;
   margin-top: 10px;
   text-align: left;
@@ -74,7 +74,7 @@ const Label = styled.div`
 `;
 
 const Text = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   font-weight: bold;
   font-size: x-large;
   margin: 1rem;
@@ -91,7 +91,7 @@ const BtnContainer = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.gray};
+  background-color: ${getColor('gray')};
   border: 0;
   outline: 0;
   width: 3rem;
@@ -107,7 +107,7 @@ const SubmitBtn = styled.button`
 `;
 
 const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.black};
+  color: ${getColor('black')};
   font-weight: bold;
 `;
 
