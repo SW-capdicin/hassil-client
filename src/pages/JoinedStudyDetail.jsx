@@ -1,9 +1,11 @@
 import 'react-datepicker/dist/react-datepicker.css';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
+import { calender } from '@/img';
 import { findStudy } from '@/api';
+import { getColor, defaultLine } from '@/utils';
 
 const JoinedStudyDetail = () => {
   const navigate = useNavigate();
@@ -12,13 +14,13 @@ const JoinedStudyDetail = () => {
   const [src, setFiles] = useState('');
   const [inputs, setInputs] = useState({});
 
-  const loadData = async _ => {
+  const loadData = async () => {
     const data = await findStudy(params.id);
-    setInputs(_ => data);
-    setFiles(_ => data.src);
+    setInputs(() => data);
+    setFiles(() => data.src);
   }
   
-  useEffect(_ => {
+  useEffect(() => {
     return loadData;
   }, []);
 
@@ -48,10 +50,11 @@ const JoinedStudyDetail = () => {
     'NCS',
   ];
 
-  const attendStudy = async (e) => {
+  const attendStudy = async () => {
     try {
       alert("스터디 출석하기");
       // 스터디 출석 로직 필요
+      navigate(-1); // 뒤로가기
     } catch (e) {
       console.log(e);
       alert('에러 발생');
@@ -65,6 +68,42 @@ const JoinedStudyDetail = () => {
         <TitleContainer>
           <Title>{inputs.name}</Title>
         </TitleContainer>
+      </FullWidthContainer>
+      <FullWidthContainer>
+        <SubTitle>출결 현황 보드</SubTitle>
+        <BoardContainer>
+          <Board>
+            <BoardLabel>미팅 횟수</BoardLabel>
+            <BoardLabel>10</BoardLabel>
+          </Board>
+          <Board>
+            <BoardLabel>지각</BoardLabel>
+            <BoardLabel>2</BoardLabel>
+          </Board>
+          <Board>
+            <BoardLabel>결석</BoardLabel>
+            <BoardLabel>1</BoardLabel>
+          </Board>
+          <Board>
+            <BoardLabel>인원</BoardLabel>
+            <BoardLabel>5</BoardLabel>
+          </Board>
+        </BoardContainer>
+        <PointContainer>
+          <PointLabelContainer>
+            <PointMainLabel>예상 환급액</PointMainLabel>
+            <PointMainLabel>{8000}원</PointMainLabel>
+          </PointLabelContainer>
+          <PointSubLabel>보증금({10000}원) - 지각 {2}회 - 결석 {1}회</PointSubLabel>
+        </PointContainer>
+        <ReserveBtnContainer>
+          <ReserveBtn>
+            <ReserveBtnText>스터디 예약하기</ReserveBtnText>
+            <Icon />
+          </ReserveBtn>
+        </ReserveBtnContainer>
+        <Line />
+        <SubTitle>스터디 정보</SubTitle>
       </FullWidthContainer>
       <ContentsContainer>
         <InputContainer>
@@ -119,23 +158,20 @@ const JoinedStudyDetail = () => {
   );
 };
 
-const contentWidth = '16rem';
+const contentWidth = '65%';
 const bottomMargin = '12px';
-const labelForVerticalCenter = `padding-top: 3px;`;
-const getGray = ({ theme }) => theme.color.gray;
-const getBlack = ({ theme }) => theme.color.black;
+const labelForVerticalCenter = `padding-top: 2px;`;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
+  height: calc(100vh - 10rem);
   width: 100%;
   overflow: auto;
 `;
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;
@@ -146,10 +182,9 @@ const FullWidthContainer = styled.div`
   left: 0;
 `;
 const TitleContainer = styled.div`
-  margin: 3% 5%;
+  margin: 0 5%;
   height: 3rem;
   display: flex;
-  margin-bottom: 27px;
 `;
 const Title = styled.label`
   display: flex;
@@ -157,7 +192,14 @@ const Title = styled.label`
   margin-left: 0px;
   font-size: 20px;
   font-weight: 400;
-  color: ${getBlack};
+  color: ${getColor('black')};
+`;
+const SubTitle = styled.label`
+  display: flex;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 15px 0px 20px 5%;
+  color: ${getColor('black')};
 `;
 const Img = styled.img`
   display: flex;
@@ -172,7 +214,7 @@ const InputContainer = styled.div`
   margin-bottom: ${bottomMargin};
 `;
 const Label = styled.label`
-  color: ${getGray};
+  color: ${getColor('gray')};
   display: flex;
   margin: auto;
   margin-left: 0px;
@@ -180,7 +222,7 @@ const Label = styled.label`
   ${labelForVerticalCenter}
 `;
 const LabelContents = styled.label`
-  color: ${getBlack};
+  color: ${getColor('black')};
   text-align: left;
   width: ${contentWidth};
   padding-left: 5px;
@@ -194,7 +236,7 @@ const FixedDiv = styled.div`
   width: 100%;
   height: 5rem;
   display: flex;
-  border-top: 1px solid ${getGray};
+  border-top: 1px solid ${getColor('gray')};
 `;
 
 const CreateBtn = styled.button`
@@ -220,11 +262,91 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 5rem;
   resize: vertical;
-  border-color: ${getGray};
+  border-color: ${getColor('gray')};
   border-radius: 5px;
   padding: 5px;
   margin-bottom: ${bottomMargin};
 `;
 
+const Line = styled.div`
+  ${defaultLine}
+  position: relative;
+`;
+
+const BoardContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  justify-content: center;
+  margin: 0 5%;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid ${getColor('gray')};
+`;
+const Board = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: min-content;
+  min-height: 60px;
+  margin: 10px;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid ${getColor('gray')};
+`;
+const BoardLabel = styled.label`
+  display: flex;
+  margin: auto;
+  font-size: 13px;
+  font-weight: 400;
+`;
+const PointContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 5%;
+`;
+const PointLabelContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  margin-bottom: 2px;
+`;
+const PointMainLabel = styled.label`
+  display: flex;
+  margin-left: 20px;
+`;
+const PointSubLabel = styled.label`
+  display: flex;
+  justify-content: end;
+  font-size: 10px;
+  font-weight: 300;
+  color: ${getColor('gray')};
+`;
+const ReserveBtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+`;
+const ReserveBtn = styled.button`
+  display: flex;
+  border: none;
+  background-color: white;
+  align-items: center;
+  height: 40px;
+`;
+const ReserveBtnText = styled.label`
+  color: ${getColor('lightBlue')};
+  display: flex;
+  font-size: 15px;
+  margin-right: 3px;
+`;
+const Icon = styled.div`
+  display: flex;
+  background-image: url(${calender});
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+`;
 
 export default JoinedStudyDetail;
