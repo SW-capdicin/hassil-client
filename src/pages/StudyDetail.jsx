@@ -5,40 +5,39 @@ import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
 import { getColor } from '@/utils';
+import { PATH_STUDY_DETAIL } from '@/constants';
 
-
-const CreateStudy = () => {
+const StudyDetail = () => {
   const navigate = useNavigate();
   const params = useParams();
 
   const [src, setFiles] = useState('');
   const [inputs, setInputs] = useState({});
 
-  const loadData = async _ => {
+  const loadData = async (_) => {
     const data = await findStudy(params.id);
-    setInputs(_ => data);
-    setFiles(_ => data.src);
-  }
-  
-  useEffect(_ => {
+    setInputs((_) => data);
+    console.log(data);
+    setFiles((_) => data.src);
+  };
+
+  useEffect((_) => {
     return loadData;
   }, []);
 
-  const showImage = src => {
-    if (src.includes('http')) {
-      return src;
-    }
-    else if (src == '' || !src) {
+  const showImage = (src) => {
+    if (src == '' || !src) {
       return emptyimg;
-    }
-    else {
+    } else if (src.includes('http')) {
+      return src;
+    } else {
       return URL.createObjectURL(src);
     }
-  }
+  };
 
-  const getDate = date => {
-    return date && date.split('T')[0]
-  }
+  const getDate = (date) => {
+    return date && date.split('T')[0];
+  };
 
   const selectList = [
     // 나중에 category 조회로 불러올 것
@@ -52,7 +51,8 @@ const CreateStudy = () => {
 
   const joinStudy = async (e) => {
     try {
-      alert("스터디 참가하기");
+      alert('스터디 참가하기');
+      await navigate(PATH_STUDY_DETAIL + `/${inputs.id}/participation`);
       // 스터디 참가 로직 필요
     } catch (e) {
       console.log(e);
@@ -90,7 +90,9 @@ const CreateStudy = () => {
         </InputContainer>
         <InputContainer>
           <Label>기간</Label>
-          <LabelContents>{getDate(inputs.startDate)} ~ {getDate(inputs.endDate)}</LabelContents>
+          <LabelContents>
+            {getDate(inputs.startDate)} ~ {getDate(inputs.endDate)}
+          </LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>운영시간</Label>
@@ -120,13 +122,10 @@ const CreateStudy = () => {
           <InputContainer>
             <Label>상세 정보</Label>
           </InputContainer>
-          <TextArea
-            readOnly={true}
-            value={inputs.info}
-          />
+          <TextArea readOnly={true} value={inputs.info} />
         </SubContainer>
       </ContentsContainer>
-      
+
       <FixedDiv>
         <CreateBtn onClick={joinStudy}>
           <BtnText>스터디 참가하기</BtnText>
@@ -241,5 +240,4 @@ const TextArea = styled.textarea`
   margin-bottom: ${bottomMargin};
 `;
 
-
-export default CreateStudy;
+export default StudyDetail;
