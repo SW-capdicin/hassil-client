@@ -31,7 +31,7 @@ const Signup = () => {
   const { type, name, nickname, bankName, phoneNumber, bankAccount } = inputs;
 
   useEffect(() => {
-    if (userState.isLoggedIn) {
+    if (userState.isSignup) {
       setInputs((prevState) => ({
         ...prevState,
         type: userState.type,
