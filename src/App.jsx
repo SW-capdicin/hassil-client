@@ -21,6 +21,7 @@ import {
   PATH_HOME,
   PATH_LOGIN,
   PATH_SIGNUP,
+  PATH_USER_EDIT,
   PATH_SIGNUP_COMPLETE,
   PATH_NOT_FOUND,
   PATH_STUDY_CREATE,
@@ -48,12 +49,15 @@ const App = () => {
               element={<PublicRoute element={Signup} showUserIcon={false} />}
             />
             <Route
+              path={PATH_USER_EDIT}
+              element={<PublicRoute element={Signup} showUserIcon={true} />}
+            />
+            <Route
               path={PATH_SIGNUP_COMPLETE}
               element={
                 <PublicRoute element={SignupComplete} showUserIcon={false} />
               }
             />
-
             <Route
               path={PATH_MYPAGE}
               element={<PublicRoute element={MyPage} />}
@@ -63,7 +67,7 @@ const App = () => {
               element={<PublicRoute element={StudyCreate} />}
             />
             <Route
-              path={PATH_STUDY_DETAIL+'/:id'}
+              path={PATH_STUDY_DETAIL + '/:id'}
               element={<PublicRoute element={StudyDetail} />}
             />
             <Route

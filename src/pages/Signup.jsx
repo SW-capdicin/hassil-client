@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Input } from '@/components';
@@ -9,10 +9,15 @@ import {
   PATH_SIGNUP_COMPLETE,
   TYPE_BANK,
 } from '@/constants';
+import { useSelector, useDispatch } from 'react-redux';
 import { patchUserInfo } from '@/api';
+import { userActions } from '@/store/actions';
 
 const Signup = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userState = useSelector((state) => state.user);
+
   const [inputs, setInputs] = useState({
     type: 0,
     name: '',
@@ -21,7 +26,23 @@ const Signup = () => {
     phoneNumber: '',
     bankAccount: '',
   });
+  const [btnText, setBtnText] = useState('가입하기');
   const { type, name, nickname, bankName, phoneNumber, bankAccount } = inputs;
+
+  useEffect(() => {
+    if (userState.isLoggedIn) {
+      setInputs((prevState) => ({
+        ...prevState,
+        type: userState.type,
+        name: userState.name,
+        nickname: userState.nickname,
+        bankName: userState.bankName,
+        phoneNumber: userState.phoneNumber,
+        bankAccount: userState.bankAccount,
+      }));
+      setBtnText('수정하기');
+    }
+  }, [userState, btnText]);
 
   const handleChange = (event) => {
     setInputs((prevInputs) => ({
@@ -40,7 +61,18 @@ const Signup = () => {
   const handleSubmit = async () => {
     const responseStatus = await patchUserInfo(inputs);
     if (responseStatus === 200) {
-      // userState update 하는 로직 추가 필요
+      dispatch(
+        userActions.setUserInfo({
+          name,
+          type,
+          nickname,
+          phoneNumber,
+          bankName,
+          bankAccount,
+          isLoggedIn: true,
+          isSignup: true,
+        }),
+      );
       navigate(PATH_SIGNUP_COMPLETE);
     } else {
       alert('에러 발생');
@@ -110,7 +142,7 @@ const Signup = () => {
             onChange={handleChange}
           />
           <SignupBtn onClick={handleSubmit}>
-            <BtnText>가입하기</BtnText>
+            <BtnText>{btnText}</BtnText>
           </SignupBtn>
         </>
       )}
