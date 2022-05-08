@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
 import { logout } from '@/api';
-import { PATH_JOINED_STUDY_LIST } from '@/constants'
+import { PATH_JOINED_STUDY_LIST, PATH_USER_EDIT } from '@/constants'
 import { getColor } from '@/utils';
-import { PATH_USER_EDIT } from '@/constants';
 
 const MyPage = () => {
   const navigate = useNavigate();
