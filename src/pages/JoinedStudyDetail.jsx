@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { calender } from '@/img';
-import { findStudy } from '@/api';
+import { findStudy, getStudyAttend } from '@/api';
 import { getColor, defaultLine } from '@/utils';
 
 const JoinedStudyDetail = () => {
@@ -12,12 +12,16 @@ const JoinedStudyDetail = () => {
   const params = useParams();
 
   const [src, setFiles] = useState('');
-  const [inputs, setInputs] = useState({});
+  const [studyInfo, setInputs] = useState({});
+  const [userAttend, setUserAttend] = useState({});
 
   const loadData = async () => {
-    const data = await findStudy(params.id);
-    setInputs(() => data);
-    setFiles(() => data.src);
+    const studyData = await findStudy(params.id);
+    const attendData = await getStudyAttend(params.id);
+    setInputs(() => studyData);
+    setFiles(() => studyData.src);
+    setUserAttend(() => attendData);
+    console.log(attendData);
   }
   
   useEffect(() => {
@@ -25,13 +29,11 @@ const JoinedStudyDetail = () => {
   }, []);
 
   const showImage = src => {
-    if (src.includes('http')) {
-      return src;
-    }
-    else if (src == '' || !src) {
+    if (src == '' || !src) {
       return emptyimg;
-    }
-    else {
+    } else if (src.includes('http')) {
+      return src;
+    } else {
       return URL.createObjectURL(src);
     }
   }
@@ -61,12 +63,20 @@ const JoinedStudyDetail = () => {
     }
   };
 
+  const calcDeposit = (attendInfo, studyInfo) => {
+    return (
+      studyInfo.depositPerPerson -
+      (attendInfo.lateCnt * studyInfo.lateFee) -
+      (attendInfo.absentCnt * studyInfo.absentFee)
+    )
+  }
+
   return (
     <Container>
       <FullWidthContainer>
         <Img src={showImage(src)}></Img>
         <TitleContainer>
-          <Title>{inputs.name}</Title>
+          <Title>{studyInfo.name}</Title>
         </TitleContainer>
       </FullWidthContainer>
       <FullWidthContainer>
@@ -74,27 +84,27 @@ const JoinedStudyDetail = () => {
         <BoardContainer>
           <Board>
             <BoardLabel>미팅 횟수</BoardLabel>
-            <BoardLabel>10</BoardLabel>
+            <BoardLabel>{studyInfo.meetingCnt}</BoardLabel>
           </Board>
           <Board>
             <BoardLabel>지각</BoardLabel>
-            <BoardLabel>2</BoardLabel>
+            <BoardLabel>{userAttend.lateCnt}</BoardLabel>
           </Board>
           <Board>
             <BoardLabel>결석</BoardLabel>
-            <BoardLabel>1</BoardLabel>
+            <BoardLabel>{userAttend.absentCnt}</BoardLabel>
           </Board>
           <Board>
             <BoardLabel>인원</BoardLabel>
-            <BoardLabel>5</BoardLabel>
+            <BoardLabel>{userAttend.memberCnt}</BoardLabel>
           </Board>
         </BoardContainer>
         <PointContainer>
           <PointLabelContainer>
             <PointMainLabel>예상 환급액</PointMainLabel>
-            <PointMainLabel>{8000}원</PointMainLabel>
+            <PointMainLabel>{calcDeposit(userAttend, studyInfo)}원</PointMainLabel>
           </PointLabelContainer>
-          <PointSubLabel>보증금({10000}원) - 지각 {2}회 - 결석 {1}회</PointSubLabel>
+          <PointSubLabel>보증금({studyInfo.depositPerPerson}원) - 지각 {userAttend.lateCnt}회 - 결석 {userAttend.absentCnt}회</PointSubLabel>
         </PointContainer>
         <ReserveBtnContainer>
           <ReserveBtn>
@@ -108,35 +118,35 @@ const JoinedStudyDetail = () => {
       <ContentsContainer>
         <InputContainer>
           <Label>인당 보증금</Label>
-          <LabelContents>{inputs.depositPerPerson}</LabelContents>
+          <LabelContents>{studyInfo.depositPerPerson}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>기간</Label>
-          <LabelContents>{getDate(inputs.startDate)} ~ {getDate(inputs.endDate)}</LabelContents>
+          <LabelContents>{getDate(studyInfo.startDate)} ~ {getDate(studyInfo.endDate)}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>운영시간</Label>
-          <LabelContents>{inputs.operationTime}</LabelContents>
+          <LabelContents>{studyInfo.operationTime}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>최소 인원</Label>
-          <LabelContents>{inputs.minPerson}</LabelContents>
+          <LabelContents>{studyInfo.minPerson}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>최대 인원</Label>
-          <LabelContents>{inputs.maxPerson}</LabelContents>
+          <LabelContents>{studyInfo.maxPerson}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>분야</Label>
-          <LabelContents>{selectList[inputs.categoryId || 0]}</LabelContents>
+          <LabelContents>{selectList[studyInfo.categoryId || 0]}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>결석 벌금</Label>
-          <LabelContents>{inputs.absentFee}</LabelContents>
+          <LabelContents>{studyInfo.absentFee}</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>지각 벌금</Label>
-          <LabelContents>{inputs.lateFee}</LabelContents>
+          <LabelContents>{studyInfo.lateFee}</LabelContents>
         </InputContainer>
         <SubContainer>
           <InputContainer>
@@ -144,7 +154,7 @@ const JoinedStudyDetail = () => {
           </InputContainer>
           <TextArea
             readOnly={true}
-            value={inputs.info}
+            value={studyInfo.info}
           />
         </SubContainer>
       </ContentsContainer>

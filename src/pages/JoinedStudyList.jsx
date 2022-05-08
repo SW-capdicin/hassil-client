@@ -21,7 +21,7 @@ const JoinedStudyList = () => {
   }, []);
 
   const showImage = src => {
-    return src.includes('http') ? src : emptyimg;
+    return src && src.includes('http') ? src : emptyimg;
   }
 
   const calcProgress = (startDate, endDate) => {
