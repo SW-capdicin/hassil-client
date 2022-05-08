@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import emptyimg from '@/img/emptyimg.png';
 import { uploadOneImage, createStudy } from '@/api';
+import { getColor } from '@/utils';
 
 const CreateStudy = () => {
   const navigate = useNavigate();
@@ -209,8 +210,6 @@ const CreateStudy = () => {
 const contentWidth = '16rem';
 const bottomMargin = '15px';
 const labelForVerticalCenter = `padding-top: 3px;`;
-const getGray = ({ theme }) => theme.color.gray;
-const getBlack = ({ theme }) => theme.color.black;
 
 const Container = styled.div`
   display: flex;
@@ -235,7 +234,7 @@ const InputContainer = styled.div`
   margin-bottom: ${bottomMargin};
 `;
 const Label = styled.label`
-  color: ${getGray};
+  color: ${getColor('gray')};
   display: flex;
   margin: auto;
   margin-left: 0px;
@@ -244,8 +243,8 @@ const Label = styled.label`
 `;
 const Input = styled.input`
   border-style: none;
-  border-bottom: 1px solid ${getGray};
-  color: ${getBlack};
+  border-bottom: 1px solid ${getColor('gray')};
+  color: ${getColor('black')};
   text-align: left;
   width: ${contentWidth};
   padding-left: 5px;
@@ -261,7 +260,7 @@ const SDatePicker = styled(DatePicker)`
   width: ${contentWidth};
   padding-left: 5px;
   border-style: solid;
-  border-color: ${getGray};
+  border-color: ${getColor('gray')};
   border-radius: 20px;
   height: 2rem;
   font-size: 15px;
@@ -272,7 +271,7 @@ const Select = styled.select`
   padding-left: 5px;
   text-align: center;
   height: 2rem;
-  border-color: ${getGray};
+  border-color: ${getColor('gray')};
   font-size: 15px;
 `;
 
@@ -283,11 +282,11 @@ const FixedDiv = styled.div`
   width: 100%;
   height: 5rem;
   display: flex;
-  border-top: 1px solid ${getGray};
+  border-top: 1px solid ${getColor('gray')};
 `;
 
 const CreateBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.blue};
+  background-color: ${getColor('blue')};
   border: 0;
   outline: 0;
   width: 14rem;
@@ -302,14 +301,14 @@ const CreateBtn = styled.button`
   margin: auto;
 `;
 const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.white};
+  color: ${getColor('white')};
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
   height: 5rem;
   resize: vertical;
-  border-color: ${getGray};
+  border-color: ${getColor('gray')};
   border-radius: 5px;
   padding: 5px;
   margin-bottom: ${bottomMargin};

@@ -20,9 +20,15 @@ const Header = () => {
           ? dispatch(
               userActions.setUserInfo({
                 id: userInfo.id,
+                name: userInfo.name,
+                type: userInfo.type,
+                nickname: userInfo.nickname,
+                phoneNumber: userInfo.phoneNumber,
+                point: userInfo.point,
+                bankName: userInfo.bankName,
+                bankAccount: userInfo.bankAccount,
                 isLoggedIn: true,
                 isSignup: true,
-                nickname: userInfo.nickname,
               }),
             )
           : dispatch(

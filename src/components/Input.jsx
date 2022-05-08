@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { getColor } from '@/utils';
 
 const Input = ({
   type,
@@ -58,7 +59,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  color: ${({ theme }) => theme.color.gray};
+  color: ${getColor('gray')};
 `;
 
 const InputField = styled.input`

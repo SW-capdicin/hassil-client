@@ -10,3 +10,4 @@ export { default as JoinedStudyDetail } from './JoinedStudyDetail.jsx';
 export { default as Payment } from './Payment';
 export { default as Refund } from './Refund';
 export { default as MyPage } from './MyPage.jsx';
+export { default as PointHistory } from './PointHistory.jsx';

@@ -17,12 +17,14 @@ import {
   Payment,
   Refund,
   MyPage,
+  PointHistory,
 } from '@/pages';
 import { Header, PublicRoute } from '@/components';
 import {
   PATH_HOME,
   PATH_LOGIN,
   PATH_SIGNUP,
+  PATH_USER_EDIT,
   PATH_SIGNUP_COMPLETE,
   PATH_NOT_FOUND,
   PATH_STUDY_CREATE,
@@ -32,6 +34,7 @@ import {
   PATH_PAYMENT,
   PATH_REFUND,
   PATH_MYPAGE,
+  PATH_POINT_HISTORY,
 } from '@/constants';
 
 const App = () => {
@@ -52,22 +55,29 @@ const App = () => {
               element={<PublicRoute element={Signup} showUserIcon={false} />}
             />
             <Route
+              path={PATH_USER_EDIT}
+              element={<PublicRoute element={Signup} showUserIcon={true} />}
+            />
+            <Route
               path={PATH_SIGNUP_COMPLETE}
               element={
                 <PublicRoute element={SignupComplete} showUserIcon={false} />
               }
             />
-
             <Route
               path={PATH_MYPAGE}
               element={<PublicRoute element={MyPage} />}
+            />
+            <Route
+              path={PATH_POINT_HISTORY}
+              element={<PublicRoute element={PointHistory} />}
             />
             <Route
               path={PATH_STUDY_CREATE}
               element={<PublicRoute element={StudyCreate} />}
             />
             <Route
-              path={PATH_STUDY_DETAIL+'/:id'}
+              path={PATH_STUDY_DETAIL + '/:id'}
               element={<PublicRoute element={StudyDetail} />}
             />
             <Route
