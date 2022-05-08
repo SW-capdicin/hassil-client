@@ -121,21 +121,20 @@ const CreateStudy = () => {
   );
 };
 
-const contentWidth = '16rem';
+const contentWidth = '65%';
 const bottomMargin = '12px';
 const labelForVerticalCenter = `padding-top: 3px;`;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
+  height: calc(100vh - 10rem);
   width: 100%;
   overflow: auto;
 `;
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;

@@ -5,6 +5,7 @@ import emptyimg from '@/img/emptyimg.png';
 // 가입된 스터디 목록 api 나오면 그 api로 교체
 import { getStudyList } from '@/api';
 import { PATH_JOINED_STUDY_DETAIL } from '@/constants';
+import { getColor } from '@/utils';
 
 const JoinedStudyList = () => {
   const navigate = useNavigate();
@@ -39,28 +40,26 @@ const JoinedStudyList = () => {
     navigate(`${PATH_JOINED_STUDY_DETAIL}/${id}`);
   }
 
+  const Study = (study) => (
+    <StudyContainer key={study.id} onClick={() => goDetail(study.id)}>
+      <Img src={showImage(study.src)}></Img>
+      <Title>{study.name}</Title>
+      <ProgressBarContainer>
+        <ProgressLabelContainer>
+          <ProgressLabel>{study.startDate}</ProgressLabel>
+          <ProgressLabel>{study.endDate}</ProgressLabel>
+        </ProgressLabelContainer>
+        <ProgressBar
+          value={calcProgress(study.startDate, study.endDate)}
+          max={100}
+        />
+      </ProgressBarContainer>
+    </StudyContainer>
+  );
+
   return (
     <Container>
-      {
-        studies.map((item) => {
-          return (
-            <StudyContainer key={item.id} onClick={() => goDetail(item.id)}>
-              <Img src={showImage(item.src)}></Img>
-              <Title>{item.name}</Title>
-              <ProgressBarContainer>
-                <ProgressLabelContainer>
-                  <ProgressLabel>{item.startDate}</ProgressLabel>
-                  <ProgressLabel>{item.endDate}</ProgressLabel>
-                </ProgressLabelContainer>
-                <ProgressBar
-                  value={calcProgress(item.startDate, item.endDate)}
-                  max={100}
-                />
-              </ProgressBarContainer>
-            </StudyContainer>
-          )
-        })
-      }
+      {studies.map(Study)}
     </Container>
   )
 }
@@ -68,14 +67,11 @@ const JoinedStudyList = () => {
 const outerContentsMargin = '50px';
 const innerContentsMargin = '7px';
 const prgressRadius = '5px';
-const getGray = ({ theme }) => theme.color.gray;
-const getBlack = ({ theme }) => theme.color.black;
-const getLightBlue = ({ theme }) => theme.color.lightBlue;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - 5rem);
   width: 100%;
   overflow: auto;
 `;
@@ -102,7 +98,7 @@ const Title = styled.label`
   margin-left: 0px;
   font-size: 20px;
   font-weight: 400;
-  color: ${getBlack};
+  color: ${getColor('black')};
   margin-bottom: ${innerContentsMargin};
 `;
 
@@ -116,21 +112,21 @@ const ProgressLabel = styled.label`
   display: flex;
   font-size: 10px;
   font-weight: 400;
-  color: ${getGray};
+  color: ${getColor('gray')};
 `;
 
 const ProgressBar = styled.progress`
   -webkit-appearance: none;
-  border: 1px solid ${getLightBlue};
+  border: 1px solid ${getColor('lightBlue')};
   border-radius: ${prgressRadius};
   height: 13px;
-  padding: 0px 0.5px;
+  padding: 0.5px;
   width: 100%;
 
   ::-webkit-progress-value {
     height: 100%;
     border-radius: ${prgressRadius};
-    background-color: ${getLightBlue};
+    background-color: ${getColor('lightBlue')};
   }
 
   ::-webkit-progress-bar {
