@@ -14,6 +14,7 @@ import {
   StudyDetail,
   JoinedStudyList,
   JoinedStudyDetail,
+  StudyParticipation,
   Payment,
   Refund,
   MyPage,
@@ -31,6 +32,7 @@ import {
   PATH_STUDY_DETAIL,
   PATH_JOINED_STUDY_LIST,
   PATH_JOINED_STUDY_DETAIL,
+  PATH_STUDY_PARTICIPATION,
   PATH_PAYMENT,
   PATH_REFUND,
   PATH_MYPAGE,
@@ -88,6 +90,9 @@ const App = () => {
               path={PATH_JOINED_STUDY_DETAIL+'/:id'}
               element={<PublicRoute element={JoinedStudyDetail} />}
             />
+              path={PATH_STUDY_PARTICIPATION}
+              element={<PublicRoute element={StudyParticipation} />}
+            
             <Route
               path={PATH_PAYMENT}
               element={<PublicRoute element={Payment} />}
