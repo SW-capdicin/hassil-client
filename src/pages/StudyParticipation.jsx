@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BiCheckCircle } from 'react-icons/bi';
-import { findStudy } from '@/api';
+import { findStudy, joinStudy } from '@/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATH_HOME } from '@/constants';
 
@@ -24,6 +24,12 @@ const StudyParticipation = () => {
     alert('결제완료');
     // 보증금 계산 요청하는 api 와
     // user의 study 목록에 실제로 등록 요청하는 api 필요
+    try {
+      await joinStudy(params.id);
+    } catch (err) {
+      console.log(err);
+      alert('error');
+    }
     navigate(PATH_HOME);
   };
   const [isAgreed, setIsAgreed] = useState(false);
