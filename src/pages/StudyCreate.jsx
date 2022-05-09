@@ -38,7 +38,7 @@ const CreateStudy = () => {
     };
     setInputs(nextInputs);
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
       let image = null;
       if (src) {
@@ -183,14 +183,14 @@ const CreateStudy = () => {
   );
 };
 
-const contentWidth = '16rem';
+const contentWidth = '65%';
 const bottomMargin = '15px';
 const labelForVerticalCenter = `padding-top: 3px;`;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
+  height: calc(100vh - 10rem);
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;
@@ -200,8 +200,7 @@ const SubContainer = styled.div``;
 const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
-  width: 22rem;
-  margin: auto;
+  width: 100%;
   margin-bottom: ${bottomMargin};
 `;
 const InputContainer = styled.div`
@@ -234,7 +233,7 @@ const SDatePickerContainer = styled.div`
 const SDatePicker = styled(DatePicker)`
   align-items: center;
   text-align: center;
-  width: ${contentWidth};
+  width: 100%;
   padding-left: 5px;
   border-style: solid;
   border-color: ${getColor('gray')};

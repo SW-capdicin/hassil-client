@@ -205,6 +205,7 @@ const Img = styled.img`
   height: 9rem;
   border-radius: 10px;
   align-self: center;
+  object-fit: cover;
 `;
 
 const Text = styled.span`

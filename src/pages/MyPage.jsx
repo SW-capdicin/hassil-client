@@ -4,11 +4,16 @@ import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
 import { logout } from '@/api';
+import { PATH_JOINED_STUDY_LIST, PATH_USER_EDIT } from '@/constants'
 import { getColor } from '@/utils';
-import { PATH_USER_EDIT } from '@/constants';
 
 const MyPage = () => {
   const navigate = useNavigate();
+
+  const goJoinedStudyList = () => {
+    navigate(PATH_JOINED_STUDY_LIST);
+  }
+
   const logoutHandler = async () => {
     const responseStatus = await logout();
     if (responseStatus === 200) {
@@ -44,7 +49,7 @@ const MyPage = () => {
           </SecondBox>
         </PointContainer>
         <InputContainer>
-          <StudyList>가입한 스터디 목록</StudyList>
+          <StudyList onClick={goJoinedStudyList}>가입한 스터디 목록</StudyList>
           <BiChevronRight size={25} />
         </InputContainer>
         <Link to={PATH_USER_EDIT}>

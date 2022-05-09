@@ -1,11 +1,10 @@
 import 'react-datepicker/dist/react-datepicker.css';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
 import { getColor } from '@/utils';
-import { PATH_STUDY_DETAIL } from '@/constants';
 
 const StudyDetail = () => {
   const navigate = useNavigate();
@@ -14,14 +13,14 @@ const StudyDetail = () => {
   const [src, setFiles] = useState('');
   const [inputs, setInputs] = useState({});
 
-  const loadData = async (_) => {
+  const loadData = async () => {
     const data = await findStudy(params.id);
-    setInputs((_) => data);
+    setInputs(() => data);
     console.log(data);
-    setFiles((_) => data.src);
+    setFiles(() => data.src);
   };
 
-  useEffect((_) => {
+  useEffect(() => {
     return loadData;
   }, []);
 
@@ -49,10 +48,10 @@ const StudyDetail = () => {
     'NCS',
   ];
 
-  const joinStudy = async (e) => {
+  const joinStudy = async () => {
     try {
       alert('스터디 참가하기');
-      await navigate(PATH_STUDY_DETAIL + `/${inputs.id}/participation`);
+      await navigate(`${window.location.pathname}/participation`);
       // 스터디 참가 로직 필요
     } catch (e) {
       console.log(e);
@@ -60,25 +59,10 @@ const StudyDetail = () => {
     }
   };
 
-  const imgInput = useRef();
-  const onLoadFile = (e) => {
-    const file = e.target.files[0];
-    setFiles(file);
-  };
-
   return (
     <Container>
       <FullWidthContainer>
-        <SelectImg onClick={() => imgInput.current.click()}>
-          <Img src={showImage(src)}></Img>
-        </SelectImg>
-        <LabelContents
-          type="file"
-          accept="image/*"
-          style={{ display: 'none' }}
-          ref={imgInput}
-          onChange={onLoadFile}
-        />
+        <Img src={showImage(src)}></Img>
         <TitleContainer>
           <Title>{inputs.name}</Title>
         </TitleContainer>
@@ -135,21 +119,20 @@ const StudyDetail = () => {
   );
 };
 
-const contentWidth = '16rem';
+const contentWidth = '65%';
 const bottomMargin = '12px';
 const labelForVerticalCenter = `padding-top: 3px;`;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
+  height: calc(100vh - 10rem);
   width: 100%;
   overflow: auto;
 `;
 const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;
@@ -160,7 +143,7 @@ const FullWidthContainer = styled.div`
   left: 0;
 `;
 const TitleContainer = styled.div`
-  margin: 3% 10%;
+  margin: 3% 5%;
   height: 3rem;
   display: flex;
 `;
@@ -172,12 +155,11 @@ const Title = styled.label`
   font-weight: 700;
   color: ${getColor('black')};
 `;
-const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
   width: 100%;
+  object-fit: cover;
   margin: auto;
-  margin-bottom: ${bottomMargin};
 `;
 const InputContainer = styled.div`
   display: flex;
