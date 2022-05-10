@@ -18,7 +18,7 @@ const CreateStudy = () => {
   const [inputs, setInputs] = useState({
     name: '',
     depositPerPerson: 0,
-    categoryId: 0,
+    categoryId: 1,
     operationTime: '',
     info: '',
     absentFee: 0,
