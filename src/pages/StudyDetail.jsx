@@ -21,7 +21,7 @@ const StudyDetail = () => {
   };
 
   useEffect(() => {
-    return loadData;
+    loadData();
   }, []);
 
   const showImage = (src) => {

@@ -18,22 +18,22 @@ const Payment = () => {
 
   const [amount, setAmount] = useState(0);
   const [leastPayment] = useState(1000);
-  
-  useEffect(() => {
-    return async () => {
-      try {
-        if (queryData.paymentKey) {
-          await paymentSuccess({
-            ...queryData
-          });
-          alert('결제 완료');
-          // 페이지 이동
-        }
-      } catch (e) {
-        alert('error');
+  const doPayment = async () => {
+    try {
+      if (queryData.paymentKey) {
+        await paymentSuccess({
+          ...queryData
+        });
+        alert('결제 완료');
         // 페이지 이동
       }
+    } catch (e) {
+      alert('error');
+      // 페이지 이동
     }
+  }
+  useEffect(() => {
+    doPayment();
   }, []);
 
   const handleSubmit = async () => {
