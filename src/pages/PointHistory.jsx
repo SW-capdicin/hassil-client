@@ -11,8 +11,8 @@ const PointHistory = () => {
     { date: '04.11', name: '포인트 충전', price: 30000 },
   ];
 
-  const Point = (point) => (
-    <>
+  const Point = (point, key) => (
+    <div key={key}>
       <Line />
       <Log>
         <Text>{point.date}</Text>
@@ -20,7 +20,7 @@ const PointHistory = () => {
         <Text>{point.price} 원</Text>
       </Log>
       <Line />
-    </>
+    </div>
   );
 
   return (
@@ -36,7 +36,7 @@ const PointHistory = () => {
           </Link>
         </ButtonContainer>
       </SubContainer>
-      <PointLog>{tempData.map((data) => Point(data))}</PointLog>
+      <PointLog>{tempData.map((data, idx) => Point(data, idx))}</PointLog>
     </Container>
   );
 };
@@ -90,6 +90,8 @@ const Log = styled.p`
   justify-content: space-between;
 `;
 
-const Line = styled.div`${defaultLine}`;
+const Line = styled.div`
+  ${defaultLine}
+`;
 
 export default PointHistory;
