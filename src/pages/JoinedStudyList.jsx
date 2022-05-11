@@ -17,7 +17,7 @@ const JoinedStudyList = () => {
     setStudies(() => data);
   }
   useEffect(() => {
-    return loadStudies;
+    loadStudies();
   }, []);
 
   const showImage = src => {

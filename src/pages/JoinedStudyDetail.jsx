@@ -25,7 +25,7 @@ const JoinedStudyDetail = () => {
   }
   
   useEffect(() => {
-    return loadData;
+    loadData();
   }, []);
 
   const showImage = src => {

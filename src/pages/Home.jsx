@@ -25,7 +25,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    return loadStudies;
+    loadStudies();
   }, []);
 
   const handleChange = (e) => {

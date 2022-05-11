@@ -19,7 +19,7 @@ const StudyParticipation = () => {
   };
 
   useEffect(() => {
-    return loadData;
+    loadData();
   }, []);
 
   const handleSubmit = async (e) => {
