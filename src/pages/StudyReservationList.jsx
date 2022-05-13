@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { PATH_PAYMENT, PATH_REFUND } from '@/constants';
-import { defaultLine, separatorMoney, getDateTime } from '@/utils';
+import { defaultLine, getDateTime } from '@/utils';
 import { getReservation } from '@/api';
 
 const StudyReservationList = () => {
