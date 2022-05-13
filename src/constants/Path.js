@@ -12,4 +12,5 @@ export const PATH_JOINED_STUDY_DETAIL = '/users/studies'; // :id
 export const PATH_STUDY_PARTICIPATION = `/studies/:id/participation`;
 export const PATH_PAYMENT = '/payment';
 export const PATH_REFUND = '/refund';
+export const PATH_STUDY_RESERVATION_CREATION = '/reservation/creation';
 export const PATH_NOT_FOUND = '/*';

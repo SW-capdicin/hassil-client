@@ -1,14 +1,20 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { calender } from '@/img';
-import { findStudy, getStudyAttend } from '@/api';
+import {
+  findStudy,
+  getStudyAttend,
+  createReservation,
+  getUserInfo,
+} from '@/api';
 import { getColor, defaultLine } from '@/utils';
 
 const JoinedStudyDetail = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const params = useParams();
 
   const [src, setFiles] = useState('');
@@ -18,17 +24,17 @@ const JoinedStudyDetail = () => {
   const loadData = async () => {
     const studyData = await findStudy(params.id);
     const attendData = await getStudyAttend(params.id);
+
     setInputs(() => studyData);
     setFiles(() => studyData.src);
     setUserAttend(() => attendData);
-    console.log(attendData);
-  }
-  
+  };
+
   useEffect(() => {
     loadData();
   }, []);
 
-  const showImage = src => {
+  const showImage = (src) => {
     if (src == '' || !src) {
       return emptyimg;
     } else if (src.includes('http')) {
@@ -36,11 +42,11 @@ const JoinedStudyDetail = () => {
     } else {
       return URL.createObjectURL(src);
     }
-  }
+  };
 
-  const getDate = date => {
-    return date && date.split('T')[0]
-  }
+  const getDate = (date) => {
+    return date && date.split('T')[0];
+  };
 
   const selectList = [
     // 나중에 category 조회로 불러올 것
@@ -54,22 +60,38 @@ const JoinedStudyDetail = () => {
 
   const attendStudy = async () => {
     try {
-      alert("스터디 출석하기");
+      alert('현재 위치 입력하기');
+      const attendData = await getStudyAttend(params.id);
       // 스터디 출석 로직 필요
-      navigate(-1); // 뒤로가기
+      // navigate(-1); // 뒤로가기
     } catch (e) {
       console.log(e);
       alert('에러 발생');
     }
   };
+  const makeReserve = async () => {
+    // 예약 하는 기능 구현
+    // const reservationPerson = await getUserInfo();
+    alert('예약 생성');
+    // const result = await createReservation(
+    //   params.id,
+    //   reservationPerson.name,
+    //   3, //status,
+    // longitude:
+    //       latitude:
+    //       address:
+    //       startTime:
+    // );
+    // console.log(result);
+  };
 
   const calcDeposit = (attendInfo, studyInfo) => {
     return (
       studyInfo.depositPerPerson -
-      (attendInfo.lateCnt * studyInfo.lateFee) -
-      (attendInfo.absentCnt * studyInfo.absentFee)
-    )
-  }
+      attendInfo.lateCnt * studyInfo.lateFee -
+      attendInfo.absentCnt * studyInfo.absentFee
+    );
+  };
 
   return (
     <Container>
@@ -102,12 +124,17 @@ const JoinedStudyDetail = () => {
         <PointContainer>
           <PointLabelContainer>
             <PointMainLabel>예상 환급액</PointMainLabel>
-            <PointMainLabel>{calcDeposit(userAttend, studyInfo)}원</PointMainLabel>
+            <PointMainLabel>
+              {calcDeposit(userAttend, studyInfo)}원
+            </PointMainLabel>
           </PointLabelContainer>
-          <PointSubLabel>보증금({studyInfo.depositPerPerson}원) - 지각 {userAttend.lateCnt}회 - 결석 {userAttend.absentCnt}회</PointSubLabel>
+          <PointSubLabel>
+            보증금({studyInfo.depositPerPerson}원) - 지각 {userAttend.lateCnt}회
+            - 결석 {userAttend.absentCnt}회
+          </PointSubLabel>
         </PointContainer>
         <ReserveBtnContainer>
-          <ReserveBtn>
+          <ReserveBtn onClick={makeReserve}>
             <ReserveBtnText>스터디 예약하기</ReserveBtnText>
             <Icon />
           </ReserveBtn>
@@ -122,7 +149,9 @@ const JoinedStudyDetail = () => {
         </InputContainer>
         <InputContainer>
           <Label>기간</Label>
-          <LabelContents>{getDate(studyInfo.startDate)} ~ {getDate(studyInfo.endDate)}</LabelContents>
+          <LabelContents>
+            {getDate(studyInfo.startDate)} ~ {getDate(studyInfo.endDate)}
+          </LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>운영시간</Label>
@@ -152,16 +181,13 @@ const JoinedStudyDetail = () => {
           <InputContainer>
             <Label>상세 정보</Label>
           </InputContainer>
-          <TextArea
-            readOnly={true}
-            value={studyInfo.info}
-          />
+          <TextArea readOnly={true} value={studyInfo.info} />
         </SubContainer>
       </ContentsContainer>
-      
+
       <FixedDiv>
         <CreateBtn onClick={attendStudy}>
-          <BtnText>출석하기</BtnText>
+          <BtnText>예약 현황</BtnText>
         </CreateBtn>
       </FixedDiv>
     </Container>

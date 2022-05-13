@@ -49,7 +49,7 @@ const CreateStudy = () => {
         const srcUrl = await uploadOneImage(fd);
         image = srcUrl;
       }
-      await createStudy({
+      const result = await createStudy({
         ...inputs,
         startDate,
         endDate,
@@ -139,7 +139,7 @@ const CreateStudy = () => {
         <Select name="categoryId" value={categoryId} onChange={handleChange}>
           {selectList.map((item) => (
             <option key={item.name} value={item.id}>
-              {item.name}
+              {item.name} {item.id}
             </option>
           ))}
         </Select>

@@ -57,7 +57,9 @@ const StudyParticipation = () => {
           <Price>결제할 금액</Price>
           <Payment>
             <Deposit>{deposit.toLocaleString()}원</Deposit>
-            <AmountAfterPay>결제 후 잔액: {(balance - deposit).toLocaleString()}원</AmountAfterPay>
+            <AmountAfterPay>
+              결제 후 잔액: {(balance - deposit).toLocaleString()}원
+            </AmountAfterPay>
           </Payment>
         </PaymentContainer>
       </SubContainer>
@@ -73,12 +75,12 @@ const StudyParticipation = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37.4rem;
-  width: 25rem;
+  /* height: 100%; */
+  /* width: 25rem; */
   align-content: center;
 `;
 const SubContainer = styled.div`
-  width: 25rem;
+  /* width: 25rem; */
   /* display: flex; */
   /* flex-direction: column; */
 `;
@@ -86,7 +88,7 @@ const Title = styled.div`
   color: ${({ theme }) => theme.color.black};
   font-weight: bold;
   font-size: xx-large;
-  width: 25rem;
+  /* width: 25rem; */
   text-align: center;
 `;
 const AgreeStatement = styled.div`
@@ -99,7 +101,7 @@ const AgreeStatement = styled.div`
   border-radius: 20px;
   border-color: ${({ theme }) => theme.color.gray};
   border-width: 2px;
-  width: 25rem;
+  /* width: 25rem; */
   height: 10rem;
 `;
 const Text = styled.div`
@@ -107,7 +109,7 @@ const Text = styled.div`
 `;
 const AgreeBtn = styled.div`
   display: flex;
-  width: 25rem;
+  /* width: 25rem; */
   justify-content: flex-end;
 
   /* justify-items: baseline; */
