@@ -19,6 +19,7 @@ import {
   Refund,
   MyPage,
   PointHistory,
+  StudyReservationList,
   StudyReservationCreation,
   PaymentSuccess,
   PaymentFail,
@@ -40,6 +41,7 @@ import {
   PATH_REFUND,
   PATH_MYPAGE,
   PATH_POINT_HISTORY,
+  PATH_STUDY_RESERVATION_LIST,
   PATH_STUDY_RESERVATION_CREATION,
   PATH_PAYMENT_SUCCESS,
   PATH_PAYMENT_FAIL,
@@ -110,6 +112,10 @@ const App = () => {
             <Route
               path={PATH_REFUND}
               element={<PrivateRoute element={Refund} />}
+            />
+            <Route
+              path={PATH_STUDY_RESERVATION_LIST}
+              element={<PrivateRoute element={StudyReservationList} />}
             />
             <Route
               path={PATH_STUDY_RESERVATION_CREATION}
