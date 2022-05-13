@@ -10,6 +10,11 @@ export const findStudy = async (id) => {
   return response.data;
 };
 
+export const findJoinedStudy = async () => {
+  const response = await api.get('/api/studies/joined');
+  return response.data;
+};
+
 export const getStudyList = async () => {
   const response = await api.get('/api/studies');
   return response.data;
