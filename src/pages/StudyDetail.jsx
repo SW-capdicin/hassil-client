@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
-import { getColor } from '@/utils';
+import { getColor, separatorMoney } from '@/utils';
 
 const StudyDetail = () => {
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const StudyDetail = () => {
         <ContentsContainer>
           <InputContainer>
             <Label>인당 보증금</Label>
-            <LabelContents>{inputs.depositPerPerson}</LabelContents>
+            <LabelContents>{separatorMoney(inputs.depositPerPerson)}원</LabelContents>
           </InputContainer>
           <InputContainer>
             <Label>기간</Label>
@@ -99,11 +99,11 @@ const StudyDetail = () => {
           </InputContainer>
           <InputContainer>
             <Label>결석 벌금</Label>
-            <LabelContents>{inputs.absentFee}</LabelContents>
+            <LabelContents>{separatorMoney(inputs.absentFee)}원</LabelContents>
           </InputContainer>
           <InputContainer>
             <Label>지각 벌금</Label>
-            <LabelContents>{inputs.lateFee}</LabelContents>
+            <LabelContents>{separatorMoney(inputs.lateFee)}원</LabelContents>
           </InputContainer>
           <SubContainer>
             <InputContainer>

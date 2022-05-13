@@ -12,7 +12,7 @@ import {
   PATH_REFUND,
   PATH_POINT_HISTORY,
 } from '@/constants';
-import { getColor } from '@/utils';
+import { getColor, separatorMoney } from '@/utils';
 import { checkCircle } from '@/img';
 
 const MyPage = () => {
@@ -54,7 +54,7 @@ const MyPage = () => {
           <PointContainer>
             <FirstBox>
               <div>보유 포인트</div>
-              <div>{userState.point}원</div>
+              <div>{separatorMoney(userState.point)}원</div>
             </FirstBox>
             <SecondBox>
               <PointHistory>

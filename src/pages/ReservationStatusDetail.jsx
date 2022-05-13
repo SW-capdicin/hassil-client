@@ -7,16 +7,13 @@ import { calender, checkCircle, fail } from '@/img';
 import {
   findStudy,
   getStudyAttend,
-  createReservation,
   getUserInfo,
   getReservation,
 } from '@/api';
-import { getColor, defaultLine } from '@/utils';
+import { getColor, defaultLine, separatorMoney } from '@/utils';
 import { updateLocation } from '@/api/reservation';
 
 const ReservationStatusDetail = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const params = useParams();
   const [openModal, setOpenModal] = useState(false);
   const [src, setFiles] = useState('');
@@ -141,12 +138,9 @@ const ReservationStatusDetail = () => {
     // console.log(result);
   };
 
-  const calcDeposit = (attendInfo, studyInfo) => {
-    return (
-      studyInfo.depositPerPerson -
-      attendInfo.lateCnt * studyInfo.lateFee -
-      attendInfo.absentCnt * studyInfo.absentFee
-    );
+  const calcAbsent = (meetingCnt, lateCnt, attendCnt) => {
+    if (!meetingCnt) return 0;
+    return meetingCnt - lateCnt - attendCnt;
   };
 
   return (
@@ -182,12 +176,12 @@ const ReservationStatusDetail = () => {
             <PointLabelContainer>
               <PointMainLabel>예상 환급액</PointMainLabel>
               <PointMainLabel>
-                {calcDeposit(userAttend, studyInfo)}원
+                {separatorMoney(studyInfo.expectedReward)}원
               </PointMainLabel>
             </PointLabelContainer>
             <PointSubLabel>
-              보증금({studyInfo.depositPerPerson}원) - 지각 {userAttend.lateCnt}
-              회 - 결석 {userAttend.absentCnt}회
+              보증금({separatorMoney(studyInfo.depositPerPerson)}원) - 지각 {userAttend.lateCnt}
+              회 - 결석 {calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt)}회
             </PointSubLabel>
           </PointContainer>
           <ReserveBtnContainer>
