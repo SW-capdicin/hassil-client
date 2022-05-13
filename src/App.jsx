@@ -20,6 +20,8 @@ import {
   MyPage,
   PointHistory,
   StudyReservationCreation,
+  PaymentSuccess,
+  PaymentFail,
 } from '@/pages';
 import { Header, PublicRoute, PrivateRoute } from '@/components';
 import {
@@ -39,6 +41,8 @@ import {
   PATH_MYPAGE,
   PATH_POINT_HISTORY,
   PATH_STUDY_RESERVATION_CREATION,
+  PATH_PAYMENT_SUCCESS,
+  PATH_PAYMENT_FAIL,
 } from '@/constants';
 
 const App = () => {
@@ -107,7 +111,6 @@ const App = () => {
               path={PATH_REFUND}
               element={<PrivateRoute element={Refund} />}
             />
-
             <Route
               path={PATH_STUDY_RESERVATION_CREATION}
               element={
@@ -116,6 +119,14 @@ const App = () => {
                   showUserIcon={false}
                 />
               }
+            />
+            <Route
+              path={PATH_PAYMENT_SUCCESS}
+              element={<PrivateRoute element={PaymentSuccess} />}
+            />
+            <Route
+              path={PATH_PAYMENT_FAIL}
+              element={<PrivateRoute element={PaymentFail} />}
             />
             <Route
               path={PATH_NOT_FOUND}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { getColor } from '@/utils';
 
 const Refund = () => {
   const [amount, setAmount] = useState(0);
-  const [maxRefund] = useState(30000);
+  const userState = useSelector((state) => state.user);
   const handleSubmit = () => {
     const tossPayments = tossPayments('test_ck_OEP59LybZ8Bdv6A1JxkV6GYo7pRe');
     tossPayments.requestPayment('카드', {
@@ -27,7 +28,7 @@ const Refund = () => {
       <SubContainer>
         <InputContainer>
           <Input type="number" onChange={handleChange} />
-          <Label>최대 환급 가능액 : {maxRefund}</Label>
+          <Label>최대 환급 가능액 : {userState.point}</Label>
         </InputContainer>
         <BtnContainer>
           <SubmitBtn onClick={handleSubmit}>
@@ -62,8 +63,20 @@ const InputContainer = styled.div`
   width: 70%;
 `;
 const Input = styled.input`
+  font-size: 1.5rem;
   border-style: none none solid none;
   width: 90%;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  :focus {
+    outline: none;
+  }
 `;
 const Label = styled.div`
   color: ${getColor('gray')};

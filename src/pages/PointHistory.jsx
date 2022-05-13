@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { PATH_PAYMENT, PATH_REFUND } from '@/constants';
 import { defaultLine } from '@/utils';
+import { getPointHistory } from '@/api';
 
 const PointHistory = () => {
-  const tempData = [
-    { date: '04.12', name: '포인트 충전', price: 30000 },
-    { date: '04.11', name: '아주대 스터디 참여', price: -30000 },
-    { date: '04.11', name: '포인트 충전', price: 30000 },
-  ];
+  const [pointHistory, setPointHistory] = useState([]);
+  const userState = useSelector((state) => state.user);
+  useEffect(() => {
+    getPointHistory(userState.id).then((pointHistory) => {
+      setPointHistory(pointHistory);
+    });
+  }, []);
 
   const Point = (point, key) => (
     <div key={key}>
       <Line />
       <Log>
-        <Text>{point.date}</Text>
-        <Text>{point.name}</Text>
-        <Text>{point.price} 원</Text>
+        <Text>{pointHistory[0].createdAt.slice(0, 10)}</Text>
+        <Text>포인트 충전</Text>
+        <Text>{point.amount} 원</Text>
       </Log>
       <Line />
     </div>
@@ -26,7 +30,7 @@ const PointHistory = () => {
   return (
     <Container>
       <SubContainer>
-        <PointText>30000원</PointText>
+        <PointText>{userState.point} 원</PointText>
         <ButtonContainer>
           <Link to={PATH_PAYMENT}>
             <Button>충전하기</Button>
@@ -36,7 +40,7 @@ const PointHistory = () => {
           </Link>
         </ButtonContainer>
       </SubContainer>
-      <PointLog>{tempData.map((data, idx) => Point(data, idx))}</PointLog>
+      <PointLog>{pointHistory.map((data, idx) => Point(data, idx))}</PointLog>
     </Container>
   );
 };

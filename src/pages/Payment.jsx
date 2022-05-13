@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-
 import { v4 } from 'uuid';
 import QueryString from 'qs';
 import { paymentSuccess } from '@/api';
@@ -10,10 +9,9 @@ import { getColor } from '@/utils';
 
 const { VITE_TOSS_CK } = import.meta.env;
 
-const clientKey = VITE_TOSS_CK;
-
 const Payment = () => {
   const location = useLocation();
+
   const queryData = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
   });
@@ -26,12 +24,9 @@ const Payment = () => {
         await paymentSuccess({
           ...queryData,
         });
-        alert('결제 완료');
-        // 페이지 이동
       }
     } catch (e) {
-      alert('error');
-      // 페이지 이동
+      console.error(e);
     }
   };
   useEffect(() => {
@@ -39,15 +34,15 @@ const Payment = () => {
   }, []);
 
   const handleSubmit = async () => {
-    const tossPayments = await loadTossPayments(clientKey);
+    const tossPayments = await loadTossPayments(VITE_TOSS_CK);
     await tossPayments
       .requestPayment('카드', {
         amount,
         orderId: v4(),
         orderName: '포인트 충전',
         customerName: 'aaa',
-        successUrl: window.location.origin + '/payment',
-        failUrl: window.location.origin + '/payment',
+        successUrl: window.location.origin + '/payment/success',
+        failUrl: window.location.origin + '/payment/success/fail',
       })
       .catch(function (error) {
         if (error.code === 'USER_CANCEL') {
@@ -102,8 +97,20 @@ const InputContainer = styled.div`
   width: 70%;
 `;
 const Input = styled.input`
+  font-size: 1.5rem;
   border-style: none none solid none;
   width: 90%;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  :focus {
+    outline: none;
+  }
 `;
 const Label = styled.div`
   color: ${getColor('gray')};
