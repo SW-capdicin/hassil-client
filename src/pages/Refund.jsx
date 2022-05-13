@@ -5,9 +5,8 @@ import { getColor } from '@/utils';
 const Refund = () => {
   const [amount, setAmount] = useState(0);
   const [maxRefund] = useState(30000);
-  const handleSubmit = (event) => {
-    // eslint-disable-next-line no-undef
-    const tossPayments = TossPayments('test_ck_OEP59LybZ8Bdv6A1JxkV6GYo7pRe');
+  const handleSubmit = () => {
+    const tossPayments = tossPayments('test_ck_OEP59LybZ8Bdv6A1JxkV6GYo7pRe');
     tossPayments.requestPayment('카드', {
       amount,
       orderId: 'aaa',

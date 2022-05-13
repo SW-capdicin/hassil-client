@@ -20,9 +20,8 @@ import {
   MyPage,
   PointHistory,
   StudyReservationCreation,
-  ReservationStatusDetail,
 } from '@/pages';
-import { Header, PublicRoute } from '@/components';
+import { Header, PublicRoute, PrivateRoute } from '@/components';
 import {
   PATH_HOME,
   PATH_LOGIN,
@@ -50,36 +49,39 @@ const App = () => {
         <BrowserRouter>
           <Header />
           <Routes>
-            <Route path={PATH_HOME} element={<PublicRoute element={Home} />} />
+            <Route
+              path={PATH_HOME}
+              element={<PublicRoute element={Home} showUserIcon={true} />}
+            />
             <Route
               path={PATH_LOGIN}
               element={<PublicRoute element={Login} showUserIcon={false} />}
             />
             <Route
               path={PATH_SIGNUP}
-              element={<PublicRoute element={Signup} showUserIcon={false} />}
+              element={<PrivateRoute element={Signup} showUserIcon={false} />}
             />
             <Route
               path={PATH_USER_EDIT}
-              element={<PublicRoute element={Signup} showUserIcon={true} />}
+              element={<PrivateRoute element={Signup} showUserIcon={true} />}
             />
             <Route
               path={PATH_SIGNUP_COMPLETE}
               element={
-                <PublicRoute element={SignupComplete} showUserIcon={false} />
+                <PrivateRoute element={SignupComplete} showUserIcon={false} />
               }
             />
             <Route
               path={PATH_MYPAGE}
-              element={<PublicRoute element={MyPage} />}
+              element={<PrivateRoute element={MyPage} />}
             />
             <Route
               path={PATH_POINT_HISTORY}
-              element={<PublicRoute element={PointHistory} />}
+              element={<PrivateRoute element={PointHistory} />}
             />
             <Route
               path={PATH_STUDY_CREATE}
-              element={<PublicRoute element={StudyCreate} />}
+              element={<PrivateRoute element={StudyCreate} />}
             />
             <Route
               path={PATH_STUDY_DETAIL + '/:id'}
@@ -87,29 +89,29 @@ const App = () => {
             />
             <Route
               path={PATH_JOINED_STUDY_LIST}
-              element={<PublicRoute element={JoinedStudyList} />}
+              element={<PrivateRoute element={JoinedStudyList} />}
             />
             <Route
               path={PATH_JOINED_STUDY_DETAIL + '/:id'}
-              element={<PublicRoute element={JoinedStudyDetail} />}
+              element={<PrivateRoute element={JoinedStudyDetail} />}
             />
             <Route
               path={PATH_STUDY_PARTICIPATION}
-              element={<PublicRoute element={StudyParticipation} />}
+              element={<PrivateRoute element={StudyParticipation} />}
             />
             <Route
               path={PATH_PAYMENT}
-              element={<PublicRoute element={Payment} />}
+              element={<PrivateRoute element={Payment} />}
             />
             <Route
               path={PATH_REFUND}
-              element={<PublicRoute element={Refund} />}
+              element={<PrivateRoute element={Refund} />}
             />
 
             <Route
               path={PATH_STUDY_RESERVATION_CREATION}
               element={
-                <PublicRoute
+                <PrivateRoute
                   element={StudyReservationCreation}
                   showUserIcon={false}
                 />

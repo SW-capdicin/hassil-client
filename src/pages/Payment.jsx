@@ -8,13 +8,15 @@ import { paymentSuccess } from '@/api';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { getColor } from '@/utils';
 
-const { TOSS_CK } = import.meta.env;
+const { VITE_TOSS_CK } = import.meta.env;
 
-const clientKey = TOSS_CK;
+const clientKey = VITE_TOSS_CK;
 
 const Payment = () => {
   const location = useLocation();
-  const queryData = QueryString.parse(location.search, { ignoreQueryPrefix: true });
+  const queryData = QueryString.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });
 
   const [amount, setAmount] = useState(0);
   const [leastPayment] = useState(1000);
@@ -22,7 +24,7 @@ const Payment = () => {
     try {
       if (queryData.paymentKey) {
         await paymentSuccess({
-          ...queryData
+          ...queryData,
         });
         alert('결제 완료');
         // 페이지 이동
@@ -31,7 +33,7 @@ const Payment = () => {
       alert('error');
       // 페이지 이동
     }
-  }
+  };
   useEffect(() => {
     doPayment();
   }, []);
