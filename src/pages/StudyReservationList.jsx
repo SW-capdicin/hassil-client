@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { defaultLine, getDateTime } from '@/utils';
+import { defaultLine, getDateTime, getColor } from '@/utils';
 import { getReservation } from '@/api';
+import { IoMdAddCircle } from 'react-icons/io';
+import { PATH_STUDY_RESERVATION_CREATION } from '@/constants';
 
 const StudyReservationList = () => {
   const [reservationList, setReservationList] = useState([]);
@@ -55,6 +58,9 @@ const StudyReservationList = () => {
         <Title>스터디 예약 목록</Title>
       </SubContainer>
       <ReservationLog>{reservationList.map((data, idx) => Reserve(data, idx))}</ReservationLog>
+      <Link to={PATH_STUDY_RESERVATION_CREATION}>
+        <CuIoMdAddCircle />
+      </Link>
     </Container>
   );
 };
@@ -95,6 +101,15 @@ const Log = styled.p`
 
 const Line = styled.div`
   ${defaultLine}
+`;
+
+const CuIoMdAddCircle = styled(IoMdAddCircle)`
+  position: fixed;
+  width: 4rem;
+  height: 4rem;
+  bottom: 5%;
+  right: 5%;
+  color: ${getColor('blue')};
 `;
 
 export default StudyReservationList;
