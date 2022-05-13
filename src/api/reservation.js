@@ -1,8 +1,7 @@
 import { api } from '@/utils';
-import axios from 'axios';
 
 export const updateLocation = async (id, data) => {
-  const response = await axios.patch(
+  const response = await api.patch(
     `/api/reservations/${id}/member/attendance`,
     data,
   );
