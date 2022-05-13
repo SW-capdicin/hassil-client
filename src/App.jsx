@@ -19,6 +19,8 @@ import {
   Refund,
   MyPage,
   PointHistory,
+  StudyReservationCreation,
+  ReservationStatusDetail,
 } from '@/pages';
 import { Header, PublicRoute } from '@/components';
 import {
@@ -37,6 +39,7 @@ import {
   PATH_REFUND,
   PATH_MYPAGE,
   PATH_POINT_HISTORY,
+  PATH_STUDY_RESERVATION_CREATION,
 } from '@/constants';
 
 const App = () => {
@@ -87,7 +90,7 @@ const App = () => {
               element={<PublicRoute element={JoinedStudyList} />}
             />
             <Route
-              path={PATH_JOINED_STUDY_DETAIL+'/:id'}
+              path={PATH_JOINED_STUDY_DETAIL + '/:id'}
               element={<PublicRoute element={JoinedStudyDetail} />}
             />
             <Route
@@ -101,6 +104,16 @@ const App = () => {
             <Route
               path={PATH_REFUND}
               element={<PublicRoute element={Refund} />}
+            />
+
+            <Route
+              path={PATH_STUDY_RESERVATION_CREATION}
+              element={
+                <PublicRoute
+                  element={StudyReservationCreation}
+                  showUserIcon={false}
+                />
+              }
             />
             <Route
               path={PATH_NOT_FOUND}

@@ -76,6 +76,7 @@ const Home = () => {
         />
         <CuGoSearch />
       </SearchContainer>
+
       <TabContainer>
         <TabTitle>
           {[{ id: 0, name: '전체' }, ...TYPE_STUDY_CATEGORY].map((category) => (

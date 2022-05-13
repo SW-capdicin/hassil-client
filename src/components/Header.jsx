@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { PATH_HOME, PATH_MYPAGE } from '@/constants';
 import logo from '@/img/logo.png';
@@ -12,9 +12,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const headerState = useSelector((state) => state.header);
   const userState = useSelector((state) => state.user);
-
+  const location = useLocation();
   useEffect(() => {
     getUserInfo().then((userInfo) => {
+      console.log(userInfo);
       if (userInfo.id) {
         userInfo.nickname
           ? dispatch(
@@ -42,15 +43,14 @@ const Header = () => {
         dispatch(userActions.setUserInfo({ isLoggedIn: false }));
       }
     });
-  }, []);
-
+  }, [location]);
   return (
     <Container showUserIcon={headerState.showUserIcon}>
       <Link to={PATH_HOME}>
         <LogoImg />
       </Link>
       {userState.isLoggedIn ? <div>로그인 성공</div> : <div>로그인 전</div>}
-      {headerState.showUserIcon && (
+      {userState.isLoggedIn && (
         <Link to={PATH_MYPAGE}>
           <ProfileImg />
         </Link>
