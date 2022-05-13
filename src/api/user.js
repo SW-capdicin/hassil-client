@@ -14,3 +14,8 @@ export const logout = async () => {
   const response = await api.post('/api/users/logout');
   return response.status;
 };
+
+export const getPointHistory = async (userId) => {
+  const response = await api.get(`/api/users/${userId}/point-history`);
+  return response.data;
+};
