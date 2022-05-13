@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { CgProfile } from 'react-icons/cg';
 import { BiChevronRight } from 'react-icons/bi';
@@ -17,6 +18,7 @@ import { checkCircle } from '@/img';
 const MyPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+  const userState = useSelector((state) => state.user);
 
   const goJoinedStudyList = () => {
     navigate(PATH_JOINED_STUDY_LIST);
@@ -42,7 +44,7 @@ const MyPage = () => {
       <Container>
         <ProfileContainer>
           <CgProfile size={50} />
-          <Nickname onClick={toggleModal}>토익하자</Nickname>
+          <Nickname onClick={toggleModal}>{userState.nickname}</Nickname>
           <BiChevronRight size={25} />
         </ProfileContainer>
         <Line>
@@ -52,7 +54,7 @@ const MyPage = () => {
           <PointContainer>
             <FirstBox>
               <div>보유 포인트</div>
-              <div>30000원</div>
+              <div>{userState.point}원</div>
             </FirstBox>
             <SecondBox>
               <PointHistory>

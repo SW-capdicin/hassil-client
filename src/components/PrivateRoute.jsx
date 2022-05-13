@@ -10,9 +10,9 @@ const PrivateRoute = ({ element: Element, showUserIcon = true }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!userState.isLoggedIn) {
+    if (!userState.loginCheck) {
       navigate(PATH_LOGIN);
-    } else if (!userState.isSignup) {
+    } else if (!userState.signupCkeck) {
       navigate(PATH_SIGNUP);
     }
   }, [userState]);

@@ -11,6 +11,8 @@ const initialState = {
   point: 0,
   isLoggedIn: false,
   isSignup: false,
+  loginCheck: true,
+  signupCkeck: true,
 };
 
 const userSlice = createSlice({
@@ -28,6 +30,8 @@ const userSlice = createSlice({
       state.bankAccount = action.payload.bankAccount;
       state.isLoggedIn = action.payload.isLoggedIn;
       state.isSignup = action.payload.isSignup;
+      state.loginCheck = true;
+      state.signupCkeck = true;
     },
     updateUser: (state, action) => {
       state.type = action.payload.type;
@@ -39,11 +43,28 @@ const userSlice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn;
       state.isSignup = action.payload.isSignup;
     },
+    setEmptyUser: (state, action) => {
+      state.isLoggedIn = action.payload.isLoggedIn;
+      state.loginCheck = false;
+    },
+    setNoSignupUser: (state, action) => {
+      state.id = action.payload.id;
+      state.isLoggedIn = true;
+      state.loginCheck = true;
+      state.signupCkeck = false;
+      state.isSignup = false;
+    },
     logout: (state) => {
       state.isLoggedIn = false;
     },
   },
 });
 
-export const { setUserInfo, logout, updateUser } = userSlice.actions;
+export const {
+  setUserInfo,
+  logout,
+  updateUser,
+  setEmptyUser,
+  setNoSignupUser,
+} = userSlice.actions;
 export default userSlice.reducer;

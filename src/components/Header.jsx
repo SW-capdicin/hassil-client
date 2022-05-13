@@ -11,11 +11,9 @@ import { userActions } from '@/store/actions';
 const Header = () => {
   const dispatch = useDispatch();
   const headerState = useSelector((state) => state.header);
-  const userState = useSelector((state) => state.user);
   const location = useLocation();
   useEffect(() => {
     getUserInfo().then((userInfo) => {
-      console.log(userInfo);
       if (userInfo.id) {
         userInfo.nickname
           ? dispatch(
@@ -33,24 +31,22 @@ const Header = () => {
               }),
             )
           : dispatch(
-              userActions.setUserInfo({
+              userActions.setNoSignupUser({
                 id: userInfo.id,
-                isLoggedIn: true,
-                isSignup: false,
               }),
             );
       } else {
-        dispatch(userActions.setUserInfo({ isLoggedIn: false }));
+        dispatch(userActions.setEmptyUser({ isLoggedIn: false }));
       }
     });
   }, [location]);
+
   return (
     <Container showUserIcon={headerState.showUserIcon}>
       <Link to={PATH_HOME}>
         <LogoImg />
       </Link>
-      {userState.isLoggedIn ? <div>로그인 성공</div> : <div>로그인 전</div>}
-      {userState.isLoggedIn && (
+      {headerState.showUserIcon && (
         <Link to={PATH_MYPAGE}>
           <ProfileImg />
         </Link>
