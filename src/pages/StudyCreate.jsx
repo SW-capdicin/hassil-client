@@ -245,6 +245,7 @@ const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
   width: 100%;
+  max-height: 45vh;
   margin-bottom: ${bottomMargin};
 `;
 const InputContainer = styled.div`

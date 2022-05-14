@@ -228,6 +228,7 @@ const Img = styled.img`
   width: 100%;
   object-fit: cover;
   margin: auto;
+  max-height: 45vh;
 `;
 const InputContainer = styled.div`
   display: flex;

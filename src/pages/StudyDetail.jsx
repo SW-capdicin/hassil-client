@@ -6,6 +6,7 @@ import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
 import { getColor, separatorMoney } from '@/utils';
 import { useSelector } from 'react-redux';
+import { PATH_PAYMENT } from '@/constants';
 
 const StudyDetail = () => {
   const navigate = useNavigate();
@@ -53,13 +54,14 @@ const StudyDetail = () => {
     setOpenModal((prevState) => !prevState);
   };
 
-  const joinStudy = () => {
-    try {
-      navigate(`${window.location.pathname}/participation`);
-      // 스터디 참가 로직 필요
-    } catch (e) {
-      console.log(e);
-    }
+  const handleSubmit = () => {
+    inputs.depositPerPerson > userState.point
+      ? toggleModal()
+      : navigate(`${window.location.pathname}/participation`);
+  };
+
+  const goPaymentPage = () => {
+    navigate(PATH_PAYMENT);
   };
 
   return (
@@ -119,7 +121,7 @@ const StudyDetail = () => {
           {inputs.joinedUsers?.find((user) => user.userId === userState.id) ? (
             <Already>이미 참여한 스터디입니다.</Already>
           ) : (
-            <CreateBtn onClick={toggleModal}>
+            <CreateBtn onClick={handleSubmit}>
               <BtnText>스터디 참가하기</BtnText>
             </CreateBtn>
           )}
@@ -134,7 +136,7 @@ const StudyDetail = () => {
             </ModalTextContainer>
             <ModalBtnContainer>
               <ModalBtn onClick={toggleModal}>취소</ModalBtn>
-              <ModalBtn onClick={joinStudy}>충전</ModalBtn>
+              <ModalBtn onClick={goPaymentPage}>충전</ModalBtn>
             </ModalBtnContainer>
           </Modal>
           <BackGround onClick={toggleModal} />
@@ -185,6 +187,7 @@ const Img = styled.img`
   width: 100%;
   object-fit: cover;
   margin: auto;
+  max-height: 45vh;
 `;
 const InputContainer = styled.div`
   display: flex;
@@ -235,7 +238,8 @@ const CreateBtn = styled.button`
 `;
 
 const Already = styled.div`
-  background-color: ${getColor('gray')};
+  background-color: #e4e4e4;
+  color: #b4b4b4;
   border: 0;
   outline: 0;
   width: 14rem;

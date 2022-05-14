@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { defaultLine, getDateTime, getColor } from '@/utils';
+import { defaultLine, getDateTime, getColor, compareDate } from '@/utils';
 import { getReservation } from '@/api';
 import { IoMdAddCircle } from 'react-icons/io';
 import { PATH_STUDY_RESERVATION_CREATION } from '@/constants';
@@ -14,13 +14,6 @@ const StudyReservationList = () => {
   const navigate = useNavigate();
   const params = useParams();
   console.log('params : ', params);
-
-  const compareDate = (objName, desc) => {
-    return (a, b) =>
-      desc
-        ? new Date(b[objName]) - new Date(a[objName])
-        : new Date(a[objName]) - new Date(b[objName]);
-  };
 
   useEffect(() => {
     // 가장 나중에 생성한 순으로 정렬

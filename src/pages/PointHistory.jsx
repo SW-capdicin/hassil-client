@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { PATH_PAYMENT, PATH_REFUND } from '@/constants';
-import { defaultLine, separatorMoney } from '@/utils';
+import { defaultLine, separatorMoney, getDateTime, compareDate } from '@/utils';
 import { getPointHistory } from '@/api';
 
 const PointHistory = () => {
@@ -11,7 +11,7 @@ const PointHistory = () => {
   const userState = useSelector((state) => state.user);
   useEffect(() => {
     getPointHistory(userState.id).then((pointHistory) => {
-      setPointHistory(pointHistory);
+      setPointHistory(pointHistory.sort(compareDate('createdAt', true)));
     });
   }, []);
 
@@ -19,9 +19,9 @@ const PointHistory = () => {
     <div key={key}>
       <Line />
       <Log>
-        <Text>{pointHistory[0].createdAt.slice(0, 10)}</Text>
-        <Text>포인트 충전</Text>
-        <Text>{separatorMoney(point.amount)} 원</Text>
+        <Text>{getDateTime(point.createdAt).date}</Text>
+        <Text>{point.status ? '스터디 가입' : '포인트 충전'}</Text>
+        <Text>{point.status ? '-' : '+'}{separatorMoney(point.amount)} 원</Text>
       </Log>
       <Line />
     </div>
@@ -60,7 +60,10 @@ const SubContainer = styled.div`
   justify-content: center;
 `;
 
-const Text = styled.span``;
+const Text = styled.span`
+  min-width: 20%;
+  text-align: right;
+`;
 
 const PointText = styled.div`
   font-size: 2rem;

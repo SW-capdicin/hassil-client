@@ -10,3 +10,10 @@ export const getDateTime = (datetime) => {
     time: dt[1].slice(0, 5), // 시:분 까지만 표기
   }
 }
+
+export const compareDate = (objName, desc) => {
+  return (a, b) =>
+    desc
+      ? new Date(b[objName]) - new Date(a[objName])
+      : new Date(a[objName]) - new Date(b[objName]);
+};

@@ -79,6 +79,7 @@ const ProfileImg = styled.div`
   background-position: center;
   width: 3rem;
   height: 3rem;
+  margin-right: 7px;
 `;
 
 export default Header;
