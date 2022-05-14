@@ -17,7 +17,6 @@ const Payment = () => {
       setIsCharge(false);
       return;
     }
-    useState(true);
     const tossPayments = await loadTossPayments(VITE_TOSS_CK);
     await tossPayments
       .requestPayment('카드', {
