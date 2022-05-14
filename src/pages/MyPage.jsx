@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -13,10 +13,8 @@ import {
   PATH_POINT_HISTORY,
 } from '@/constants';
 import { getColor, separatorMoney } from '@/utils';
-import { checkCircle } from '@/img';
 
 const MyPage = () => {
-  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
 
@@ -35,16 +33,12 @@ const MyPage = () => {
     navigate(path);
   };
 
-  const toggleModal = () => {
-    setOpenModal((prevState) => !prevState);
-  };
-
   return (
     <>
       <Container>
         <ProfileContainer>
           <CgProfile size={50} />
-          <Nickname onClick={toggleModal}>{userState.nickname}</Nickname>
+          <Nickname>{userState.nickname}</Nickname>
           <BiChevronRight size={25} />
         </ProfileContainer>
         <Line>
@@ -103,15 +97,6 @@ const MyPage = () => {
           </InputContainer>
         </InformationContainer>
       </Container>
-      {openModal && (
-        <>
-          <Modal>
-            <Img />
-            <ModalText>출석 완료</ModalText>
-          </Modal>
-          <BackGround onClick={toggleModal} />
-        </>
-      )}
     </>
   );
 };
@@ -211,45 +196,6 @@ const EditInformation = styled.div``;
 const Logout = styled.button`
   background-color: transparent;
   border: none;
-`;
-
-const Modal = styled.div`
-  position: absolute;
-  width: 80%;
-  max-width: 350px;
-  background-color: ${getColor('white')};
-  z-index: 999;
-  top: 25%;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
-  align-items: center;
-  padding: 1.5rem 0.5rem 1.5rem 0.5rem;
-`;
-
-const ModalText = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-`;
-
-const BackGround = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: ${getColor('gray')};
-  opacity: 0.7;
-  z-index: 500;
-`;
-
-const Img = styled.div`
-  display: flex;
-  background-image: url(${checkCircle});
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 200px;
-  height: 200px;
 `;
 
 export default MyPage;
