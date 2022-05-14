@@ -61,7 +61,7 @@ const StudyParticipation = () => {
         </PaymentContainer>
       </SubContainer>
       <FixedDiv>
-        <CreateBtn onClick={handleSubmit}>
+        <CreateBtn onClick={handleSubmit} disabled={!isAgreed}>
           <BtnText>결제하고 참가하기</BtnText>
         </CreateBtn>
       </FixedDiv>
@@ -181,6 +181,9 @@ const CreateBtn = styled.button`
   border-radius: 20px;
   cursor: pointer;
   margin: auto;
+  :disabled {
+    background-color: ${({ theme }) => theme.color.gray};
+  }
 `;
 const BtnText = styled.div`
   color: ${({ theme }) => theme.color.white};
