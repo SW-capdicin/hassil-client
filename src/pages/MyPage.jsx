@@ -195,7 +195,7 @@ const Btn = styled.button`
   border-radius: 20px;
   border-width: 0;
   background-color: ${getColor('gray')};
-  font-weight: bold;
+  font-weight: normal;
   width: 45px;
   cursor: pointer;
 `;

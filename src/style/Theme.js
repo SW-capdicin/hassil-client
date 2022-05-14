@@ -8,6 +8,7 @@ const theme = {
     lightgray: '#F8F8F8',
     dimgray: '#E0E0E0',
     red: '#FF0909',
+    error: '#F7570B',
   },
 };
 

@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { v4 } from 'uuid';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
-import { getColor } from '@/utils';
+import { getColor, separatorMoney } from '@/utils';
 
 const { VITE_TOSS_CK } = import.meta.env;
 
 const Payment = () => {
   const [amount, setAmount] = useState(0);
+  const [isCharge, setIsCharge] = useState(true);
 
   const leastPayment = 1000;
 
   const handleSubmit = async () => {
     if (leastPayment > amount) {
-      alert('최소 충전 가능액을 확인해주세요.');
+      setIsCharge(false);
       return;
     }
+    setIsCharge(false);
     const tossPayments = await loadTossPayments(VITE_TOSS_CK);
     await tossPayments
       .requestPayment('카드', {
@@ -43,8 +45,8 @@ const Payment = () => {
       <Text>입력해주세요.</Text>
       <SubContainer>
         <InputContainer>
-          <Input type="number" onChange={handleChange} />
-          <Label>최소 충전 가능액 : {leastPayment}</Label>
+          <Input error={!isCharge} type="number" onChange={handleChange} />
+          <Label error={!isCharge}>최소 충전 가능액 : {separatorMoney(leastPayment)}</Label>
         </InputContainer>
         <BtnContainer>
           <SubmitBtn onClick={handleSubmit}>
@@ -79,6 +81,10 @@ const InputContainer = styled.div`
   width: 70%;
 `;
 const Input = styled.input`
+  ${props => props.error && css`
+    color: ${getColor('error')};
+    border-color: ${getColor('error')};
+  `}
   font-size: 1.5rem;
   border-style: none none solid none;
   width: 90%;
@@ -94,12 +100,17 @@ const Input = styled.input`
     outline: none;
   }
 `;
+
 const Label = styled.div`
   color: ${getColor('gray')};
   font-size: small;
   margin-top: 10px;
   text-align: left;
   width: 80%;
+  ${props => props.error && css`
+    color: ${getColor('error')};
+    border-color: ${getColor('error')};
+  `}
 `;
 
 const Text = styled.div`
