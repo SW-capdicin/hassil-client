@@ -1,37 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
-import QueryString from 'qs';
-import { paymentSuccess } from '@/api';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { getColor } from '@/utils';
 
 const { VITE_TOSS_CK } = import.meta.env;
 
 const Payment = () => {
-  const location = useLocation();
-
-  const queryData = QueryString.parse(location.search, {
-    ignoreQueryPrefix: true,
-  });
-
   const [amount, setAmount] = useState(0);
   const [leastPayment] = useState(1000);
-  const doPayment = async () => {
-    try {
-      if (queryData.paymentKey) {
-        await paymentSuccess({
-          ...queryData,
-        });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  useEffect(() => {
-    doPayment();
-  }, []);
 
   const handleSubmit = async () => {
     const tossPayments = await loadTossPayments(VITE_TOSS_CK);
