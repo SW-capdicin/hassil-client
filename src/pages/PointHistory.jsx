@@ -60,7 +60,10 @@ const SubContainer = styled.div`
   justify-content: center;
 `;
 
-const Text = styled.span``;
+const Text = styled.span`
+  min-width: 20%;
+  text-align: right;
+`;
 
 const PointText = styled.div`
   font-size: 2rem;
