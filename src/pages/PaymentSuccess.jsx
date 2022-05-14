@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '@/img/check_circle_fill.png';
 import { Link } from 'react-router-dom';
+import QueryString from 'qs';
+import { paymentSuccess } from '@/api';
 import { PATH_POINT_HISTORY } from '@/constants';
 import { getColor } from '@/utils';
 
 const PaymentSuccess = () => {
+  const queryData = QueryString.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });
+
+  const doPayment = async () => {
+    try {
+      if (queryData.paymentKey) {
+        await paymentSuccess({
+          ...queryData,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  useEffect(() => {
+    doPayment();
+  }, []);
+
   return (
     <Container>
       <SignupLogo />
