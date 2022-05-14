@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { PATH_JOINED_STUDY_DETAIL } from '@/constants';
+import { getUserInfo, findStudy, createReservation } from '@/api';
 
 const { kakao, daum } = window;
 const StudyReservationCreation = () => {
@@ -14,28 +15,58 @@ const StudyReservationCreation = () => {
   const [startDate, setStartDate] = useState(new Date()); // 진행일
   const [startTime, setStartTime] = useState(new Date()); // 시작 시간
   const navigate = useNavigate();
+  const params = useParams();
+  const location = useLocation();
 
   //filterPassedTime
   const filterPassedTime = (time) => {
-    const currentTime = new Date();
-    const selectedDate = new Date(time);
-    return currentTime.getTime() < selectedDate.getTime();
+    const currentTime = new Date(); // 5-14 17:24
+    const selectedDate = new Date(time); // 5-1
+    // console.log(selectedDate.getDate());
+    if (startDate.getDate() == selectedDate.getDate()) {
+      return currentTime.getTime() < selectedDate.getTime();
+    } else {
+      return '00:00';
+    }
   };
 
   //스터디 예약하기
   const reserveStudy = async () => {
-    // const reservationPerson = await
+    const reservationPerson = await getUserInfo();
+    console.log(reservationPerson);
+    console.log(reservationPerson.name);
+    console.log(params);
     // 위도, 경도, 스터디 진행날짜, 시작 시간, 예약한 사람
+    // reservationPersonName, status, longitude, latitude, address, startTime
+    const reservationTime =
+      startDate.toISOString().split('T')[0] +
+      ' ' +
+      startTime.toTimeString().split(' ')[0] +
+      ' ';
+    startTime.toTimeString().split(' ')[1];
     const data = {
-      address: address,
+      reservatingUserId: reservationPerson.id,
+      status: 3,
       latitude: lat,
       longitude: lng,
-      startDate: startDate,
-      startTime: startTime,
-      // reservationPerson :
+      address: address,
+      datetime: reservationTime,
     };
     alert('스터디 예약하기');
-    // await navigate(`${PATH_JOINED_STUDY_DETAIL}/1`);
+    console.log(startDate.toISOString().split('T')[0]);
+    console.log(startTime.toTimeString().split(' ')[0]);
+    console.log(startTime.toTimeString().split(' ')[1]);
+    console.log(startTime);
+    console.log(reservationTime);
+    console.log(data);
+    const curPath = location.pathname.split('/creation')[0];
+    console.log(curPath);
+    const resp = await createReservation(
+      params.id, // studyId
+      data,
+    );
+    console.log(resp);
+    await navigate(`${curPath}`);
   };
 
   //위치 검색
@@ -81,45 +112,47 @@ const StudyReservationCreation = () => {
 
   return (
     <Container>
-      <InputContainer>
-        <Title> 스터디 진행일</Title>
-        <SDatePickerContainer>
-          <SDatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            startDate={startDate}
-            locale={ko}
-            minDate={new Date()}
-            dateFormat="yyyy년 MM월 dd일"
-          />
-        </SDatePickerContainer>
-      </InputContainer>
-      <InputContainer>
-        <Title> 시작 시간</Title>
-        <SDatePickerContainer>
-          <SDatePicker
-            selected={startTime}
-            onChange={(date) => setStartTime(date)}
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={60}
-            timeCaption="Time"
-            locale={ko}
-            filterTime={filterPassedTime}
-            dateFormat="hh : mm aa"
-          />
-        </SDatePickerContainer>
-      </InputContainer>
+      <SubContainer>
+        <InputContainer>
+          <Title> 스터디 진행일</Title>
+          <SDatePickerContainer>
+            <SDatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              startDate={startDate}
+              locale={ko}
+              minDate={new Date()}
+              dateFormat="yyyy년 MM월 dd일"
+            />
+          </SDatePickerContainer>
+        </InputContainer>
+        <InputContainer>
+          <Title> 시작 시간</Title>
+          <SDatePickerContainer>
+            <SDatePicker
+              selected={startTime}
+              onChange={(date) => setStartTime(date)}
+              showTimeSelect
+              showTimeSelectOnly
+              timeIntervals={60}
+              timeCaption="Time"
+              locale={ko}
+              filterTime={filterPassedTime}
+              dateFormat="hh : mm aa"
+            />
+          </SDatePickerContainer>
+        </InputContainer>
 
-      <InputContainer>
-        <Title>스터디 장소 검색하기</Title>
-        <AddressInput
-          type="text"
-          onClick={Post}
-          value={address}
-          readOnly
-        ></AddressInput>
-      </InputContainer>
+        <InputContainer>
+          <Title>스터디 장소 검색하기</Title>
+          <AddressInput
+            type="text"
+            onClick={Post}
+            value={address}
+            readOnly
+          ></AddressInput>
+        </InputContainer>
+      </SubContainer>
       <MapContainer>
         <KaKaoMap id="map"></KaKaoMap>
       </MapContainer>
@@ -138,6 +171,13 @@ const Container = styled.div`
   justify-content: space-evenly;
   width: 100%;
   height: 100vh;
+`;
+const SubContainer = styled.div`
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 const Title = styled.div`
   color: ${({ theme }) => theme.color.gray};
@@ -182,19 +222,20 @@ const MapContainer = styled.div`
   height: 70%;
 `;
 const KaKaoMap = styled.div`
-  width: 450px;
-  height: 360px;
+  width: 320px;
+  height: 300px;
   margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  /* margin-left: 20px; */
+  /* margin-right: 20px; */
   display: none;
+  z-index: -999;
 `;
 const FixedDiv = styled.div`
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 5rem;
+  height: 6rem;
   display: flex;
   justify-content: center;
   border-top: 1px solid ${({ theme }) => theme.color.gray};
