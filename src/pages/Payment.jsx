@@ -8,9 +8,14 @@ const { VITE_TOSS_CK } = import.meta.env;
 
 const Payment = () => {
   const [amount, setAmount] = useState(0);
-  const [leastPayment] = useState(1000);
+
+  const leastPayment = 1000;
 
   const handleSubmit = async () => {
+    if (leastPayment > amount) {
+      alert('최소 충전 가능액을 확인해주세요.');
+      return;
+    }
     const tossPayments = await loadTossPayments(VITE_TOSS_CK);
     await tossPayments
       .requestPayment('카드', {
