@@ -4,7 +4,13 @@ import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { calender, checkCircle, fail } from '@/img';
-import { findStudy, getStudyAttend, getUserInfo, getReservation } from '@/api';
+import {
+  findStudy,
+  getStudyAttend,
+  getUserInfo,
+  getReservation,
+  getOneReservationInfo,
+} from '@/api';
 import { getColor, defaultLine, separatorMoney } from '@/utils';
 import { updateLocation } from '@/api/reservation';
 
@@ -17,6 +23,7 @@ const ReservationStatusDetail = () => {
   const [src, setFiles] = useState('');
   const [studyInfo, setInputs] = useState({});
   const [userAttend, setUserAttend] = useState({});
+  const [reservationData, setReservationData] = useState({});
   const [reservationResult, setReservationResult] = useState('fail');
 
   // const [lat, setLat] = useState(0); // 위도
@@ -28,10 +35,12 @@ const ReservationStatusDetail = () => {
     const studyData = await findStudy(studyId);
     console.log(studyId);
     const attendData = await getStudyAttend(studyId);
-
+    console.log(attendData);
+    const reservationData = await getOneReservationInfo(studyId, reservationId);
     setInputs(() => studyData);
     setFiles(() => studyData.src);
     setUserAttend(() => attendData);
+    setReservationData(() => reservationData);
   };
 
   useEffect(() => {
@@ -134,20 +143,17 @@ const ReservationStatusDetail = () => {
           <SubTitle>출결 현황 보드</SubTitle>
           <BoardContainer>
             <Board>
-              <BoardLabel>미팅 횟수</BoardLabel>
-              <BoardLabel>{studyInfo.meetingCnt}</BoardLabel>
+              <BoardLabel>출석</BoardLabel>
+              <BoardLabel>{reservationData.attendCnt}</BoardLabel>
             </Board>
             <Board>
               <BoardLabel>지각</BoardLabel>
-              <BoardLabel>{userAttend.lateCnt}</BoardLabel>
+              <BoardLabel>{reservationData.lateCnt}</BoardLabel>
             </Board>
-            <Board>
-              <BoardLabel>결석</BoardLabel>
-              <BoardLabel>{userAttend.absentCnt}</BoardLabel>
-            </Board>
+
             <Board>
               <BoardLabel>인원</BoardLabel>
-              <BoardLabel>{userAttend.memberCnt}</BoardLabel>
+              <BoardLabel>{userAttend.isAlive}</BoardLabel>
             </Board>
           </BoardContainer>
           <PointContainer>

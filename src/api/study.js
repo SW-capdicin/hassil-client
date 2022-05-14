@@ -38,3 +38,9 @@ export const getReservation = async (id) => {
   const response = await api.get(`/api/studies/${id}/reservations`);
   return response.data;
 };
+export const getOneReservationInfo = async (studyId, reservationId) => {
+  const response = await api.get(
+    `/api/studies/${studyId}/reservations/${reservationId}`,
+  );
+  return response.data;
+};
