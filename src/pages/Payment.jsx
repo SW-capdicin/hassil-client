@@ -13,11 +13,11 @@ const Payment = () => {
   const leastPayment = 1000;
 
   const handleSubmit = async () => {
-    if (leastPayment > amount) {
+    if (leastPayment > Number(amount)) {
       setIsCharge(false);
       return;
     }
-    setIsCharge(false);
+    useState(true);
     const tossPayments = await loadTossPayments(VITE_TOSS_CK);
     await tossPayments
       .requestPayment('카드', {
