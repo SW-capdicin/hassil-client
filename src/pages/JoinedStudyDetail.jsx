@@ -76,6 +76,13 @@ const JoinedStudyDetail = () => {
     return meetingCnt - lateCnt - attendCnt;
   };
 
+  const calcExpectedDeposit = () => {
+    const deposit = studyInfo.depositPerPerson;
+    const late = userAttend.lateCnt * studyInfo.lateFee;
+    const absent = calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt) * studyInfo.absentFee;
+    return deposit + studyInfo.expectedReward - late - absent;
+  }
+
   const getCurPath = useLocation().pathname;
   const moveReservation = () => navigate(`${getCurPath}/reservation`);
 
@@ -111,12 +118,13 @@ const JoinedStudyDetail = () => {
           <PointLabelContainer>
             <PointMainLabel>예상 환급액</PointMainLabel>
             <PointMainLabel>
-              {separatorMoney(studyInfo.expectedReward)}원
+              {separatorMoney(calcExpectedDeposit())}원
             </PointMainLabel>
           </PointLabelContainer>
           <PointSubLabel>
             보증금({separatorMoney(studyInfo.depositPerPerson)}원) - 지각 {userAttend.lateCnt}회
             - 결석 {calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt)}회
+            + 리워드 {separatorMoney((studyInfo.expectedReward))} 원
           </PointSubLabel>
         </PointContainer>
         <ReserveBtnContainer>
