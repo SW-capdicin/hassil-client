@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Input } from '@/components';
 import { man, woman } from '@/img';
@@ -8,6 +8,8 @@ import {
   TYPE_USER_CAFE_OWNER,
   PATH_SIGNUP_COMPLETE,
   TYPE_BANK,
+  PATH_USER_EDIT,
+  PATH_MYPAGE,
 } from '@/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { patchUserInfo } from '@/api';
@@ -18,6 +20,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
+  const location = useLocation();
 
   const [inputs, setInputs] = useState({
     type: 0,
@@ -74,7 +77,9 @@ const Signup = () => {
           isSignup: true,
         }),
       );
-      navigate(PATH_SIGNUP_COMPLETE);
+      location.pathname === PATH_USER_EDIT
+        ? navigate(PATH_MYPAGE)
+        : navigate(PATH_SIGNUP_COMPLETE);
     } else {
       alert('에러 발생');
     }

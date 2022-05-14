@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { findStudy } from '@/api';
 import { getColor, separatorMoney } from '@/utils';
+import { useSelector } from 'react-redux';
 
 const StudyDetail = () => {
   const navigate = useNavigate();
   const params = useParams();
-
+  const userState = useSelector((state) => state.user);
   const [src, setFiles] = useState('');
   const [inputs, setInputs] = useState({});
   const [openModal, setOpenModal] = useState(false);
@@ -73,7 +74,9 @@ const StudyDetail = () => {
         <ContentsContainer>
           <InputContainer>
             <Label>인당 보증금</Label>
-            <LabelContents>{separatorMoney(inputs.depositPerPerson)}원</LabelContents>
+            <LabelContents>
+              {separatorMoney(inputs.depositPerPerson)}원
+            </LabelContents>
           </InputContainer>
           <InputContainer>
             <Label>기간</Label>
@@ -113,9 +116,13 @@ const StudyDetail = () => {
           </SubContainer>
         </ContentsContainer>
         <FixedDiv>
-          <CreateBtn onClick={toggleModal}>
-            <BtnText>스터디 참가하기</BtnText>
-          </CreateBtn>
+          {inputs.joinedUsers?.find((user) => user.userId === userState.id) ? (
+            <Already>이미 참여한 스터디입니다.</Already>
+          ) : (
+            <CreateBtn onClick={toggleModal}>
+              <BtnText>스터디 참가하기</BtnText>
+            </CreateBtn>
+          )}
         </FixedDiv>
       </Container>
       {openModal && (
@@ -226,6 +233,23 @@ const CreateBtn = styled.button`
   cursor: pointer;
   margin: auto;
 `;
+
+const Already = styled.div`
+  background-color: ${getColor('gray')};
+  border: 0;
+  outline: 0;
+  width: 14rem;
+  height: 2.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: auto;
+`;
+
 const BtnText = styled.div`
   color: ${getColor('white')};
 `;
