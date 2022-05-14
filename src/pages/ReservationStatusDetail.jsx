@@ -1,16 +1,10 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { calender, checkCircle, fail } from '@/img';
-import {
-  findStudy,
-  getStudyAttend,
-  getUserInfo,
-  getReservation,
-  getOneReservationInfo,
-} from '@/api';
+import { findStudy, getStudyAttend, getOneReservationInfo } from '@/api';
 import { getColor, defaultLine, separatorMoney } from '@/utils';
 import { updateLocation } from '@/api/reservation';
 
@@ -26,16 +20,9 @@ const ReservationStatusDetail = () => {
   const [reservationData, setReservationData] = useState({});
   const [reservationResult, setReservationResult] = useState('fail');
 
-  // const [lat, setLat] = useState(0); // 위도
-  // const [lng, setLng] = useState(0); // 경도
-
   const loadData = async () => {
-    console.log(studyId);
-    console.log('params.id : ', params.id);
     const studyData = await findStudy(studyId);
-    console.log(studyId);
     const attendData = await getStudyAttend(studyId);
-    console.log(attendData);
     const reservationData = await getOneReservationInfo(studyId, reservationId);
     setInputs(() => studyData);
     setFiles(() => studyData.src);
@@ -76,16 +63,7 @@ const ReservationStatusDetail = () => {
 
   const attendStudy = async (lat, lng) => {
     try {
-      alert('출석 하기');
-      // const attendData = await getStudyAttend(params.id);
-      const reservationPerson = await getUserInfo();
       toggleModal();
-      // let reservationId = 0;
-      const reservationResult = await getReservation(studyId);
-      console.log('Result : ', reservationResult);
-      console.log('person : ', reservationPerson);
-      console.log(lat, lng);
-
       const data = {
         latitude: lat,
         longitude: lng,
@@ -93,10 +71,8 @@ const ReservationStatusDetail = () => {
       const responseResult = await updateLocation(reservationId, data);
       // 스터디 출석 로직 필요
       setReservationResult(responseResult);
-      console.log(responseResult);
     } catch (e) {
-      console.log(e);
-      alert('에러 발생');
+      console.error(e);
     }
   };
   const getLocation = () => {
@@ -133,9 +109,54 @@ const ReservationStatusDetail = () => {
   const calcExpectedDeposit = () => {
     const deposit = studyInfo.depositPerPerson;
     const late = userAttend.lateCnt * studyInfo.lateFee;
-    const absent = calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt) * studyInfo.absentFee;
+    const absent =
+      calcAbsent(
+        studyInfo.meetingCnt,
+        userAttend.lateCnt,
+        userAttend.attendCnt,
+      ) * studyInfo.absentFee;
     return deposit + studyInfo.expectedReward - late - absent;
-  }
+  };
+
+  const setModal = (result) => {
+    switch (result) {
+      case 'pass':
+        return (
+          <>
+            <Modal>
+              <Imo reservationResult="notFail" />
+              <ModalText>출석 완료</ModalText>
+            </Modal>
+            <BackGround onClick={toggleModal} />
+          </>
+        );
+      case 'late':
+        return (
+          <>
+            <Modal>
+              <Imo reservationResult="notFail" />
+              <WarnText>지각</WarnText>
+              <ModalText>출석 완료</ModalText>
+            </Modal>
+            <BackGround onClick={toggleModal} />
+          </>
+        );
+
+      case 'fail':
+        return (
+          <>
+            <Modal>
+              <Imo reservationResult="fail" />
+              <WarnText>거리가 너무 멉니다</WarnText>
+              <ModalText>출석 실패</ModalText>
+            </Modal>
+            <BackGround onClick={toggleModal} />
+          </>
+        );
+      default:
+        return;
+    }
+  };
 
   return (
     <>
@@ -178,8 +199,7 @@ const ReservationStatusDetail = () => {
                 userAttend.lateCnt,
                 userAttend.attendCnt,
               )}
-              회
-              + 리워드 {separatorMoney((studyInfo.expectedReward))} 원
+              회 + 리워드 {separatorMoney(studyInfo.expectedReward)} 원
             </PointSubLabel>
           </PointContainer>
           <ReserveBtnContainer></ReserveBtnContainer>
@@ -236,25 +256,7 @@ const ReservationStatusDetail = () => {
           </CreateBtn>
         </FixedDiv>
       </Container>
-      {openModal &&
-        (reservationResult !== 'fail' ? (
-          <>
-            <Modal>
-              <Imo reservationResult="notFail" />
-              <ModalText>출석 완료</ModalText>
-            </Modal>
-            <BackGround onClick={toggleModal} />
-          </>
-        ) : (
-          <>
-            <Modal>
-              <Imo reservationResult="fail" />
-              <WarnText>거리가 너무 멉니다</WarnText>
-              <ModalText>출석 실패</ModalText>
-            </Modal>
-            <BackGround onClick={toggleModal} />
-          </>
-        ))}
+      {openModal && setModal(reservationResult)}
     </>
   );
 };
