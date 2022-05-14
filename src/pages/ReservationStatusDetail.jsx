@@ -130,6 +130,13 @@ const ReservationStatusDetail = () => {
     return meetingCnt - lateCnt - attendCnt;
   };
 
+  const calcExpectedDeposit = () => {
+    const deposit = studyInfo.depositPerPerson;
+    const late = userAttend.lateCnt * studyInfo.lateFee;
+    const absent = calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt) * studyInfo.absentFee;
+    return deposit + studyInfo.expectedReward - late - absent;
+  }
+
   return (
     <>
       <Container>
@@ -160,7 +167,7 @@ const ReservationStatusDetail = () => {
             <PointLabelContainer>
               <PointMainLabel>예상 환급액</PointMainLabel>
               <PointMainLabel>
-                {separatorMoney(studyInfo.expectedReward)}원
+                {separatorMoney(calcExpectedDeposit())}원
               </PointMainLabel>
             </PointLabelContainer>
             <PointSubLabel>
@@ -172,6 +179,7 @@ const ReservationStatusDetail = () => {
                 userAttend.attendCnt,
               )}
               회
+              + 리워드 {separatorMoney((studyInfo.expectedReward))} 원
             </PointSubLabel>
           </PointContainer>
           <ReserveBtnContainer></ReserveBtnContainer>
