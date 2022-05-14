@@ -174,6 +174,7 @@ const Container = styled.div`
 `;
 const SubContainer = styled.div`
   height: 25%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -184,6 +185,7 @@ const Title = styled.div`
   font-size: medium;
   text-align: left;
   width: 50%;
+  line-height: 32px;
 `;
 const InputContainer = styled.div`
   width: 90%;
