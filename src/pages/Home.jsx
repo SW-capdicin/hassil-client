@@ -40,7 +40,7 @@ const Home = () => {
     const d = new Date(date);
     const now = new Date();
     const diffDate = d.getTime() - now.getTime();
-    return Math.floor(Math.abs(diffDate / (1000 * 3600 * 24)));
+    return Math.ceil(Math.abs(diffDate / (1000 * 3600 * 24)));
   }
 
   const getStudyListByCurrentTab = () =>
