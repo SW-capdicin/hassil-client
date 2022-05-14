@@ -12,16 +12,15 @@ import { getStudyList } from '@/api';
 import emptyimg from '@/img/emptyimg.png';
 import { getColor } from '@/utils';
 
-const Date = 2;
-
 const Home = () => {
   const [studyList, setStudyList] = useState([]);
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState(0);
 
   const loadStudies = async () => {
+    const now = new Date();
     const data = await getStudyList();
-    setStudyList(() => data);
+    setStudyList(() => data.filter(a => new Date(a.startDate) > now));
   };
 
   useEffect(() => {
@@ -37,6 +36,13 @@ const Home = () => {
     setActiveTab(categoryId);
   };
 
+  const calcDate = (date) => {
+    const d = new Date(date);
+    const now = new Date();
+    const diffDate = d.getTime() - now.getTime();
+    return Math.floor(Math.abs(diffDate / (1000 * 3600 * 24)));
+  }
+
   const getStudyListByCurrentTab = () =>
     activeTab
       ? studyList
@@ -47,7 +53,7 @@ const Home = () => {
                 <Img src={item.src ? `${item.src}` : emptyimg} />
                 <TextContainer>
                   <Text>{item.name}</Text>
-                  <DateText>{Date}일뒤 시작</DateText>
+                  <DateText>{calcDate(item.startDate)}일뒤 시작</DateText>
                 </TextContainer>
               </Link>
             </TabContent>
@@ -58,7 +64,7 @@ const Home = () => {
               <Img src={item.src ? `${item.src}` : emptyimg} />
               <TextContainer>
                 <Text>{item.name}</Text>
-                <DateText>{Date}일뒤 시작</DateText>
+                <DateText>{calcDate(item.startDate)}일뒤 시작</DateText>
               </TextContainer>
             </Link>
           </TabContent>
@@ -103,7 +109,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 35rem;
-  width: 22rem;
+  width: 80%;
 `;
 const SearchContainer = styled.div`
   display: flex;
@@ -213,7 +219,7 @@ const Text = styled.span`
   font-size: 1rem;
   width: 100%;
   margin-top: 4px;
-  margin-bottom: 1px;
+  margin-bottom: 10px;
 `;
 
 const DateText = styled.div`
