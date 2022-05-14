@@ -8,8 +8,10 @@ import { ko } from 'date-fns/esm/locale';
 import emptyimg from '@/img/emptyimg.png';
 import { uploadOneImage, createStudy } from '@/api';
 import { getColor } from '@/utils';
+import { useSelector } from 'react-redux';
 
 const CreateStudy = () => {
+  const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const [src, setFiles] = useState(null);
@@ -17,14 +19,14 @@ const CreateStudy = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [inputs, setInputs] = useState({
     name: '',
-    depositPerPerson: 0,
+    depositPerPerson: 1000,
     categoryId: 1,
     operationTime: '',
     info: '',
-    absentFee: 0,
-    lateFee: 0,
-    maxPerson: 0,
-    minPerson: 0,
+    absentFee: 500,
+    lateFee: 500,
+    maxPerson: 1,
+    minPerson: 1,
   });
   const { name, depositPerPerson, categoryId, operationTime } = inputs;
   const selectList = [
@@ -39,27 +41,43 @@ const CreateStudy = () => {
     setInputs(nextInputs);
   };
   const handleSubmit = async () => {
+    if (userState.point < inputs.depositPerPerson) {
+      alert('포인트가 부족합니다');
+      return;
+    }
+    if (inputs.maxPerson < inputs.minPerson || inputs.maxPerson === 0) {
+      alert('인원 수를 확인해주세요.');
+      return;
+    }
+    if (
+      inputs.maxPerson < 0 ||
+      inputs.minPerson < 0 ||
+      inputs.lateFee < 0 ||
+      inputs.absentFee < 0 ||
+      inputs.depositPerPerson < 0
+    ) {
+      alert('잘못된 값이 있습니다');
+      return;
+    }
+
     try {
       let image = null;
       if (src) {
-        //FormData 생성
         const fd = new FormData();
-        //FormData에 key, value 추가
         fd.append('image', src);
         const srcUrl = await uploadOneImage(fd);
         image = srcUrl;
       }
+
       await createStudy({
         ...inputs,
         startDate,
         endDate,
         src: image || src,
       });
-      alert('스터디 생성 완료');
       navigate(PATH_HOME);
     } catch (e) {
-      console.log(e);
-      alert('에러 발생');
+      console.error(e);
     }
   };
 
@@ -102,6 +120,7 @@ const CreateStudy = () => {
           type="number"
           defaultValue={depositPerPerson ? depositPerPerson : ''}
           onChange={handleChange}
+          value={inputs.value}
         />
       </InputContainer>
       <InputContainer>
@@ -139,7 +158,7 @@ const CreateStudy = () => {
         <Select name="categoryId" value={categoryId} onChange={handleChange}>
           {selectList.map((item) => (
             <option key={item.name} value={item.id}>
-              {item.name} {item.id}
+              {item.name}
             </option>
           ))}
         </Select>
@@ -150,29 +169,54 @@ const CreateStudy = () => {
           name="operationTime"
           value={operationTime}
           onChange={handleChange}
+          placeholder="오전 11:00~12:00"
         />
       </InputContainer>
       <InputContainer>
         <Label>최소 인원</Label>
-        <Input name="minPerson" type="number" onChange={handleChange} />
+        <Input
+          name="minPerson"
+          type="number"
+          onChange={handleChange}
+          value={inputs.minPerson}
+        />
       </InputContainer>
       <InputContainer>
         <Label>최대 인원</Label>
-        <Input name="maxPerson" type="number" onChange={handleChange} />
+        <Input
+          name="maxPerson"
+          type="number"
+          onChange={handleChange}
+          value={inputs.maxPerson}
+        />
       </InputContainer>
       <InputContainer>
         <Label>결석 벌금</Label>
-        <Input name="absentFee" type="number" onChange={handleChange} />
+        <Input
+          name="absentFee"
+          type="number"
+          onChange={handleChange}
+          value={inputs.lateFee}
+        />
       </InputContainer>
       <InputContainer>
         <Label>지각 벌금</Label>
-        <Input name="lateFee" type="number" onChange={handleChange} />
+        <Input
+          name="lateFee"
+          type="number"
+          onChange={handleChange}
+          value={inputs.absentFee}
+        />
       </InputContainer>
       <SubContainer>
         <InputContainer>
           <Label>상세 정보</Label>
         </InputContainer>
-        <TextArea name="info" onChange={handleChange} />
+        <TextArea
+          name="info"
+          onChange={handleChange}
+          placeholder="상세 정보를 입력해주세요"
+        />
       </SubContainer>
       <FixedDiv>
         <CreateBtn onClick={handleSubmit}>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BiCheckCircle } from 'react-icons/bi';
 import { findStudy, joinStudy, getUserInfo } from '@/api';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PATH_HOME } from '@/constants';
+import { PATH_HOME, PATH_JOINED_STUDY_LIST } from '@/constants';
 import { separatorMoney } from '@/utils';
 
 const StudyParticipation = () => {
@@ -25,16 +25,12 @@ const StudyParticipation = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('결제완료');
-    // 보증금 계산 요청하는 api 와
-    // user의 study 목록에 실제로 등록 요청하는 api 필요
     try {
       await joinStudy(params.id);
     } catch (err) {
       console.log(err);
-      alert('error');
     }
-    navigate(PATH_HOME);
+    navigate(PATH_JOINED_STUDY_LIST);
   };
   const [isAgreed, setIsAgreed] = useState(false);
   const handleAgree = () => {
