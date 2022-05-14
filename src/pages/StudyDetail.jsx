@@ -238,7 +238,8 @@ const CreateBtn = styled.button`
 `;
 
 const Already = styled.div`
-  background-color: ${getColor('gray')};
+  background-color: #e4e4e4;
+  color: #b4b4b4;
   border: 0;
   outline: 0;
   width: 14rem;

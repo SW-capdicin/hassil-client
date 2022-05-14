@@ -65,7 +65,7 @@ const MyPage = () => {
                 >
                   내역 보기
                 </div>
-                <BiChevronRight size={25} />
+                <BiChevronRight size={20} />
               </PointHistory>
               <BtnContainer>
                 <Btn
@@ -171,7 +171,7 @@ const FirstBox = styled.div`
   width: 15rem;
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
+  font-weight: normal;
 `;
 const SecondBox = styled.div`
   width: 15rem;
@@ -181,6 +181,9 @@ const SecondBox = styled.div`
 const PointHistory = styled.div`
   display: flex;
   cursor: pointer;
+  div {
+    font-size: 0.9rem;
+  }
 `;
 const BtnContainer = styled.div`
   justify-content: space-between;
