@@ -10,7 +10,7 @@ import { GoSearch } from 'react-icons/go';
 import { IoMdAddCircle } from 'react-icons/io';
 import { getStudyList } from '@/api';
 import emptyimg from '@/img/emptyimg.png';
-import { getColor } from '@/utils';
+import { getColor, compareDate } from '@/utils';
 
 const Home = () => {
   const [studyList, setStudyList] = useState([]);
@@ -20,7 +20,7 @@ const Home = () => {
   const loadStudies = async () => {
     const now = new Date();
     const data = await getStudyList();
-    setStudyList(() => data.filter(a => new Date(a.startDate) > now));
+    setStudyList(() => data.filter(a => new Date(a.startDate) > now).sort(compareDate('startDate')));
   };
 
   useEffect(() => {
