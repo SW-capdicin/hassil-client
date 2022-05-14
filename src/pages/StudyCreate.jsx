@@ -41,20 +41,23 @@ const CreateStudy = () => {
     setInputs(nextInputs);
   };
   const handleSubmit = async () => {
-    if (userState.point < inputs.depositPerPerson) {
+    if (Number(userState.point) < Number(inputs.depositPerPerson)) {
       alert('포인트가 부족합니다');
       return;
     }
-    if (inputs.maxPerson < inputs.minPerson || inputs.maxPerson === 0) {
+    if (
+      Number(inputs.maxPerson) < Number(inputs.minPerson) ||
+      inputs.maxPerson === '0'
+    ) {
       alert('인원 수를 확인해주세요.');
       return;
     }
     if (
-      inputs.maxPerson < 0 ||
-      inputs.minPerson < 0 ||
-      inputs.lateFee < 0 ||
-      inputs.absentFee < 0 ||
-      inputs.depositPerPerson < 0
+      Number(inputs.maxPerson) < 0 ||
+      Number(inputs.minPerson) < 0 ||
+      Number(inputs.lateFee) < 0 ||
+      Number(inputs.absentFee) < 0 ||
+      Number(inputs.depositPerPerson) < 0
     ) {
       alert('잘못된 값이 있습니다');
       return;
