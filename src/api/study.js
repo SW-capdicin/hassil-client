@@ -30,11 +30,8 @@ export const joinStudy = async (id) => {
   return response.data;
 };
 
-export const createReservation = async (id, userName, status) => {
-  const response = await api.post(`/api/studies/${id}/reservations`, {
-    reservationPersonName: userName,
-    status: status,
-  });
+export const createReservation = async (id, data) => {
+  const response = await api.post(`/api/studies/${id}/reservations`, data);
   return response.data;
 };
 export const getReservation = async (id) => {
