@@ -21,6 +21,7 @@ import {
   PointHistory,
   StudyReservationList,
   StudyReservationCreation,
+  ReservationStatusDetail,
   PaymentSuccess,
   PaymentFail,
 } from '@/pages';
@@ -43,6 +44,7 @@ import {
   PATH_POINT_HISTORY,
   PATH_STUDY_RESERVATION_LIST,
   PATH_STUDY_RESERVATION_CREATION,
+  PATH_RESERVATION_STATUS_DETAIL,
   PATH_PAYMENT_SUCCESS,
   PATH_PAYMENT_FAIL,
 } from '@/constants';
@@ -122,6 +124,15 @@ const App = () => {
               element={
                 <PrivateRoute
                   element={StudyReservationCreation}
+                  showUserIcon={false}
+                />
+              }
+            />
+            <Route
+              path={PATH_RESERVATION_STATUS_DETAIL}
+              element={
+                <PrivateRoute
+                  element={ReservationStatusDetail}
                   showUserIcon={false}
                 />
               }

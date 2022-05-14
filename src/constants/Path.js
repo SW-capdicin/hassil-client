@@ -17,4 +17,6 @@ export const PATH_REFUND = '/refund';
 export const PATH_STUDY_RESERVATION_LIST = '/users/studies/:id/reservation';
 export const PATH_STUDY_RESERVATION_CREATION =
   '/users/studies/:id/reservation/creation';
+export const PATH_RESERVATION_STATUS_DETAIL =
+  '/users/studies/:id/reservation/:id/detail'; // :studyId  :reservationId
 export const PATH_NOT_FOUND = '/*';

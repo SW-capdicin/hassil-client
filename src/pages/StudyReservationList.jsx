@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { defaultLine, getDateTime, getColor } from '@/utils';
@@ -11,6 +11,7 @@ const StudyReservationList = () => {
   const [reservationList, setReservationList] = useState([]);
   const userState = useSelector((state) => state.user);
   const location = useLocation();
+  const navigate = useNavigate();
   const params = useParams();
   console.log('params : ', params);
 
@@ -57,7 +58,12 @@ const StudyReservationList = () => {
     return (
       <div key={key}>
         <Line />
-        <div>{body}</div>
+        <CLink
+          to={location.pathname + '/' + reserve.id + '/detail'}
+          state={{ studyId: params.id }}
+        >
+          <div>{body}</div>
+        </CLink>
         <Line />
       </div>
     );
@@ -111,7 +117,10 @@ const Log = styled.p`
   align-items: center;
   justify-content: space-between;
 `;
-
+const CLink = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme }) => theme.color.black};
+`;
 const Line = styled.div`
   ${defaultLine}
 `;

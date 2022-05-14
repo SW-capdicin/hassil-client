@@ -4,17 +4,15 @@ import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { calender, checkCircle, fail } from '@/img';
-import {
-  findStudy,
-  getStudyAttend,
-  getUserInfo,
-  getReservation,
-} from '@/api';
+import { findStudy, getStudyAttend, getUserInfo, getReservation } from '@/api';
 import { getColor, defaultLine, separatorMoney } from '@/utils';
 import { updateLocation } from '@/api/reservation';
 
 const ReservationStatusDetail = () => {
   const params = useParams();
+  const location = useLocation();
+  const studyId = location.state.studyId;
+  const reservationId = params.id;
   const [openModal, setOpenModal] = useState(false);
   const [src, setFiles] = useState('');
   const [studyInfo, setInputs] = useState({});
@@ -25,10 +23,11 @@ const ReservationStatusDetail = () => {
   // const [lng, setLng] = useState(0); // 경도
 
   const loadData = async () => {
-    console.log(params);
-    const studyData = await findStudy(params.id);
-    console.log(params);
-    const attendData = await getStudyAttend(params.id);
+    console.log(studyId);
+    console.log('params.id : ', params.id);
+    const studyData = await findStudy(studyId);
+    console.log(studyId);
+    const attendData = await getStudyAttend(studyId);
 
     setInputs(() => studyData);
     setFiles(() => studyData.src);
@@ -72,25 +71,20 @@ const ReservationStatusDetail = () => {
       // const attendData = await getStudyAttend(params.id);
       const reservationPerson = await getUserInfo();
       toggleModal();
-      let reservationId = 0;
-      const reservationResult = await getReservation(studyInfo.id);
+      // let reservationId = 0;
+      const reservationResult = await getReservation(studyId);
+      console.log('Result : ', reservationResult);
+      console.log('person : ', reservationPerson);
+      console.log(lat, lng);
 
-      for (let key in reservationResult) {
-        if (
-          reservationResult[key].reservationPersonName == reservationPerson.name
-        ) {
-          reservationId = reservationResult[key].id;
-        }
-      }
       const data = {
         latitude: lat,
         longitude: lng,
-        // latitude: 100.0000001,
-        // longitude: 100.00000001,
       };
       const responseResult = await updateLocation(reservationId, data);
       // 스터디 출석 로직 필요
       setReservationResult(responseResult);
+      console.log(responseResult);
     } catch (e) {
       console.log(e);
       alert('에러 발생');
@@ -120,22 +114,6 @@ const ReservationStatusDetail = () => {
       alert('GPS를 지원하지 않습니다');
       return;
     }
-  };
-  const makeReserve = async () => {
-    // 예약 하는 기능 구현
-    // const reservationPerson = await getUserInfo();
-    // console.log(reservationPerson);
-    alert('예약 생성');
-    // const result = await createReservation(
-    //   params.id,
-    //   reservationPerson.name,
-    //   3, //status,
-    // longitude:
-    //       latitude:
-    //       address:
-    //       startTime:
-    // );
-    // console.log(result);
   };
 
   const calcAbsent = (meetingCnt, lateCnt, attendCnt) => {
@@ -180,16 +158,17 @@ const ReservationStatusDetail = () => {
               </PointMainLabel>
             </PointLabelContainer>
             <PointSubLabel>
-              보증금({separatorMoney(studyInfo.depositPerPerson)}원) - 지각 {userAttend.lateCnt}
-              회 - 결석 {calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt)}회
+              보증금({separatorMoney(studyInfo.depositPerPerson)}원) - 지각{' '}
+              {userAttend.lateCnt}회 - 결석{' '}
+              {calcAbsent(
+                studyInfo.meetingCnt,
+                userAttend.lateCnt,
+                userAttend.attendCnt,
+              )}
+              회
             </PointSubLabel>
           </PointContainer>
-          <ReserveBtnContainer>
-            <ReserveBtn onClick={makeReserve}>
-              <ReserveBtnText>스터디 예약하기</ReserveBtnText>
-              <Icon />
-            </ReserveBtn>
-          </ReserveBtnContainer>
+          <ReserveBtnContainer></ReserveBtnContainer>
           <Line />
           <SubTitle>스터디 정보</SubTitle>
         </FullWidthContainer>
