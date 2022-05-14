@@ -121,21 +121,11 @@ const App = () => {
             />
             <Route
               path={PATH_STUDY_RESERVATION_CREATION}
-              element={
-                <PrivateRoute
-                  element={StudyReservationCreation}
-                  showUserIcon={false}
-                />
-              }
+              element={<PrivateRoute element={StudyReservationCreation} />}
             />
             <Route
               path={PATH_RESERVATION_STATUS_DETAIL}
-              element={
-                <PrivateRoute
-                  element={ReservationStatusDetail}
-                  showUserIcon={false}
-                />
-              }
+              element={<PrivateRoute element={ReservationStatusDetail} />}
             />
             <Route
               path={PATH_PAYMENT_SUCCESS}
