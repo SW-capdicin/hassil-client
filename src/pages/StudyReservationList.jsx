@@ -25,7 +25,7 @@ const StudyReservationList = () => {
   const checkIsReserveStudyRoom = (reserve) => reserve.StudyRoomSchedules.length > 0;
 
   const getTerm = (schedule) => {
-    const sortedTime = schedule.sort(compareDate('time')).map(a => a.time);
+    const sortedTime = schedule.sort(compareDate('time')).map(a => a.datetime);
     return `${getDateTime(sortedTime[0]).date} (${getDateTime(sortedTime[0]).time} ~ ${getDateTime(sortedTime[schedule.length - 1]).time})`;
   }
 
@@ -37,7 +37,7 @@ const StudyReservationList = () => {
       </Log>
     ) : (
       <Log>
-        <Text>{`${getDateTime(reserve.Meeting.startTime).date} (${getDateTime(reserve.Meeting.startTime).time})`}</Text>
+        <Text>{`${getDateTime(reserve.Meeting.datetime).date} (${getDateTime(reserve.Meeting.datetime).time})`}</Text>
         <Text>일반 미팅</Text>
       </Log>
     )
