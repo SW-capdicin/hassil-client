@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { defaultLine, getDateTime, getColor } from '@/utils';
@@ -10,24 +10,35 @@ import { PATH_STUDY_RESERVATION_CREATION } from '@/constants';
 const StudyReservationList = () => {
   const [reservationList, setReservationList] = useState([]);
   const userState = useSelector((state) => state.user);
+  const location = useLocation();
+  const params = useParams();
+  console.log('params : ', params);
 
   const compareDate = (objName, desc) => {
-    return (a, b) => desc 
-      ? new Date(b[objName]) - new Date(a[objName])
-      : new Date(a[objName]) - new Date(b[objName])
-  }
+    return (a, b) =>
+      desc
+        ? new Date(b[objName]) - new Date(a[objName])
+        : new Date(a[objName]) - new Date(b[objName]);
+  };
 
   useEffect(() => {
     // 가장 나중에 생성한 순으로 정렬
-    getReservation(userState.id).then((reservationList) => setReservationList(reservationList.sort(compareDate('createdAt', true))));
+    getReservation(params.id).then((reservationList) =>
+      setReservationList(reservationList.sort(compareDate('createdAt', true))),
+    );
   }, []);
 
-  const checkIsReserveStudyRoom = (reserve) => reserve.StudyRoomSchedules.length > 0;
+  const checkIsReserveStudyRoom = (reserve) =>
+    reserve.StudyRoomSchedules.length > 0;
 
   const getTerm = (schedule) => {
-    const sortedTime = schedule.sort(compareDate('time')).map(a => a.time);
-    return `${getDateTime(sortedTime[0]).date} (${getDateTime(sortedTime[0]).time} ~ ${getDateTime(sortedTime[schedule.length - 1]).time})`;
-  }
+    const sortedTime = schedule
+      .sort(compareDate('time'))
+      .map((a) => a.datetime);
+    return `${getDateTime(sortedTime[0]).date} (${
+      getDateTime(sortedTime[0]).time
+    } ~ ${getDateTime(sortedTime[schedule.length - 1]).time})`;
+  };
 
   const Reserve = (reserve, key) => {
     const body = checkIsReserveStudyRoom(reserve) ? (
@@ -37,19 +48,19 @@ const StudyReservationList = () => {
       </Log>
     ) : (
       <Log>
-        <Text>{`${getDateTime(reserve.Meeting.startTime).date} (${getDateTime(reserve.Meeting.startTime).time})`}</Text>
+        <Text>{`${getDateTime(reserve.Meeting.datetime).date} (${
+          getDateTime(reserve.Meeting.datetime).time
+        })`}</Text>
         <Text>일반 미팅</Text>
       </Log>
-    )
+    );
     return (
       <div key={key}>
         <Line />
-          <Log>
-            {body}
-          </Log>
+        <div>{body}</div>
         <Line />
       </div>
-    )
+    );
   };
 
   return (
@@ -57,8 +68,10 @@ const StudyReservationList = () => {
       <SubContainer>
         <Title>스터디 예약 목록</Title>
       </SubContainer>
-      <ReservationLog>{reservationList.map((data, idx) => Reserve(data, idx))}</ReservationLog>
-      <Link to={PATH_STUDY_RESERVATION_CREATION}>
+      <ReservationLog>
+        {reservationList.map((data, idx) => Reserve(data, idx))}
+      </ReservationLog>
+      <Link to={location.pathname + '/creation'}>
         <CuIoMdAddCircle />
       </Link>
     </Container>
