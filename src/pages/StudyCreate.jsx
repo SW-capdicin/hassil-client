@@ -49,7 +49,7 @@ const CreateStudy = () => {
         const srcUrl = await uploadOneImage(fd);
         image = srcUrl;
       }
-      const result = await createStudy({
+      await createStudy({
         ...inputs,
         startDate,
         endDate,

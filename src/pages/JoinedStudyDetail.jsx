@@ -1,20 +1,17 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { calender } from '@/img';
 import {
   findStudy,
   getStudyAttend,
-  createReservation,
-  getUserInfo,
 } from '@/api';
-import { getColor, defaultLine } from '@/utils';
+import { getColor, defaultLine, separatorMoney } from '@/utils';
 
 const JoinedStudyDetail = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const params = useParams();
 
   const [src, setFiles] = useState('');
@@ -58,19 +55,8 @@ const JoinedStudyDetail = () => {
     'NCS',
   ];
 
-  const attendStudy = async () => {
-    try {
-      alert('현재 위치 입력하기');
-      const attendData = await getStudyAttend(params.id);
-      // 스터디 출석 로직 필요
-      // navigate(-1); // 뒤로가기
-    } catch (e) {
-      console.log(e);
-      alert('에러 발생');
-    }
-  };
   const makeReserve = async () => {
-    // 예약 하는 기능 구현
+    // 스터디룸 예약 하는 기능 구현
     // const reservationPerson = await getUserInfo();
     alert('예약 생성');
     // const result = await createReservation(
@@ -85,13 +71,13 @@ const JoinedStudyDetail = () => {
     // console.log(result);
   };
 
-  const calcDeposit = (attendInfo, studyInfo) => {
-    return (
-      studyInfo.depositPerPerson -
-      attendInfo.lateCnt * studyInfo.lateFee -
-      attendInfo.absentCnt * studyInfo.absentFee
-    );
+  const calcAbsent = (meetingCnt, lateCnt, attendCnt) => {
+    if (!meetingCnt) return 0;
+    return meetingCnt - lateCnt - attendCnt;
   };
+
+  const getCurPath = useLocation().pathname;
+  const moveReservation = () => navigate(`${getCurPath}/reservation`);
 
   return (
     <Container>
@@ -114,28 +100,28 @@ const JoinedStudyDetail = () => {
           </Board>
           <Board>
             <BoardLabel>결석</BoardLabel>
-            <BoardLabel>{userAttend.absentCnt}</BoardLabel>
+            <BoardLabel>{calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt)}</BoardLabel>
           </Board>
           <Board>
             <BoardLabel>인원</BoardLabel>
-            <BoardLabel>{userAttend.memberCnt}</BoardLabel>
+            <BoardLabel>{studyInfo.aliveCnt}</BoardLabel>
           </Board>
         </BoardContainer>
         <PointContainer>
           <PointLabelContainer>
             <PointMainLabel>예상 환급액</PointMainLabel>
             <PointMainLabel>
-              {calcDeposit(userAttend, studyInfo)}원
+              {separatorMoney(studyInfo.expectedReward)}원
             </PointMainLabel>
           </PointLabelContainer>
           <PointSubLabel>
-            보증금({studyInfo.depositPerPerson}원) - 지각 {userAttend.lateCnt}회
-            - 결석 {userAttend.absentCnt}회
+            보증금({separatorMoney(studyInfo.depositPerPerson)}원) - 지각 {userAttend.lateCnt}회
+            - 결석 {calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt)}회
           </PointSubLabel>
         </PointContainer>
         <ReserveBtnContainer>
           <ReserveBtn onClick={makeReserve}>
-            <ReserveBtnText>스터디 예약하기</ReserveBtnText>
+            <ReserveBtnText>스터디 카페 예약하기</ReserveBtnText>
             <Icon />
           </ReserveBtn>
         </ReserveBtnContainer>
@@ -145,7 +131,7 @@ const JoinedStudyDetail = () => {
       <ContentsContainer>
         <InputContainer>
           <Label>인당 보증금</Label>
-          <LabelContents>{studyInfo.depositPerPerson}</LabelContents>
+          <LabelContents>{separatorMoney(studyInfo.depositPerPerson)}원</LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>기간</Label>
@@ -186,9 +172,9 @@ const JoinedStudyDetail = () => {
       </ContentsContainer>
 
       <FixedDiv>
-        <CreateBtn onClick={attendStudy}>
-          <BtnText>예약 현황</BtnText>
-        </CreateBtn>
+          <ReservationListBtn onClick={moveReservation}>
+            <label>예약 현황</label>
+          </ReservationListBtn>
       </FixedDiv>
     </Container>
   );
@@ -275,8 +261,8 @@ const FixedDiv = styled.div`
   border-top: 1px solid ${getColor('gray')};
 `;
 
-const CreateBtn = styled.button`
-  background-color: ${({ theme }) => theme.color.blue};
+const ReservationListBtn = styled.button`
+  background-color: ${getColor('blue')};
   border: 0;
   outline: 0;
   width: 14rem;
@@ -289,9 +275,10 @@ const CreateBtn = styled.button`
   border-radius: 20px;
   cursor: pointer;
   margin: auto;
-`;
-const BtnText = styled.div`
-  color: ${({ theme }) => theme.color.white};
+  label {
+    color: ${getColor('white')};
+    text-decoration: none;
+  }
 `;
 
 const TextArea = styled.textarea`

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { PATH_PAYMENT, PATH_REFUND } from '@/constants';
-import { defaultLine } from '@/utils';
+import { defaultLine, separatorMoney } from '@/utils';
 import { getPointHistory } from '@/api';
 
 const PointHistory = () => {
@@ -21,7 +21,7 @@ const PointHistory = () => {
       <Log>
         <Text>{pointHistory[0].createdAt.slice(0, 10)}</Text>
         <Text>포인트 충전</Text>
-        <Text>{point.amount} 원</Text>
+        <Text>{separatorMoney(point.amount)} 원</Text>
       </Log>
       <Line />
     </div>
@@ -30,7 +30,7 @@ const PointHistory = () => {
   return (
     <Container>
       <SubContainer>
-        <PointText>{userState.point} 원</PointText>
+        <PointText>{separatorMoney(userState.point)} 원</PointText>
         <ButtonContainer>
           <Link to={PATH_PAYMENT}>
             <Button>충전하기</Button>

@@ -14,5 +14,6 @@ export const PATH_PAYMENT = '/payment';
 export const PATH_PAYMENT_SUCCESS = '/payment/success';
 export const PATH_PAYMENT_FAIL = '/payment/fail';
 export const PATH_REFUND = '/refund';
+export const PATH_STUDY_RESERVATION_LIST = '/users/studies/:id/reservation';
 export const PATH_STUDY_RESERVATION_CREATION = '/reservation/creation';
 export const PATH_NOT_FOUND = '/*';

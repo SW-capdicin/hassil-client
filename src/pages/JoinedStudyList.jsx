@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import emptyimg from '@/img/emptyimg.png';
-// 가입된 스터디 목록 api 나오면 그 api로 교체
-import { getStudyList } from '@/api';
+import { findJoinedStudy } from '@/api';
 import { PATH_JOINED_STUDY_DETAIL } from '@/constants';
 import { getColor } from '@/utils';
 
@@ -13,7 +12,7 @@ const JoinedStudyList = () => {
   const [studies, setStudies] = useState([]);
 
   const loadStudies = async () => {
-    const data = await getStudyList();
+    const data = await findJoinedStudy();
     setStudies(() => data);
   }
   useEffect(() => {

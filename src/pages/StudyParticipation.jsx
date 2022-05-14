@@ -4,6 +4,7 @@ import { BiCheckCircle } from 'react-icons/bi';
 import { findStudy, joinStudy, getUserInfo } from '@/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATH_HOME } from '@/constants';
+import { separatorMoney } from '@/utils';
 
 const StudyParticipation = () => {
   const navigate = useNavigate();
@@ -56,9 +57,9 @@ const StudyParticipation = () => {
         <PaymentContainer>
           <Price>결제할 금액</Price>
           <Payment>
-            <Deposit>{deposit.toLocaleString()}원</Deposit>
+            <Deposit>{separatorMoney(deposit)}원</Deposit>
             <AmountAfterPay>
-              결제 후 잔액: {(balance - deposit).toLocaleString()}원
+              결제 후 잔액: {separatorMoney(balance - deposit)}원
             </AmountAfterPay>
           </Payment>
         </PaymentContainer>
