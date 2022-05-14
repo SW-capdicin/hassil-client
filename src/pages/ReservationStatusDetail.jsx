@@ -181,7 +181,7 @@ const ReservationStatusDetail = () => {
 
             <Board>
               <BoardLabel>인원</BoardLabel>
-              <BoardLabel>{userAttend.isAlive}</BoardLabel>
+              <BoardLabel>{studyInfo.aliveCnt}</BoardLabel>
             </Board>
           </BoardContainer>
           <PointContainer>
