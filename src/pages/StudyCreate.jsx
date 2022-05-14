@@ -196,7 +196,7 @@ const CreateStudy = () => {
           name="absentFee"
           type="number"
           onChange={handleChange}
-          value={inputs.lateFee}
+          value={inputs.absentFee}
         />
       </InputContainer>
       <InputContainer>
@@ -205,7 +205,7 @@ const CreateStudy = () => {
           name="lateFee"
           type="number"
           onChange={handleChange}
-          value={inputs.absentFee}
+          value={inputs.lateFee}
         />
       </InputContainer>
       <SubContainer>
