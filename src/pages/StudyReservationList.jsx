@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { defaultLine, getDateTime, getColor, compareDate } from '@/utils';
 import { getReservation } from '@/api';
 import { IoMdAddCircle } from 'react-icons/io';
-import { PATH_STUDY_RESERVATION_CREATION } from '@/constants';
 
 const StudyReservationList = () => {
   const [reservationList, setReservationList] = useState([]);
-  const userState = useSelector((state) => state.user);
   const location = useLocation();
-  const navigate = useNavigate();
   const params = useParams();
-  console.log('params : ', params);
+  const curPath = location.pathname;
 
   useEffect(() => {
     // 가장 나중에 생성한 순으로 정렬
@@ -52,7 +49,7 @@ const StudyReservationList = () => {
       <div key={key}>
         <Line />
         <CLink
-          to={location.pathname + '/' + reserve.id + '/detail'}
+          to={curPath + '/' + reserve.id + '/detail'}
           state={{ studyId: params.id }}
         >
           <div>{body}</div>
@@ -70,7 +67,7 @@ const StudyReservationList = () => {
       <ReservationLog>
         {reservationList.map((data, idx) => Reserve(data, idx))}
       </ReservationLog>
-      <Link to={location.pathname + '/creation'}>
+      <Link to={curPath + '/requirement'}>
         <CuIoMdAddCircle />
       </Link>
     </Container>

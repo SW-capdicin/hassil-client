@@ -24,6 +24,8 @@ import {
   ReservationStatusDetail,
   PaymentSuccess,
   PaymentFail,
+  StudyRoomRequirement,
+  StudyCafeCreate,
 } from '@/pages';
 import { Header, PublicRoute, PrivateRoute } from '@/components';
 import {
@@ -45,8 +47,10 @@ import {
   PATH_STUDY_RESERVATION_LIST,
   PATH_STUDY_RESERVATION_CREATION,
   PATH_RESERVATION_STATUS_DETAIL,
+  PATH_STUDYROOM_REQUIREMENT,
   PATH_PAYMENT_SUCCESS,
   PATH_PAYMENT_FAIL,
+  PATH_STUDYCAFE_CREATE,
 } from '@/constants';
 
 const App = () => {
@@ -92,6 +96,10 @@ const App = () => {
               element={<PrivateRoute element={StudyCreate} />}
             />
             <Route
+              path={PATH_STUDYCAFE_CREATE}
+              element={<PrivateRoute element={StudyCafeCreate} />}
+            />
+            <Route
               path={PATH_STUDY_DETAIL + '/:id'}
               element={<PublicRoute element={StudyDetail} />}
             />
@@ -118,6 +126,10 @@ const App = () => {
             <Route
               path={PATH_STUDY_RESERVATION_LIST}
               element={<PrivateRoute element={StudyReservationList} />}
+            />
+            <Route
+              path={PATH_STUDYROOM_REQUIREMENT}
+              element={<PrivateRoute element={StudyRoomRequirement} />}
             />
             <Route
               path={PATH_STUDY_RESERVATION_CREATION}
