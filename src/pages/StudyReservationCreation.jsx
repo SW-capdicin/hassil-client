@@ -33,9 +33,7 @@ const StudyReservationCreation = () => {
   //스터디 예약하기
   const reserveStudy = async () => {
     const reservationPerson = await getUserInfo();
-    console.log(reservationPerson);
-    console.log(reservationPerson.name);
-    console.log(params);
+
     // 위도, 경도, 스터디 진행날짜, 시작 시간, 예약한 사람
     // reservationPersonName, status, longitude, latitude, address, startTime
     const reservationTime =
@@ -53,19 +51,13 @@ const StudyReservationCreation = () => {
       datetime: reservationTime,
     };
     alert('스터디 예약하기');
-    console.log(startDate.toISOString().split('T')[0]);
-    console.log(startTime.toTimeString().split(' ')[0]);
-    console.log(startTime.toTimeString().split(' ')[1]);
-    console.log(startTime);
-    console.log(reservationTime);
-    console.log(data);
-    const curPath = location.pathname.split('/creation')[0];
+
+    const curPath = location.pathname.split('/requirement')[0];
     console.log(curPath);
     const resp = await createReservation(
       params.id, // studyId
       data,
     );
-    console.log(resp);
     await navigate(`${curPath}`);
   };
 

@@ -9,6 +9,7 @@ const theme = {
     dimgray: '#E0E0E0',
     red: '#FF0909',
     error: '#F7570B',
+    offwhite: '#FFFFFF',
   },
 };
 

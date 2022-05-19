@@ -1,56 +1,72 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { getColor } from '@/utils';
 
-const Input = ({
-  type,
-  name,
-  label,
-  placeholder,
-  value,
-  onChange,
-  defaultText,
-  selectOptions,
-}) => {
-  const getInputFieldByType = (type) => {
-    switch (type) {
-      case 'tel':
-      case 'text':
-        return (
-          <InputField
-            type={type}
-            name={name}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            autoComplete="off"
-          />
-        );
-      case 'sel':
-        return (
-          <Select name={name} onChange={onChange} value={value}>
-            <Option value="" disabled hidden>
-              {defaultText}
-            </Option>
-            {selectOptions.map((option, idx) => (
-              <Option value={option} key={idx}>
-                {option}
+const Input = forwardRef(
+  (
+    {
+      type,
+      name,
+      label,
+      placeholder,
+      value,
+      onChange,
+      defaultText,
+      selectOptions,
+    },
+    ref,
+  ) => {
+    const getInputFieldByType = (type) => {
+      switch (type) {
+        case 'tel':
+        case 'text':
+          return (
+            <InputField
+              type={type}
+              name={name}
+              placeholder={placeholder}
+              value={value}
+              onChange={onChange}
+              autoComplete="off"
+            />
+          );
+        case 'sel':
+          return (
+            <Select name={name} onChange={onChange} value={value}>
+              <Option value="" disabled hidden>
+                {defaultText}
               </Option>
-            ))}
-          </Select>
-        );
-      default:
-        return;
-    }
-  };
+              {selectOptions.map((option, idx) => (
+                <Option value={option} key={idx}>
+                  {option}
+                </Option>
+              ))}
+            </Select>
+          );
+        case 'file':
+          return (
+            <InputField
+              type={type}
+              accept="image/*"
+              style={{ display: 'none' }}
+              ref={ref}
+              onChange={onChange}
+            />
+          );
+        default:
+          return;
+      }
+    };
 
-  return (
-    <Container>
-      <Label htmlFor={name}>{label}</Label>
-      {getInputFieldByType(type)}
-    </Container>
-  );
-};
+    return (
+      <Container>
+        <Label htmlFor={name}>{label}</Label>
+        {getInputFieldByType(type)}
+      </Container>
+    );
+  },
+);
+Input.displayName = 'Input';
 
 const Container = styled.div`
   display: flex;
