@@ -8,24 +8,33 @@ import {
 import styled from 'styled-components';
 import { GoSearch } from 'react-icons/go';
 import { IoMdAddCircle } from 'react-icons/io';
-import { getStudyList } from '@/api';
+import { getStudyList, searchStudy } from '@/api';
 import emptyimg from '@/img/emptyimg.png';
 import { getColor, compareDate } from '@/utils';
 
 const Home = () => {
   const [studyList, setStudyList] = useState([]);
   const [search, setSearch] = useState('');
+  const [searchList, setSearchList] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
 
   const loadStudies = async () => {
     const now = new Date();
     const data = await getStudyList();
-    setStudyList(() => data.filter(a => new Date(a.startDate) > now).sort(compareDate('startDate')));
+    setStudyList(() =>
+      data
+        .filter((a) => new Date(a.startDate) > now)
+        .sort(compareDate('startDate')),
+    );
   };
 
   useEffect(() => {
     loadStudies();
   }, []);
+
+  useEffect(() => {
+    getSearchStudy();
+  }, [search]);
 
   const handleChange = (e) => {
     const studyName = e.target.value;
@@ -41,7 +50,7 @@ const Home = () => {
     const now = new Date();
     const diffDate = d.getTime() - now.getTime();
     return Math.ceil(Math.abs(diffDate / (1000 * 3600 * 24)));
-  }
+  };
 
   const getStudyListByCurrentTab = () =>
     activeTab
@@ -70,6 +79,41 @@ const Home = () => {
           </TabContent>
         ));
 
+  const getSearchStudy = async () => {
+    if (search != '') {
+      const responseSearch = await searchStudy({ keyword: search });
+      await setSearchList(responseSearch);
+    }
+  };
+
+  const getSearchStudyList = () => {
+    return activeTab
+      ? searchList
+          .filter((item) => item.categoryId == activeTab)
+          .map((item, idx) => (
+            <TabContent key={idx}>
+              <Link to={{ pathname: PATH_STUDY_DETAIL + `/${item.id}` }}>
+                <Img src={item.src ? `${item.src}` : emptyimg} />
+                <TextContainer>
+                  <Text>{item.name}</Text>
+                  <DateText>{calcDate(item.startDate)}일뒤 시작</DateText>
+                </TextContainer>
+              </Link>
+            </TabContent>
+          ))
+      : searchList.map((item, idx) => (
+          <TabContent key={idx}>
+            <Link to={{ pathname: PATH_STUDY_DETAIL + `/${item.id}` }}>
+              <Img src={item.src ? `${item.src}` : emptyimg} />
+              <TextContainer>
+                <Text>{item.name}</Text>
+                <DateText>{calcDate(item.startDate)}일뒤 시작</DateText>
+              </TextContainer>
+            </Link>
+          </TabContent>
+        ));
+  };
+
   return (
     <Container>
       <SearchContainer>
@@ -97,8 +141,15 @@ const Home = () => {
           ))}
         </TabTitle>
         <Line />
-        <TabContentContainer>{getStudyListByCurrentTab()}</TabContentContainer>
+        {search === '' ? (
+          <TabContentContainer>
+            {getStudyListByCurrentTab()}
+          </TabContentContainer>
+        ) : (
+          <TabContentContainer>{getSearchStudyList()}</TabContentContainer>
+        )}
       </TabContainer>
+
       <Link to={PATH_STUDY_CREATE}>
         <CuIoMdAddCircle />
       </Link>
@@ -220,9 +271,9 @@ const Text = styled.span`
   width: 100%;
   margin-top: 4px;
   margin-bottom: 10px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const DateText = styled.div`
