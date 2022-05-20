@@ -44,3 +44,8 @@ export const getOneReservationInfo = async (studyId, reservationId) => {
   );
   return response.data;
 };
+
+export const searchStudy = async (keyword) => {
+  const response = await api.get('/api/studies/search', keyword);
+  return response.data;
+};

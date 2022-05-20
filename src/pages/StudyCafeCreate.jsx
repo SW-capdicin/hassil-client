@@ -69,15 +69,16 @@ const StudyCafeCreate = () => {
     }));
   };
 
-  const registStudyRoom = () => {
+  const registStudyRoom = async () => {
     // setStudyRooms(studyRooms.concat(studyRoom));
-    setStudyRooms((prevInputs) => [...prevInputs, studyRoom]);
-    setStudyRoom((prevInputs) => ({
+    await setStudyRooms((prevInputs) => [...prevInputs, studyRoom]);
+    await setStudyRoom((prevInputs) => ({
       ...prevInputs,
       studyRoomName: '',
       pricePerHour: 0,
       maxPerson: 0,
     }));
+    await toggleModal();
   };
   const Post = async () => {
     await new daum.Postcode({
