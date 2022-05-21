@@ -20,8 +20,8 @@ const PointHistory = () => {
       <Line />
       <Log>
         <Text>{getDateTime(point.createdAt).date}</Text>
-        <Text>{point.status ? '스터디 가입' : '포인트 충전'}</Text>
-        <Text>{point.status ? '-' : '+'}{separatorMoney(point.amount)} 원</Text>
+        <Text>{point.content}</Text>
+        <TextRight>{point.status ? '-' : '+'}{separatorMoney(point.amount)} 원</TextRight>
       </Log>
       <Line />
     </div>
@@ -61,7 +61,12 @@ const SubContainer = styled.div`
 `;
 
 const Text = styled.span`
-  min-width: 20%;
+  min-width: 23%;
+  text-align: center;
+`;
+
+const TextRight = styled.span`
+  min-width: 23%;
   text-align: right;
 `;
 
@@ -85,7 +90,7 @@ const Button = styled.button`
 `;
 
 const PointLog = styled.div`
-  width: 20rem;
+  width: 90%;
   align-self: center;
 `;
 
