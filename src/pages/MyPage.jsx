@@ -11,6 +11,7 @@ import {
   PATH_PAYMENT,
   PATH_REFUND,
   PATH_POINT_HISTORY,
+  TYPE_USER_GENERAL,
 } from '@/constants';
 import { getColor, separatorMoney } from '@/utils';
 
@@ -79,12 +80,14 @@ const MyPage = () => {
               </BtnContainer>
             </SecondBox>
           </PointContainer>
-          <InputContainer>
-            <StudyList onClick={goJoinedStudyList}>
-              가입한 스터디 목록
-            </StudyList>
-            <BiChevronRight size={25} />
-          </InputContainer>
+          {userState.type === TYPE_USER_GENERAL && (
+            <InputContainer>
+              <StudyList onClick={goJoinedStudyList}>
+                가입한 스터디 목록
+              </StudyList>
+              <BiChevronRight size={25} />
+            </InputContainer>
+          )}
           <Link to={PATH_USER_EDIT}>
             <InputContainer>
               <EditInformation>회원 정보 수정</EditInformation>
