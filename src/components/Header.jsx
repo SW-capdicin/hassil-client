@@ -80,6 +80,7 @@ const ProfileImg = styled.div`
   width: 3rem;
   height: 3rem;
   margin-right: 7px;
+  margin-bottom: 7px;
 `;
 
 export default Header;

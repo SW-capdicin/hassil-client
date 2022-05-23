@@ -295,6 +295,9 @@ const InputContainer = styled.div`
   justify-content: space-between;
   margin-bottom: ${bottomMargin};
 `;
+const InputWithLabel = styled.input`
+  ${bottomMargin}
+`;
 const Label = styled.label`
   color: ${({ theme }) => theme.color.gray};
   display: flex;
@@ -411,6 +414,7 @@ const AddBtnContainer = styled.div`
   display: flex;
   justify-content: center;
   border: 1px solid ${getColor('gray')};
+  margin-bottom: 20px;
 `;
 const CuIoMdAddCircle = styled(IoMdAddCircle)`
   width: 2rem;
