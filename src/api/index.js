@@ -3,3 +3,4 @@ export * from './payment';
 export * from './study';
 export * from './upload';
 export * from './reservation';
+export * from './studycafe';

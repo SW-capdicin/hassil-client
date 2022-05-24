@@ -2,22 +2,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
-import { uploadOneImage } from '@/api';
+import { uploadOneImage, createStudyCafe } from '@/api';
 
 import { IoMdAddCircle } from 'react-icons/io';
 import { useSelector } from 'react-redux';
 import { Input } from '@/components';
 import { getColor } from '@/utils';
-const { daum } = window;
+const { kakao, daum } = window;
 
 const StudyCafeCreate = () => {
   const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [src, setFiles] = useState(null);
   const [inputs, setInputs] = useState({
+    longitude: '',
+    latitude: '',
     name: '',
     address: '',
-    phoneNumber: '',
+    region_2depth_name: '',
+    shopNumber: '',
     operationTime: '',
     info: '',
   });
@@ -26,10 +29,11 @@ const StudyCafeCreate = () => {
     studyRoomName: '',
     pricePerHour: 0,
     maxPerson: 0,
-    img: null,
+    src: null,
   });
   const { studyRoomName, pricePerHour, maxPerson } = studyRoom;
-  const { name, address, phoneNumber, operationTime } = inputs;
+  const { name, region_2depth_name, address, shopNumber, operationTime } =
+    inputs;
   const [openModal, setOpenModal] = useState(false);
   const imgInput = useRef();
   const studyRoomImgInput = useRef();
@@ -39,12 +43,6 @@ const StudyCafeCreate = () => {
     const file = e.target.files[0];
     setFiles(file);
   };
-
-  useEffect(() => {
-    console.log('studyRoom : ', studyRoom);
-    console.log('studyRooms : ', studyRooms);
-    console.log(src);
-  }, [studyRooms, src]);
 
   const handleChange = (event) => {
     setInputs((prevInputs) => ({
@@ -65,31 +63,55 @@ const StudyCafeCreate = () => {
   const handleImgStudyRoom = (event) => {
     setStudyRoom((prevInputs) => ({
       ...prevInputs,
-      img: event.target.files[0],
+      src: event.target.files[0],
     }));
   };
 
   const registStudyRoom = async () => {
-    // setStudyRooms(studyRooms.concat(studyRoom));
-    await setStudyRooms((prevInputs) => [...prevInputs, studyRoom]);
+    let image = null;
+    if (studyRoom.src) {
+      const fd = new FormData();
+      fd.append('image', studyRoom.src);
+      const srcUrl = await uploadOneImage(fd);
+      image = srcUrl;
+    }
+
+    await setStudyRooms((prevInputs) => [
+      ...prevInputs,
+      { ...studyRoom, src: image },
+    ]);
     await setStudyRoom((prevInputs) => ({
       ...prevInputs,
       studyRoomName: '',
       pricePerHour: 0,
       maxPerson: 0,
+      src: null,
     }));
     await toggleModal();
   };
   const Post = async () => {
+    let geocoder = new kakao.maps.services.Geocoder();
     await new daum.Postcode({
       oncomplete: function (data) {
         let addr = data.address; // 최종 주소 변수
-        setInputs((prevInputs) => ({
-          ...prevInputs,
-          address: addr,
-        }));
-        console.log(addr);
-        console.log(address);
+        let lng = null;
+        let lat = null;
+        let loc = null;
+        geocoder.addressSearch(data.address, function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            lng = result[0].x;
+            lat = result[0].y;
+            loc = result[0].road_address.region_2depth_name;
+
+            setInputs((prevInputs) => ({
+              ...prevInputs,
+              longitude: lng,
+              latitude: lat,
+              address: addr,
+              region_2depth_name: loc,
+            }));
+          }
+        });
       },
     }).open();
   };
@@ -102,20 +124,30 @@ const StudyCafeCreate = () => {
       studyRoomName: '',
       pricePerHour: 0,
       maxPerson: 0,
-      img: null,
+      src: null,
     }));
     toggleModal();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // studyCafe 등록하는 api 필요
-    alert('매장 등록 성공');
+    let image = null;
+    if (src) {
+      const fd = new FormData();
+      fd.append('image', src);
+      const srcUrl = await uploadOneImage(fd);
+      image = srcUrl;
+    }
     const StudyCafe = {
       ...inputs,
-      studyRooms: { ...studyRooms },
+      src: image || src,
+      studyRooms: [...studyRooms],
     };
-    console.log('StudyCafe : ', StudyCafe);
+    const response = await createStudyCafe(StudyCafe);
+    console.log(response);
+    navigate('/');
   };
+
   const setModal = () => {
     return (
       <>
@@ -155,8 +187,8 @@ const StudyCafeCreate = () => {
             <Mlabel>대표 이미지 등록</Mlabel>
             <MSelectImg onClick={() => studyRoomImgInput.current.click()}>
               {/* <CuIoMdAddCircle /> */}
-              {studyRoom.img ? (
-                <MImg src={URL.createObjectURL(studyRoom.img)}></MImg>
+              {studyRoom.src ? (
+                <MImg src={URL.createObjectURL(studyRoom.src)}></MImg>
               ) : (
                 <CuIoMdAddCircle />
               )}
@@ -217,10 +249,10 @@ const StudyCafeCreate = () => {
         </InputContainer>
         <Input
           type="tel"
-          name="phoneNumber"
+          name="shopNumber"
           label="연락처"
           placeholder="010-1234-1234"
-          value={phoneNumber}
+          value={shopNumber}
           onChange={handleChange}
         />
         <Input
