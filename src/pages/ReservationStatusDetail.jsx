@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
-import { calender, checkCircle, fail } from '@/img';
+import { checkCircle, fail } from '@/img';
 import { findStudy, getStudyAttend, getOneReservationInfo } from '@/api';
-import { getColor, defaultLine, separatorMoney } from '@/utils';
+import { getColor, defaultLine, separatorMoney, getGeneratedLocation } from '@/utils';
 import { updateLocation } from '@/api/reservation';
 
 const ReservationStatusDetail = () => {
@@ -61,13 +61,9 @@ const ReservationStatusDetail = () => {
     setOpenModal((prevState) => !prevState);
   };
 
-  const attendStudy = async (lat, lng) => {
+  const attendStudy = async (data) => {
     try {
       toggleModal();
-      const data = {
-        latitude: lat,
-        longitude: lng,
-      };
       const responseResult = await updateLocation(reservationId, data);
       // 스터디 출석 로직 필요
       setReservationResult(responseResult);
@@ -75,30 +71,11 @@ const ReservationStatusDetail = () => {
       console.error(e);
     }
   };
-  const getLocation = () => {
-    let lat, lng;
-    if (navigator.geolocation) {
-      // GPS를 지원하면
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          lat = position.coords.latitude;
-          lng = position.coords.longitude;
-
-          attendStudy(lat, lng);
-        },
-        (error) => {
-          console.error(error);
-        },
-        {
-          enableHighAccuracy: true,
-          maximumAge: 0,
-          timeout: Infinity,
-        },
-      );
-    } else {
-      alert('GPS를 지원하지 않습니다');
-      return;
-    }
+  const clickGetLocationBtn = async () => {
+    const location =  await getGeneratedLocation();
+    console.log(location);
+    if (!location) return alert('GPS를 지원하지 않습니다');
+    await attendStudy(location);
   };
 
   const calcAbsent = (meetingCnt, lateCnt, attendCnt) => {
@@ -251,7 +228,7 @@ const ReservationStatusDetail = () => {
           </SubContainer>
         </ContentsContainer>
         <FixedDiv>
-          <CreateBtn onClick={getLocation}>
+          <CreateBtn onClick={clickGetLocationBtn}>
             <BtnText>출석 하기</BtnText>
           </CreateBtn>
         </FixedDiv>
@@ -430,27 +407,6 @@ const ReserveBtnContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: 20px 0;
-`;
-const ReserveBtn = styled.button`
-  display: flex;
-  border: none;
-  background-color: white;
-  align-items: center;
-  height: 40px;
-`;
-const ReserveBtnText = styled.label`
-  color: ${getColor('lightBlue')};
-  display: flex;
-  font-size: 15px;
-  margin-right: 3px;
-`;
-const Icon = styled.div`
-  display: flex;
-  background-image: url(${calender});
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 24px;
-  height: 24px;
 `;
 const Modal = styled.div`
   position: absolute;
