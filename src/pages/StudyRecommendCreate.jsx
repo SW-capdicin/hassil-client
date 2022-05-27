@@ -50,8 +50,8 @@ const StudyRcommendCreate = () => {
     }
   }
 
-  //스터디 예약하기
-  const reserveStudy = async () => {
+  //스터디 스케줄 추천받기
+  const recommendStudySchedule = async () => {
     const reservationPerson = await getUserInfo();
 
     // 위도, 경도, 스터디 진행날짜, 시작 시간, 예약한 사람
@@ -76,12 +76,12 @@ const StudyRcommendCreate = () => {
     };
     alert('스케줄 추천 받기');
     console.log(data);
-    // const curPath = location.pathname.split('/requirement')[0];
+    const curPath = location.pathname;
     // await createReservation(
     //   params.id, // studyId
     //   data,
     // );
-    // await navigate(`${curPath}`);
+    await navigate(`${curPath}/success`);
   };
 
   const initMap = async () => {
@@ -251,7 +251,7 @@ const StudyRcommendCreate = () => {
         <KaKaoMap id="map" ref={container}></KaKaoMap>
       </MapContainer>
       <FixedDiv>
-        <Btn onClick={reserveStudy}>
+        <Btn onClick={recommendStudySchedule}>
           <BtnText>추천받기</BtnText>
         </Btn>
       </FixedDiv>
