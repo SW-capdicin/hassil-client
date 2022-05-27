@@ -18,6 +18,7 @@ export { default as StudyReservationCreation } from './StudyReservationCreation.
 export { default as ReservationStatusDetail } from './ReservationStatusDetail.jsx';
 export { default as StudyRoomRequirement } from './StudyRoomRequirement.jsx';
 export { default as StudyRoomReservation } from './StudyRoomReservation.jsx';
+export { default as StudyRecommendCreate } from './StudyRecommendCreate.jsx';
 
 export { default as PaymentSuccess } from './PaymentSuccess';
 export { default as PaymentFail } from './PaymentFail';

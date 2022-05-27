@@ -24,4 +24,6 @@ export const PATH_STUDYROOM_RESERVATION_SELECTION =
   '/users/studies/:id/reservation/requirement/selection';
 export const PATH_RESERVATION_STATUS_DETAIL =
   '/users/studies/:id/reservation/:id/detail'; // :studyId  :reservationId
+export const PATH_STUDYROOM_RECOMMEND_CREATE =
+  '/users/studies/:id/reservation/requirement/selection/recommend'; // :studyId
 export const PATH_NOT_FOUND = '/*';

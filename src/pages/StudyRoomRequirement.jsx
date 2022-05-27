@@ -8,8 +8,8 @@ const StudyRoomRequirement = () => {
   console.log(curPath);
   return (
     <Container>
-      <Link>
-        <NeedReservation> 스터디룸 예약 필요해요</NeedReservation>
+      <Link to={curPath + '/selection'}>
+        <DontNeedReservation> 스터디룸 예약 필요해요</DontNeedReservation>
       </Link>
 
       <Link to={curPath + '/creation'}>

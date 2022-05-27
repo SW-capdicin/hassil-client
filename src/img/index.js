@@ -1,5 +1,11 @@
 export { default as man } from './man.png';
 export { default as woman } from './woman.png';
 export { default as calender } from './calender.svg';
+export { default as calenderGray } from './calender_gray.svg';
 export { default as checkCircle } from './check_circle_blue.png';
+export { default as checkCircleEmpty } from './check_circle_empty.svg';
+export { default as checkCircleEmptySelect } from './check_circle_empty_select.svg';
 export { default as fail } from './fail.png';
+export { default as locationIcon } from './location.svg';
+export { default as clockIcon } from './clock.svg';
+export { getLocationIcon, getLocationIconText } from './getLocationIcon.jsx';
