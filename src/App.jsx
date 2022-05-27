@@ -27,6 +27,7 @@ import {
   StudyRoomRequirement,
   StudyRoomReservation,
   StudyRecommendCreate,
+  StudyRecommendSuccess,
   StudyCafeCreate,
 } from '@/pages';
 import { Header, PublicRoute, PrivateRoute } from '@/components';
@@ -52,6 +53,7 @@ import {
   PATH_STUDYROOM_REQUIREMENT,
   PATH_STUDYROOM_RESERVATION_SELECTION,
   PATH_STUDYROOM_RECOMMEND_CREATE,
+  PATH_STUDYROOM_RECOMMEND_SUCCESS,
   PATH_PAYMENT_SUCCESS,
   PATH_PAYMENT_FAIL,
   PATH_STUDYCAFE_CREATE,
@@ -146,6 +148,10 @@ const App = () => {
             <Route
               path={PATH_STUDYROOM_RECOMMEND_CREATE}
               element={<PrivateRoute element={StudyRecommendCreate} />}
+            />
+            <Route
+              path={PATH_STUDYROOM_RECOMMEND_SUCCESS}
+              element={<PrivateRoute element={StudyRecommendSuccess} />}
             />
             <Route
               path={PATH_RESERVATION_STATUS_DETAIL}
