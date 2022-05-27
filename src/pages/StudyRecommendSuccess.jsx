@@ -94,7 +94,6 @@ const StudyRecommendSuccess = () => {
   const mkMarker = (map, position, image) => {
     return new kakao.maps.Marker({
       clickable: true,
-      itemName: 1,
       image,
       position,
       map,
@@ -106,17 +105,47 @@ const StudyRecommendSuccess = () => {
     const url = URL.createObjectURL(svg);
     return url;
   }
+
+  const mkInfoWindow = (name) => {
+    return new kakao.maps.InfoWindow({
+      content: `<div>${name}</div>`,
+    });
+  }
+
+  const makeOverListener = (map, marker, infowindow) => {
+    return () => {
+      infowindow.open(map, marker);
+    };
+  }
+
+  const makeOutListener = (infowindow) => {
+    return () => {
+      infowindow.close();
+    };
+  }
   
   const assignMarker2Map = (list, map) => {
     const studyMap = {};
-    list.map(({ studyId, latitude, longitude }) => (studyMap[studyId] = { latitude, longitude }));
+    list.map(({
+      studyId,
+      studyName,
+      latitude,
+      longitude
+    }) => (studyMap[studyId] = { latitude, longitude, studyName }));
+
     Object.keys(studyMap).map(key => {
       const position = new kakao.maps.LatLng(studyMap[key].latitude, studyMap[key].longitude);
       
-      const imageSrc = getSvgFromText(getLocationIconText(colorMap[key]));
-      const imageSize = new kakao.maps.Size(24, 35); 
-      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-      mkMarker(map, position, markerImage);
+      const markerImage = new kakao.maps.MarkerImage(
+        getSvgFromText(getLocationIconText(colorMap[key])),
+        new kakao.maps.Size(24, 35)
+      ); 
+
+      const marker = mkMarker(map, position, markerImage);
+      const infowindow = mkInfoWindow(studyMap[key].studyName);
+
+      kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+      kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
     });
   }
 
@@ -128,7 +157,7 @@ const StudyRecommendSuccess = () => {
       strokeColor: '#70B3EC',
       strokeOpacity: 1,
       fillColor: '#70B3EC',
-      fillOpacity: 0.5
+      fillOpacity: 0.2
     });
   }
 
@@ -136,7 +165,7 @@ const StudyRecommendSuccess = () => {
     const center = new kakao.maps.LatLng(cur.latitude, cur.longitude);
     const options = {
       center,
-      level: 6, // 축적 500m
+      level: 5, // 축적 250m
     };
     const map = new kakao.maps.Map(container.current, options);
 
