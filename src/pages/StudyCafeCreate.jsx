@@ -32,8 +32,7 @@ const StudyCafeCreate = () => {
     src: null,
   });
   const { studyRoomName, pricePerHour, maxPerson } = studyRoom;
-  const { name, region_2depth_name, address, shopNumber, operationTime } =
-    inputs;
+  const { name, address, shopNumber, operationTime } = inputs;
   const [openModal, setOpenModal] = useState(false);
   const imgInput = useRef();
   const studyRoomImgInput = useRef();
@@ -140,7 +139,8 @@ const StudyCafeCreate = () => {
     }
     const StudyCafe = {
       ...inputs,
-      src: image || src,
+      // src: image || src,
+      StudyCafeImages: [{ src: image }],
       studyRooms: [...studyRooms],
     };
     const response = await createStudyCafe(StudyCafe);

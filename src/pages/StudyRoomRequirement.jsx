@@ -8,7 +8,7 @@ const StudyRoomRequirement = () => {
   console.log(curPath);
   return (
     <Container>
-      <Link>
+      <Link to={curPath + '/selection'}>
         <NeedReservation> 스터디룸 예약 필요해요</NeedReservation>
       </Link>
 
@@ -49,20 +49,6 @@ const Container = styled.div`
     border-color: ${({ theme }) => theme.color.gray};
   }
 `;
-const NeedReservation = styled.div`
-  display: flex;
-  height: 40%;
-  width: 80%;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border: solid 1px;
-  border-radius: 30px;
-  border-color: ${({ theme }) => theme.color.gray};
-  color: ${({ theme }) => theme.color.black};
-  font-weight: bold;
-  font-size: larger;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-`;
+const NeedReservation = styled.div``;
 const DontNeedReservation = styled.div``;
 export default StudyRoomRequirement;
