@@ -18,3 +18,8 @@ export const getStudyRoomsInStudyCafe = async (id) => {
   const response = await api.get(`/api/study-cafes/${id}/rooms`);
   return response.data;
 };
+
+export const searchStudyCafe = async (keyword) => {
+  const response = await api.get(`/api/study-cafes/search`, keyword);
+  return response.data;
+};

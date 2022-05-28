@@ -3,48 +3,54 @@ import styled from 'styled-components';
 import { GoSearch } from 'react-icons/go';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import emptyimg from '@/img/emptyimg.png';
-import { getStudyCafesByRegion } from '@/api';
+import { getStudyCafesByRegion, searchStudyCafe } from '@/api';
 
 const StudyRoomReservation = () => {
   const location = useLocation();
-  console.log(location.state);
   const studyId = location.state.studyId;
-  console.log(studyId);
   const [search, setSearch] = useState('');
   const [searchList, setSearchList] = useState([]);
   const [area, setArea] = useState('지역을 선택해주세요.');
   const [locationGu, setLocationGu] = useState([]);
 
-  const [studyCafeList, setStudyCafeList] = useState([]);
   const navigate = useNavigate();
 
   const getSearchStudyCafe = async () => {
     if (search != '') {
-      // studyCafe 찾는 api 필요
-      // const responseSearch = await searchStudyCafe({ keyword: search });
-      // await setSearchList(responseSearch);
+      const responseSearch = await searchStudyCafe({ keyword: search });
+      await setSearchList(responseSearch);
     }
   };
   const handleSearchChange = (event) => {
     const studyCafeName = event.target.value;
     setSearch(studyCafeName);
   };
-  // const getSearchStudyCafeList = () => {
-  //   searchList.map((item, idx) => (
-  //     <TabContent key={idx}>
-  //       <Link to={{ pathname: PATH_STUDYCAFE_DETAIL + `/${item.id}` }}>
-  //         <Img src={item.src ? `${item.src}` : emptyimg} />
-  //         <TextContainer>
-  //           <Text>{item.name}</Text>
-  //         </TextContainer>
-  //       </Link>
-  //     </TabContent>
-  //   ));
-  // };
+  const getSearchStudyCafeList = () => {
+    return searchList.map((item, idx) => (
+      <TabContent key={idx}>
+        <Link to={{ pathname: `/cafes/${item.id}` }}>
+          <Img
+            src={
+              item.StudyCafeImages.length !== 0
+                ? `${item.StudyCafeImages[0].src}`
+                : emptyimg
+            }
+          />
+          <TextContainer>
+            <Text>{item.name}</Text>
+          </TextContainer>
+        </Link>
+      </TabContent>
+    ));
+  };
 
   useEffect(() => {
     getStudyCafeListByGu();
   }, []);
+
+  useEffect(() => {
+    getSearchStudyCafe();
+  }, [search]);
 
   const handleLocation = (event) => {
     setArea(event.target.innerHTML.split('(')[0].trim());
@@ -77,35 +83,41 @@ const StudyRoomReservation = () => {
         />
         <CuGoSearch />
       </SearchContainer>
-      <LocationContainer>
-        <SiLocationContainer>
-          <SiLocation>지역</SiLocation>
-          <Label onClick={resetArea}>{area}</Label>
-        </SiLocationContainer>
-        {area === '지역을 선택해주세요.'
-          ? locationGu.map((Gu, idx) => (
-              <Location key={idx} onClick={handleLocation}>
-                {`${Gu.region2DepthName} (${Gu.studyCafes.length})`}
-              </Location>
-            ))
-          : locationGu
-              .filter((item) => item.region2DepthName == area)[0]
-              .studyCafes.map((item, idx) => (
-                <StudyCafeContainer
-                  key={idx}
-                  onClick={() => goStudyCafeDetail(item.id)}
-                >
-                  <StudyCafeImg
-                    src={
-                      item.StudyCafeImages.length !== 0
-                        ? `${item.StudyCafeImages[0].src}`
-                        : emptyimg
-                    }
-                  />
-                  <StudyCafe>{item.name}</StudyCafe>
-                </StudyCafeContainer>
-              ))}
-      </LocationContainer>
+      {search == '' ? (
+        <>
+          <LocationContainer>
+            <SiLocationContainer>
+              <SiLocation>지역</SiLocation>
+              <Label onClick={resetArea}>{area}</Label>
+            </SiLocationContainer>
+            {area === '지역을 선택해주세요.'
+              ? locationGu.map((Gu, idx) => (
+                  <Location key={idx} onClick={handleLocation}>
+                    {`${Gu.region2DepthName} (${Gu.studyCafes.length})`}
+                  </Location>
+                ))
+              : locationGu
+                  .filter((item) => item.region2DepthName == area)[0]
+                  .studyCafes.map((item, idx) => (
+                    <StudyCafeContainer
+                      key={idx}
+                      onClick={() => goStudyCafeDetail(item.id)}
+                    >
+                      <StudyCafeImg
+                        src={
+                          item.StudyCafeImages.length !== 0
+                            ? `${item.StudyCafeImages[0].src}`
+                            : emptyimg
+                        }
+                      />
+                      <StudyCafe>{item.name}</StudyCafe>
+                    </StudyCafeContainer>
+                  ))}
+          </LocationContainer>
+        </>
+      ) : (
+        <TabContentContainer>{getSearchStudyCafeList()}</TabContentContainer>
+      )}
       {area === '지역을 선택해주세요.' && (
         <FixedDiv>
           <CreateBtn onClick={goStudyRoomRecommendation}>
@@ -127,11 +139,11 @@ const SearchContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 100%;
+  width: 80vw;
   margin-bottom: 1rem;
 `;
 const Search = styled.input`
-  width: 80%;
+  width: 100%;
   height: 2rem;
   display: flex;
   flex-direction: row;
@@ -182,6 +194,21 @@ const Text = styled.span`
 const LocationContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+const TabContentContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+  a {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+  }
+  a:link {
+    text-decoration: none;
+  }
 `;
 const SiLocationContainer = styled.div`
   display: flex;
