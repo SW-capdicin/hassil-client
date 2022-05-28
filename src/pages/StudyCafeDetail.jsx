@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import emptyimg from '@/img/emptyimg.png';
-import { useParams } from 'react-router-dom';
+import { emptyimg, review, right } from '@/img';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getOneStudyCafe, getStudyRoomsInStudyCafe } from '@/api';
 
 const StudyCafeDetail = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [studyCafe, setStudyCafe] = useState({});
   const [studyRooms, setStudyRooms] = useState([]);
 
@@ -20,6 +21,10 @@ const StudyCafeDetail = () => {
     const StudyRooms = await getStudyRoomsInStudyCafe(StudyCafeId);
     console.log('StudyRooms : ', StudyRooms);
     setStudyRooms(StudyRooms);
+  };
+
+  const goReviewPage = () => {
+    navigate(`${window.location.pathname}/reviews`);
   };
 
   useEffect(() => {
@@ -40,7 +45,11 @@ const StudyCafeDetail = () => {
       />
       <StudyCafeHeader>
         <StudyCafeName>{studyCafe.name}</StudyCafeName>
-        <Review>4.6 (17)</Review>
+        <Review onClick={goReviewPage}>
+          <ReviewImg src={review} width="20" />
+          4.6 (17)
+          <RightImg src={right} width="20" height="15" />
+        </Review>
       </StudyCafeHeader>
       <StudyCafeBody>
         <StudyCafeInfo>{studyCafe.info}</StudyCafeInfo>
@@ -63,6 +72,12 @@ const StudyCafeDetail = () => {
     </Container>
   );
 };
+
+const ReviewImg = styled.img`
+  margin-right: 5px;
+`;
+
+const RightImg = styled.img``;
 
 const Container = styled.div`
   display: flex;

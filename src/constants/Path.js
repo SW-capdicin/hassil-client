@@ -27,3 +27,4 @@ export const PATH_STUDYROOM_RESERVATION_SELECTION =
 export const PATH_RESERVATION_STATUS_DETAIL =
   '/users/studies/:id/reservation/:id/detail'; // :studyId  :reservationId
 export const PATH_NOT_FOUND = '/*';
+export const PATH_CAFE_REVIEW = '/cafes/:id/reviews';
