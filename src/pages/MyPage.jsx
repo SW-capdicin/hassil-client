@@ -12,6 +12,7 @@ import {
   PATH_REFUND,
   PATH_POINT_HISTORY,
   TYPE_USER_GENERAL,
+  PATH_USED_CAFE_LIST,
 } from '@/constants';
 import { getColor, separatorMoney } from '@/utils';
 
@@ -21,6 +22,10 @@ const MyPage = () => {
 
   const goJoinedStudyList = () => {
     navigate(PATH_JOINED_STUDY_LIST);
+  };
+
+  const goUsedStudyCafe = () => {
+    navigate(PATH_USED_CAFE_LIST);
   };
 
   const logoutHandler = async () => {
@@ -81,12 +86,20 @@ const MyPage = () => {
             </SecondBox>
           </PointContainer>
           {userState.type === TYPE_USER_GENERAL && (
-            <InputContainer>
-              <StudyList onClick={goJoinedStudyList}>
-                가입한 스터디 목록
-              </StudyList>
-              <BiChevronRight size={25} />
-            </InputContainer>
+            <>
+              <InputContainer>
+                <StudyList onClick={goJoinedStudyList}>
+                  가입한 스터디 목록
+                </StudyList>
+                <BiChevronRight size={25} />
+              </InputContainer>
+              <InputContainer>
+                <StudyList onClick={goUsedStudyCafe}>
+                  이용한 카페 내역
+                </StudyList>
+                <BiChevronRight size={25} />
+              </InputContainer>
+            </>
           )}
           <Link to={PATH_USER_EDIT}>
             <InputContainer>
