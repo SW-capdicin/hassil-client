@@ -4,3 +4,4 @@ export { default as PublicRoute } from './PublicRoute';
 export { default as PrivateRoute } from './PrivateRoute';
 export { default as UserHome } from './UserHome';
 export { default as CafeHome } from './CafeHome';
+export { default as CafeReview } from './CafeReview';
