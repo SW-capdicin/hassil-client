@@ -6,6 +6,7 @@ export { default as NotFound } from './NotFound.jsx';
 export { default as StudyCreate } from './StudyCreate.jsx';
 export { default as StudyCafeCreate } from './StudyCafeCreate.jsx';
 export { default as StudyDetail } from './StudyDetail.jsx';
+export { default as StudyCafeDetail } from './StudyCafeDetail.jsx';
 export { default as JoinedStudyList } from './JoinedStudyList.jsx';
 export { default as JoinedStudyDetail } from './JoinedStudyDetail.jsx';
 export { default as StudyParticipation } from './StudyParticipation.jsx';
@@ -18,6 +19,5 @@ export { default as StudyReservationCreation } from './StudyReservationCreation.
 export { default as ReservationStatusDetail } from './ReservationStatusDetail.jsx';
 export { default as StudyRoomRequirement } from './StudyRoomRequirement.jsx';
 export { default as StudyRoomReservation } from './StudyRoomReservation.jsx';
-
 export { default as PaymentSuccess } from './PaymentSuccess';
 export { default as PaymentFail } from './PaymentFail';
