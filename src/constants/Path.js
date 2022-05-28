@@ -10,6 +10,7 @@ export const PATH_STUDYCAFE_CREATE = '/cafes/create';
 export const PATH_STUDY_DETAIL = '/studies'; // :id
 export const PATH_STUDYCAFE_DETAIL = '/cafes/:id'; // studyCafeId
 export const PATH_JOINED_STUDY_LIST = '/users/studies';
+export const PATH_USED_CAFE_LIST = '/users/used-cafe';
 export const PATH_JOINED_STUDY_DETAIL = '/users/studies'; // :id
 export const PATH_STUDY_PARTICIPATION = `/studies/:id/participation`;
 export const PATH_PAYMENT = '/payment';
@@ -26,3 +27,4 @@ export const PATH_STUDYROOM_RESERVATION_SELECTION =
 export const PATH_RESERVATION_STATUS_DETAIL =
   '/users/studies/:id/reservation/:id/detail'; // :studyId  :reservationId
 export const PATH_NOT_FOUND = '/*';
+export const PATH_CAFE_REVIEW = '/cafes/:id/reviews';
