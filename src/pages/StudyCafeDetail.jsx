@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { emptyimg, review, right } from '@/img';
-import { useParams } from 'react-router-dom';
-import { getOneStudyCafe, getStudyRoomsInStudyCafe } from '@/api';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { getOneStudyCafe } from '@/api';
 import { CafeReview } from '@/components';
 
 const StudyCafeDetail = () => {
   const params = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [studyCafe, setStudyCafe] = useState({});
-  const [studyRooms, setStudyRooms] = useState([]);
   const [showReview, setShowReview] = useState(false);
 
+  const studyId = location.state.studyId;
   const StudyCafeId = params.id;
   const findOneStudyCafe = async () => {
     const Cafe = await getOneStudyCafe(StudyCafeId);
-    console.log('StudyCafe : ', Cafe);
     setStudyCafe(Cafe);
-  };
-
-  const getStudyRooms = async () => {
-    const StudyRooms = await getStudyRoomsInStudyCafe(StudyCafeId);
-    console.log('StudyRooms : ', StudyRooms);
-    setStudyRooms(StudyRooms);
   };
 
   const toggleShowReview = () => {
@@ -30,11 +25,13 @@ const StudyCafeDetail = () => {
 
   useEffect(() => {
     findOneStudyCafe();
-    getStudyRooms();
-    console.log(typeof studyCafe);
-    console.log(studyCafe);
   }, []);
 
+  const goReserveStudyRoomPage = () => {
+    navigate(`${window.location.pathname}/reserve`, {
+      state: { studyId: studyId },
+    });
+  };
   return (
     <Container>
       <Img
@@ -58,22 +55,13 @@ const StudyCafeDetail = () => {
         ) : (
           <>
             <StudyCafeInfo>{studyCafe.info}</StudyCafeInfo>
-            <StudyRoomsContainer>
-              {studyRooms.map((item) => {
-                return (
-                  <StudyRooms key={item.id}>
-                    {`${item.name}(다인실)`} {`${item.maxPerson}인실`}{' '}
-                    {`시간당 ${item.pricePerHour}`}
-                  </StudyRooms>
-                );
-              })}
-            </StudyRoomsContainer>
           </>
         )}
       </StudyCafeBody>
+
       <FixedDiv>
-        <CreateBtn>
-          <BtnText>예약하기</BtnText>
+        <CreateBtn onClick={goReserveStudyRoomPage}>
+          <BtnText>예약하러 가기</BtnText>
         </CreateBtn>
       </FixedDiv>
     </Container>
@@ -125,27 +113,6 @@ const StudyCafeInfo = styled.div`
   /* width: 70vw; */
   height: auto;
   white-space: pre-line;
-`;
-const StudyRoomsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: auto;
-  border-width: 1px;
-  border-style: solid none none none;
-  border-color: ${({ theme }) => theme.color.gray};
-`;
-
-const StudyRooms = styled.div`
-  display: flex;
-  width: 100vw;
-  height: 3rem;
-  border-width: 1px;
-  border-style: none none solid none;
-  border-color: ${({ theme }) => theme.color.gray};
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 0rem 1rem 0rem;
 `;
 
 const FixedDiv = styled.div`

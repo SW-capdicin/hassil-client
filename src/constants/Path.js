@@ -9,6 +9,7 @@ export const PATH_STUDY_CREATE = '/studies/create';
 export const PATH_STUDYCAFE_CREATE = '/cafes/create';
 export const PATH_STUDY_DETAIL = '/studies'; // :id
 export const PATH_STUDYCAFE_DETAIL = '/cafes/:id'; // studyCafeId
+export const PATH_STUDYCAFE_DETAIL_STUDYROOM = '/cafes/:id/reserve'; // studyCafeId
 export const PATH_JOINED_STUDY_LIST = '/users/studies';
 export const PATH_USED_CAFE_LIST = '/users/used-cafe';
 export const PATH_JOINED_STUDY_DETAIL = '/users/studies'; // :id

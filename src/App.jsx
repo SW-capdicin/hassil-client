@@ -29,6 +29,7 @@ import {
   StudyCafeCreate,
   StudyCafeDetail,
   UsedCafe,
+  ReserveStudyRoom,
 } from '@/pages';
 import { Header, PublicRoute, PrivateRoute } from '@/components';
 import {
@@ -57,6 +58,7 @@ import {
   PATH_STUDYCAFE_CREATE,
   PATH_STUDYCAFE_DETAIL,
   PATH_USED_CAFE_LIST,
+  PATH_STUDYCAFE_DETAIL_STUDYROOM,
 } from '@/constants';
 
 const App = () => {
@@ -108,6 +110,10 @@ const App = () => {
             <Route
               path={PATH_STUDYCAFE_DETAIL}
               element={<PrivateRoute element={StudyCafeDetail} />}
+            />
+            <Route
+              path={PATH_STUDYCAFE_DETAIL_STUDYROOM}
+              element={<PrivateRoute element={ReserveStudyRoom} />}
             />
             <Route
               path={PATH_STUDY_DETAIL + '/:id'}

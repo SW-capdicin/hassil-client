@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useParams } from 'react-router-dom';
 
 const StudyRoomRequirement = () => {
   const location = useLocation();
+  const params = useParams();
   const curPath = location.pathname;
-  console.log(curPath);
   return (
     <Container>
-      <Link to={curPath + '/selection'}>
+      <Link to={curPath + '/selection'} state={{ studyId: params.id }}>
         <NeedReservation> 스터디룸 예약 필요해요</NeedReservation>
       </Link>
 
