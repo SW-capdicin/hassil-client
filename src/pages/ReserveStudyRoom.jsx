@@ -66,10 +66,6 @@ const ReserveStudyRoom = () => {
     setPersonnel(event.target.value);
   };
 
-  const goReviewPage = () => {
-    navigate(`${window.location.pathname}/reviews`);
-  };
-
   useEffect(() => {
     findOneStudyCafe();
     getStudyRooms();
@@ -110,6 +106,7 @@ const ReserveStudyRoom = () => {
       datetime: reservationTime,
     };
 
+    //error 발생 백엔드 api 수정 필요
     const response = await createReservation(studyId, data);
     console.log(response);
     navigate('/');
