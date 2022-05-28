@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GoSearch } from 'react-icons/go';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import emptyimg from '@/img/emptyimg.png';
 import { getStudyCafesByRegion } from '@/api';
 
 const StudyRoomReservation = () => {
+  const location = useLocation();
+  console.log(location.state);
+  const studyId = location.state.studyId;
+  console.log(studyId);
   const [search, setSearch] = useState('');
   const [searchList, setSearchList] = useState([]);
   const [area, setArea] = useState('지역을 선택해주세요.');
@@ -57,7 +61,9 @@ const StudyRoomReservation = () => {
   };
   const goStudyCafeDetail = (studyCafeId) => {
     console.log(studyCafeId);
-    navigate(`/cafes/${studyCafeId}`);
+    navigate(`/cafes/${studyCafeId}`, {
+      state: { studyId: studyId },
+    });
   };
   return (
     <Container>
