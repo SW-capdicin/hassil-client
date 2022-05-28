@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { emptyimg, review, right } from '@/img';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getOneStudyCafe, getStudyRoomsInStudyCafe } from '@/api';
+import { CafeReview } from '@/components';
 
 const StudyCafeDetail = () => {
   const params = useParams();
-  const navigate = useNavigate();
   const [studyCafe, setStudyCafe] = useState({});
   const [studyRooms, setStudyRooms] = useState([]);
+  const [showReview, setShowReview] = useState(false);
 
   const StudyCafeId = params.id;
   const findOneStudyCafe = async () => {
@@ -23,8 +24,8 @@ const StudyCafeDetail = () => {
     setStudyRooms(StudyRooms);
   };
 
-  const goReviewPage = () => {
-    navigate(`${window.location.pathname}/reviews`);
+  const toggleShowReview = () => {
+    setShowReview((prevState) => !prevState);
   };
 
   useEffect(() => {
@@ -45,24 +46,30 @@ const StudyCafeDetail = () => {
       />
       <StudyCafeHeader>
         <StudyCafeName>{studyCafe.name}</StudyCafeName>
-        <Review onClick={goReviewPage}>
+        <Review onClick={toggleShowReview}>
           <ReviewImg src={review} width="20" />
           4.6 (17)
           <RightImg src={right} width="20" height="15" />
         </Review>
       </StudyCafeHeader>
       <StudyCafeBody>
-        <StudyCafeInfo>{studyCafe.info}</StudyCafeInfo>
-        <StudyRoomsContainer>
-          {studyRooms.map((item) => {
-            return (
-              <StudyRooms key={item.id}>
-                {`${item.name}(다인실)`} {`${item.maxPerson}인실`}{' '}
-                {`시간당 ${item.pricePerHour}`}
-              </StudyRooms>
-            );
-          })}
-        </StudyRoomsContainer>
+        {showReview ? (
+          <CafeReview />
+        ) : (
+          <>
+            <StudyCafeInfo>{studyCafe.info}</StudyCafeInfo>
+            <StudyRoomsContainer>
+              {studyRooms.map((item) => {
+                return (
+                  <StudyRooms key={item.id}>
+                    {`${item.name}(다인실)`} {`${item.maxPerson}인실`}{' '}
+                    {`시간당 ${item.pricePerHour}`}
+                  </StudyRooms>
+                );
+              })}
+            </StudyRoomsContainer>
+          </>
+        )}
       </StudyCafeBody>
       <FixedDiv>
         <CreateBtn>
@@ -83,7 +90,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* height: calc(100%-15rem); */
   width: 100%;
 `;
 
@@ -111,6 +117,7 @@ const StudyCafeBody = styled.div`
   align-items: center;
   width: 80vw;
   height: 400px;
+  margin-bottom: 5rem;
 `;
 const StudyCafeInfo = styled.div`
   display: flex;
@@ -149,6 +156,7 @@ const FixedDiv = styled.div`
   height: 5rem;
   display: flex;
   border-top: 1px solid ${({ theme }) => theme.color.gray};
+  background-color: ${({ theme }) => theme.color.offwhite};
 `;
 
 const CreateBtn = styled.button`

@@ -29,7 +29,6 @@ import {
   StudyCafeCreate,
   StudyCafeDetail,
   UsedCafe,
-  CafeReview,
 } from '@/pages';
 import { Header, PublicRoute, PrivateRoute } from '@/components';
 import {
@@ -58,7 +57,6 @@ import {
   PATH_STUDYCAFE_CREATE,
   PATH_STUDYCAFE_DETAIL,
   PATH_USED_CAFE_LIST,
-  PATH_CAFE_REVIEW,
 } from '@/constants';
 
 const App = () => {
@@ -166,10 +164,6 @@ const App = () => {
             <Route
               path={PATH_USED_CAFE_LIST}
               element={<PrivateRoute element={UsedCafe} />}
-            />
-            <Route
-              path={PATH_CAFE_REVIEW}
-              element={<PrivateRoute element={CafeReview} />}
             />
             <Route
               path={PATH_NOT_FOUND}

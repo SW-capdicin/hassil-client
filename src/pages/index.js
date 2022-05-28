@@ -22,4 +22,3 @@ export { default as StudyRoomReservation } from './StudyRoomReservation.jsx';
 export { default as PaymentSuccess } from './PaymentSuccess';
 export { default as PaymentFail } from './PaymentFail';
 export { default as UsedCafe } from './UsedCafe';
-export { default as CafeReview } from './CafeReview';
