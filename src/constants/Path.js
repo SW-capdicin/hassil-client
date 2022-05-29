@@ -8,7 +8,10 @@ export const PATH_POINT_HISTORY = '/users/point-history';
 export const PATH_STUDY_CREATE = '/studies/create';
 export const PATH_STUDYCAFE_CREATE = '/cafes/create';
 export const PATH_STUDY_DETAIL = '/studies'; // :id
+export const PATH_STUDYCAFE_DETAIL = '/cafes/:id'; // studyCafeId
+export const PATH_STUDYCAFE_DETAIL_STUDYROOM = '/cafes/:id/reserve'; // studyCafeId
 export const PATH_JOINED_STUDY_LIST = '/users/studies';
+export const PATH_USED_CAFE_LIST = '/users/used-cafe';
 export const PATH_JOINED_STUDY_DETAIL = '/users/studies'; // :id
 export const PATH_STUDY_PARTICIPATION = `/studies/:id/participation`;
 export const PATH_PAYMENT = '/payment';
@@ -19,9 +22,9 @@ export const PATH_STUDY_RESERVATION_LIST = '/users/studies/:id/reservation';
 export const PATH_STUDYROOM_REQUIREMENT =
   '/users/studies/:id/reservation/requirement';
 export const PATH_STUDY_RESERVATION_CREATION =
-  '/users/studies/:id/reservation/requirement/creation';
+  '/users/studies/:id/reservation/requirement/creation'; // :studyId
 export const PATH_STUDYROOM_RESERVATION_SELECTION =
-  '/users/studies/:id/reservation/requirement/selection';
+  '/users/studies/:id/reservation/requirement/selection'; // :studyId
 export const PATH_RESERVATION_STATUS_DETAIL =
   '/users/studies/:id/reservation/:id/detail'; // :studyId  :reservationId
 export const PATH_STUDYROOM_RECOMMEND_CREATE =

@@ -8,21 +8,19 @@ import { getUserInfo, findStudy, createReservation } from '@/api';
 
 const { kakao, daum } = window;
 const StudyReservationCreation = () => {
-  const [address, setAddress] = useState(''); // 주소
-  const [lat, setLat] = useState(0); // 위도
-  const [lng, setLng] = useState(0); // 경도
+  const [address, setAddress] = useState('');
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
 
-  const [startDate, setStartDate] = useState(new Date()); // 진행일
-  const [startTime, setStartTime] = useState(new Date()); // 시작 시간
+  const [startDate, setStartDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(new Date());
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
 
-  //filterPassedTime
   const filterPassedTime = (time) => {
-    const currentTime = new Date(); // 5-14 17:24
-    const selectedDate = new Date(time); // 5-1
-    // console.log(selectedDate.getDate());
+    const currentTime = new Date();
+    const selectedDate = new Date(time);
     if (startDate.getDate() == selectedDate.getDate()) {
       return currentTime.getTime() < selectedDate.getTime();
     } else {
@@ -30,12 +28,9 @@ const StudyReservationCreation = () => {
     }
   };
 
-  //스터디 예약하기
   const reserveStudy = async () => {
     const reservationPerson = await getUserInfo();
 
-    // 위도, 경도, 스터디 진행날짜, 시작 시간, 예약한 사람
-    // reservationPersonName, status, longitude, latitude, address, startTime
     const reservationTime =
       startDate.toISOString().split('T')[0] +
       ' ' +
@@ -61,14 +56,13 @@ const StudyReservationCreation = () => {
     await navigate(`${curPath}`);
   };
 
-  //위치 검색
   const Post = async () => {
     let container = document.getElementById('map');
     let options = {
       center: new kakao.maps.LatLng(33.450701, 126.570667),
       level: 3,
     };
-    let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+    let map = new kakao.maps.Map(container, options);
     let geocoder = new kakao.maps.services.Geocoder();
     let marker = new kakao.maps.Marker({
       map: map,
@@ -76,7 +70,7 @@ const StudyReservationCreation = () => {
     });
     await new daum.Postcode({
       oncomplete: function (data) {
-        let addr = data.address; // 최종 주소 변수
+        let addr = data.address;
         setAddress(addr);
         geocoder.addressSearch(data.address, function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
@@ -91,7 +85,6 @@ const StudyReservationCreation = () => {
             container.style.display = 'block';
             map.relayout();
 
-            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
             map.setCenter(coords);
             marker.setPosition(coords);
             setLng(result[0].x);

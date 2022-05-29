@@ -9,3 +9,6 @@ export { default as fail } from './fail.png';
 export { default as locationIcon } from './location.svg';
 export { default as clockIcon } from './clock.svg';
 export { getLocationIcon, getLocationIconText } from './getLocationIcon.jsx';
+export { default as review } from './review.png';
+export { default as emptyimg } from './emptyimg.png';
+export { default as right } from './right.png';
