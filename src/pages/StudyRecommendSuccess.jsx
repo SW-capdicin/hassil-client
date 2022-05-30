@@ -90,7 +90,6 @@ const StudyRecommendSuccess = () => {
   const assignColor2Study = (list) => {
     const tmp = [...colorTable];
     list.map(({ studyCafeId }) => (colorMap[studyCafeId] = extractRandomOne(tmp)));
-    console.log(colorMap)
   }
 
   const mkMarker = (map, position, image) => {
@@ -167,7 +166,7 @@ const StudyRecommendSuccess = () => {
     const center = new kakao.maps.LatLng(cur.latitude, cur.longitude);
     const options = {
       center,
-      level: 5, // 축적 250m
+      level: radius > 500 ? 6 : 5, // 축적 250m
     };
     const map = new kakao.maps.Map(container.current, options);
 
@@ -178,7 +177,7 @@ const StudyRecommendSuccess = () => {
   };
 
   useEffect(() => {
-    const data = mockData;
+    const data = state;
     setSchedule(data.schedule);
     const map = initMap({
       latitude: data.latitude,

@@ -31,6 +31,8 @@ const StudyRcommendCreate = () => {
   const [endTime, setEndTime] = useState(new Date()); // 종료 시간
   const [option, setOption] = useState(0); // 추천 기준
   const [radius, setRadius] = useState(500); // 검색 반경
+
+  const [isModal, setIsModal] = useState(false);
   
   const filterPassedTime = (time) => {
     const currentTime = new Date(); // 5-14 17:24
@@ -77,12 +79,12 @@ const StudyRcommendCreate = () => {
       option,
       address,
     };
-    alert('스케줄 추천 받기');
-    const response = await requestStudyRecommend(data);
-    if (response.message == 'path exists') {
+    const { message, ...response } = await requestStudyRecommend(data);
+    if (message == 'path exists') {
       navigate(`${curPath}/success`, { state: response });
-    }
-    // navigate(`${curPath}/success`);
+    } else if (message == 'how about these') {
+      navigate(`${curPath}/substitute`, { state: data });
+    } else setIsModal(true);
   };
 
   const initMap = async () => {
@@ -187,76 +189,97 @@ const StudyRcommendCreate = () => {
     }
   }
 
+  const toggle = (val, setVal) => {
+    return () => setVal(!val);
+  }
+
+  const openModal = () => {
+    if (isModal) return (
+      <>
+      <Modal>
+        <ModalText>
+          해당 조건에 이용 가능한 스터디 카페가 없습니다. 조건을 변경해보세요!
+        </ModalText>
+      </Modal>
+      <BackGround onClick={toggle(isModal, setIsModal)} />
+      </>
+    )
+  }
+
   return (
-    <Container>
-      <SubContainer>
-        <InputContainer>
-          <Title>스터디 진행일</Title>
-          <SDatePickerContainer>
-            <SDatePicker
-              selected={startDate}
-              onChange={setStartDate}
-              startDate={startDate}
-              locale={ko}
-              minDate={new Date()}
-              dateFormat="yyyy년 MM월 dd일"
-            />
-            <AbsIcon src={calenderGray}/>
-          </SDatePickerContainer>
-        </InputContainer>
-        <InputContainer>
-          <Title>시작 시간</Title>
-          {timeBlock(startTime, changeStartTime)}
-        </InputContainer>
-        <InputContainer>
-          <Title>종료 시간</Title>
-          {timeBlock(endTime, setEndTime)}
-        </InputContainer>
+    <>
+      <Container>
+        <SubContainer>
+          <InputContainer>
+            <Title>스터디 진행일</Title>
+            <SDatePickerContainer>
+              <SDatePicker
+                selected={startDate}
+                onChange={setStartDate}
+                startDate={startDate}
+                locale={ko}
+                minDate={new Date()}
+                dateFormat="yyyy년 MM월 dd일"
+              />
+              <AbsIcon src={calenderGray}/>
+            </SDatePickerContainer>
+          </InputContainer>
+          <InputContainer>
+            <Title>시작 시간</Title>
+            {timeBlock(startTime, changeStartTime)}
+          </InputContainer>
+          <InputContainer>
+            <Title>종료 시간</Title>
+            {timeBlock(endTime, setEndTime)}
+          </InputContainer>
 
-        <ColumnContainer>
-          <Title>추천 기준</Title>
-          <SelectBox>
-            <Select onClick={selectOption(RECOMMEND_FEE)}>
-              <CircleIcon src={getSelectIcon(RECOMMEND_FEE)} /> 
-              최소 요금
-            </Select>
-            <Select onClick={selectOption(RECOMMEND_ROUTE)}>
-              <CircleIcon src={getSelectIcon(RECOMMEND_ROUTE)} /> 
-              최소 환승
-            </Select>
-          </SelectBox>
-        </ColumnContainer>
+          <ColumnContainer>
+            <Title>추천 기준</Title>
+            <SelectBox>
+              <Select onClick={selectOption(RECOMMEND_FEE)}>
+                <CircleIcon src={getSelectIcon(RECOMMEND_FEE)} /> 
+                최소 요금
+              </Select>
+              <Select onClick={selectOption(RECOMMEND_ROUTE)}>
+                <CircleIcon src={getSelectIcon(RECOMMEND_ROUTE)} /> 
+                최소 환승
+              </Select>
+            </SelectBox>
+          </ColumnContainer>
 
-        <ColumnContainer>
-          <Title>검색 기준 위치 찾기</Title>
-          <RelativeContainer>
-            <AddressInput
-              type="text"
-              onClick={Post}
-              value={address}
-              readOnly
-            ></AddressInput>
-            <AbsIconBox>{getLocationIcon()}</AbsIconBox>
-          </RelativeContainer>
-        </ColumnContainer>
-        <InputContainer>
-          <Title>검색 반경 설정 (m)</Title>
-          <ContentInput
-            type="number"
-            value={Number(radius)}
-            onChange={changeRadius}
-          ></ContentInput>
-        </InputContainer>
-      </SubContainer>
-      <MapContainer>
-        <KaKaoMap id="map" ref={container}></KaKaoMap>
-      </MapContainer>
-      <FixedDiv>
-        <Btn onClick={recommendStudySchedule}>
-          <BtnText>추천받기</BtnText>
-        </Btn>
-      </FixedDiv>
-    </Container>
+          <ColumnContainer>
+            <Title>검색 기준 위치 찾기</Title>
+            <RelativeContainer>
+              <AddressInput
+                type="text"
+                onClick={Post}
+                value={address}
+                readOnly
+              ></AddressInput>
+              <AbsIconBox>{getLocationIcon()}</AbsIconBox>
+            </RelativeContainer>
+          </ColumnContainer>
+          <InputContainer>
+            <Title>검색 반경 설정 (m)</Title>
+            <ContentInput
+              type="number"
+              value={Number(radius)}
+              onChange={changeRadius}
+            ></ContentInput>
+          </InputContainer>
+        </SubContainer>
+        <MapContainer>
+          <KaKaoMap id="map" ref={container}></KaKaoMap>
+        </MapContainer>
+        <FixedDiv>
+          <Btn onClick={recommendStudySchedule}>
+            <BtnText>추천받기</BtnText>
+          </Btn>
+        </FixedDiv>
+      </Container>
+      {openModal()}
+    </>
+    
   );
 };
 
@@ -421,4 +444,37 @@ const Btn = styled.button`
 const BtnText = styled.div`
   color: ${getColor('white')};
 `;
+
+const Modal = styled.div`
+  position: absolute;
+  width: 80%;
+  max-width: 350px;
+  background-color: ${getColor('white')};
+  z-index: 999;
+  top: 40%;
+  height: 15%;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+`;
+
+const BackGround = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: ${getColor('gray')};
+  opacity: 0.7;
+  z-index: 500;
+`;
+
+const ModalText = styled.div`
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
 export default StudyRcommendCreate;

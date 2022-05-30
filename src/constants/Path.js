@@ -31,4 +31,6 @@ export const PATH_STUDYROOM_RECOMMEND_CREATE =
   '/users/studies/:id/reservation/requirement/selection/recommend'; // :studyId
 export const PATH_STUDYROOM_RECOMMEND_SUCCESS =
   '/users/studies/:id/reservation/requirement/selection/recommend/success'; // :studyId
+export const PATH_STUDYROOM_RECOMMEND_SUBSTITUTE =
+  '/users/studies/:id/reservation/requirement/selection/recommend/substitute'; // :studyId
 export const PATH_NOT_FOUND = '/*';
