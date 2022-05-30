@@ -49,3 +49,8 @@ export const searchStudy = async (keyword) => {
   const response = await api.get('/api/studies/search', keyword);
   return response.data;
 };
+
+export const createShceduleRecommendReservation = async (id, data) => {
+  const response = await api.post(`/api/studies/${id}/schedule-recommend/reservations`, data);
+  return response.data;
+};
