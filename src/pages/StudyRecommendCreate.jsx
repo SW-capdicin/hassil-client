@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { getUserInfo } from '@/api';
+import { getUserInfo, requestStudyRecommend } from '@/api';
 import { checkCircleEmptySelect, checkCircleEmpty, calenderGray, getLocationIcon } from '@/img';
 import { getColor, getLocation, getTimestampByDateAndTime } from '@/utils';
 
@@ -53,9 +53,7 @@ const StudyRcommendCreate = () => {
   //스터디 스케줄 추천받기
   const recommendStudySchedule = async () => {
     const reservationPerson = await getUserInfo();
-
-    // 위도, 경도, 스터디 진행날짜, 시작 시간, 예약한 사람
-    // reservationPersonName, status, longitude, latitude, address, startTime
+    const curPath = location.pathname;
     const reservationStartTime = getTimestampByDateAndTime(
       startDate.toISOString().split('T')[0],
       startTime.toTimeString().split(' ')[0]
@@ -66,22 +64,25 @@ const StudyRcommendCreate = () => {
     );
     const data = {
       reservatingUserId: reservationPerson.id,
-      latitude: lat,
-      longitude: lng,
-      startTime: reservationStartTime,
-      endTime: reservationEndTime,
+      // for test
+      latitude: 33.450701,
+      longitude: 126.570667,
+      startTime: '2022-05-22T00:00:00+09',
+      endTime: '2022-05-22T06:00:00+09',
+      // latitude: lat,
+      // longitude: lng,
+      // startTime: reservationStartTime,
+      // endTime: reservationEndTime,
       radius,
       option,
       address,
     };
     alert('스케줄 추천 받기');
-    console.log(data);
-    const curPath = location.pathname;
-    // await createReservation(
-    //   params.id, // studyId
-    //   data,
-    // );
-    await navigate(`${curPath}/success`);
+    const response = await requestStudyRecommend(data);
+    if (response.message == 'path exists') {
+      navigate(`${curPath}/success`, { state: response });
+    }
+    // navigate(`${curPath}/success`);
   };
 
   const initMap = async () => {

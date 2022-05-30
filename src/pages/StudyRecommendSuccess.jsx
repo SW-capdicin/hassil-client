@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { getColor, extractRandomOne, getDateTime, getLastEl, defaultLine, separatorMoney } from '@/utils';
-import { clockIcon, getLocationIconText, locationIcon } from '@/img';
+import { clockIcon, getLocationIconText } from '@/img';
 
 const { kakao } = window;
 
@@ -12,8 +13,8 @@ const mockData = {
   schedule: [
     {
       studyRoomId: 1000,
-      studyId: 1000,
-      studyName: '아주대 공간샘',
+      studyCafeId: 1000,
+      studyCafeName: '아주대 공간샘',
       latitude: 33.451393,
       longitude: 126.570738,
       roomName: 'A 룸',
@@ -22,8 +23,8 @@ const mockData = {
     },
     {
       studyRoomId: 1002,
-      studyId: 1001,
-      studyName: '아주대 랭스터디',
+      studyCafeId: 1001,
+      studyCafeName: '아주대 랭스터디',
       latitude: 33.450936,
       longitude: 126.569477,
       roomName: 'B 룸',
@@ -32,8 +33,8 @@ const mockData = {
     },
     {
       studyRoomId: 1001,
-      studyId: 1001,
-      studyName: '아주대 랭스터디',
+      studyCafeId: 1001,
+      studyCafeName: '아주대 랭스터디',
       latitude: 33.450936,
       longitude: 126.569477,
       roomName: 'A 룸',
@@ -42,8 +43,8 @@ const mockData = {
     },
     {
       studyRoomId: 1000,
-      studyId: 1000,
-      studyName: '아주대 공간샘',
+      studyCafeId: 1000,
+      studyCafeName: '아주대 공간샘',
       latitude: 33.451393,
       longitude: 126.570738,
       roomName: 'A 룸',
@@ -52,8 +53,8 @@ const mockData = {
     },
     {
       studyRoomId: 1003,
-      studyId: 1000,
-      studyName: '아주대 공간샘',
+      studyCafeId: 1000,
+      studyCafeName: '아주대 공간샘',
       latitude: 33.451393,
       longitude: 126.570738,
       roomName: 'B 룸',
@@ -79,7 +80,7 @@ const colorTable = [
 ]
 
 const StudyRecommendSuccess = () => {
-  const loadData = () => mockData;
+  const { state } = useLocation();
 
   const [colorMap] = useState({});
   const [schedule, setSchedule] = useState([]);
@@ -88,7 +89,8 @@ const StudyRecommendSuccess = () => {
 
   const assignColor2Study = (list) => {
     const tmp = [...colorTable];
-    list.map(({ studyId }) => (colorMap[studyId] = extractRandomOne(tmp)));
+    list.map(({ studyCafeId }) => (colorMap[studyCafeId] = extractRandomOne(tmp)));
+    console.log(colorMap)
   }
 
   const mkMarker = (map, position, image) => {
@@ -127,11 +129,11 @@ const StudyRecommendSuccess = () => {
   const assignMarker2Map = (list, map) => {
     const studyMap = {};
     list.map(({
-      studyId,
-      studyName,
+      studyCafeId,
+      studyCafeName,
       latitude,
       longitude
-    }) => (studyMap[studyId] = { latitude, longitude, studyName }));
+    }) => (studyMap[studyCafeId] = { latitude, longitude, studyCafeName }));
 
     Object.keys(studyMap).map(key => {
       const position = new kakao.maps.LatLng(studyMap[key].latitude, studyMap[key].longitude);
@@ -142,7 +144,7 @@ const StudyRecommendSuccess = () => {
       ); 
 
       const marker = mkMarker(map, position, markerImage);
-      const infowindow = mkInfoWindow(studyMap[key].studyName);
+      const infowindow = mkInfoWindow(studyMap[key].studyCafeName);
 
       kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
       kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
@@ -176,7 +178,7 @@ const StudyRecommendSuccess = () => {
   };
 
   useEffect(() => {
-    const data = loadData();
+    const data = mockData;
     setSchedule(data.schedule);
     const map = initMap({
       latitude: data.latitude,
@@ -186,31 +188,35 @@ const StudyRecommendSuccess = () => {
     assignMarker2Map(data.schedule, map);
   }, []);
 
+  const rmTimezone = (datetime) => `${getDateTime(datetime).date}T${getDateTime(datetime).time}`
+
   const getTimestamp = (schedule) => {
     if (schedule.length == 0) return;
     const start = getDateTime(schedule[0].datetime);
-    const end = new Date(getLastEl(schedule).datetime);
+    const end = new Date(rmTimezone(getLastEl(schedule).datetime));
     return `${start.date} ${start.time} ~ ${formatHour(end.getHours() + 1)}`;
   }
 
   const formatHour = (hour) => `${String(hour).padStart(2, '0')}:00`
 
   const getOneHourTerm = (datetime) => {
-    const dt = new Date(datetime);
+    const dt = new Date(rmTimezone(datetime));
     return `${formatHour(dt.getHours())} ~ ${formatHour(dt.getHours() + 1)}`
   }
 
+  const sumValInList = (list, key) => list.reduce((acc, cur) => (acc += cur[key]), 0);
+
   const getScheduleContent = (schedule, idx) => (
     <ScheduleBox key={idx}>
-      <ColorBlock style={{ backgroundColor: colorMap[schedule.studyId] }} />
+      <ColorBlock style={{ backgroundColor: colorMap[schedule.studyCafeId] }} />
       <ColumnBox>
         <RowBox>
           <Icon src={clockIcon} />
           <ScheduleLabelSmall>{getOneHourTerm(schedule.datetime)}</ScheduleLabelSmall>
         </RowBox>
-        <ScheduleLabelLarge>{schedule.studyName}</ScheduleLabelLarge>
+        <ScheduleLabelLarge>{schedule.studyCafeName} {schedule.studyRoomName}룸</ScheduleLabelLarge>
       </ColumnBox>
-      <ScheduleLabelSmall>{schedule.price}원</ScheduleLabelSmall>
+      <ScheduleLabelSmall>{schedule.pricePerHour}원</ScheduleLabelSmall>
     </ScheduleBox>
   )
 
@@ -223,7 +229,7 @@ const StudyRecommendSuccess = () => {
       <PayContainer>
         <Line />
         <PayLabel>총 이용 금액 : </PayLabel>
-        <PayLabelImport>{separatorMoney(1000)}원</PayLabelImport>
+        <PayLabelImport>{separatorMoney(sumValInList(schedule, 'pricePerHour'))}원</PayLabelImport>
       </PayContainer>
       <MapContainer>
         <KaKaoMap id="map" ref={container}></KaKaoMap>
@@ -293,7 +299,7 @@ const ColorBlock = styled.div`
 const ScheduleLabelLarge = styled.label`
   display: flex;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 `;
 const ScheduleLabelSmall = styled.label`
   display: flex;

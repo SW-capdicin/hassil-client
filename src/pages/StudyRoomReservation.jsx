@@ -63,7 +63,8 @@ const StudyRoomReservation = () => {
     setArea('지역을 선택해주세요.');
   };
   const goStudyRoomRecommendation = () => {
-    // navigate()
+    const curPath = location.pathname;
+    navigate(`${curPath}/recommend`);
   };
   const goStudyCafeDetail = (studyCafeId) => {
     console.log(studyCafeId);
