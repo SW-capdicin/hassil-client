@@ -85,6 +85,7 @@ const StudyRcommendCreate = () => {
     } else if (message == 'how about these') {
       navigate(`${curPath}/substitute`, { state: data });
     } else setIsModal(true);
+    navigate(`${curPath}/substitute`, { state: data });
   };
 
   const initMap = async () => {
@@ -208,76 +209,76 @@ const StudyRcommendCreate = () => {
 
   return (
     <>
-      <Container>
-        <SubContainer>
-          <InputContainer>
-            <Title>스터디 진행일</Title>
-            <SDatePickerContainer>
-              <SDatePicker
-                selected={startDate}
-                onChange={setStartDate}
-                startDate={startDate}
-                locale={ko}
-                minDate={new Date()}
-                dateFormat="yyyy년 MM월 dd일"
-              />
-              <AbsIcon src={calenderGray}/>
-            </SDatePickerContainer>
-          </InputContainer>
-          <InputContainer>
-            <Title>시작 시간</Title>
-            {timeBlock(startTime, changeStartTime)}
-          </InputContainer>
-          <InputContainer>
-            <Title>종료 시간</Title>
-            {timeBlock(endTime, setEndTime)}
-          </InputContainer>
+    <Container>
+      <SubContainer>
+        <InputContainer>
+          <Title>스터디 진행일</Title>
+          <SDatePickerContainer>
+            <SDatePicker
+              selected={startDate}
+              onChange={setStartDate}
+              startDate={startDate}
+              locale={ko}
+              minDate={new Date()}
+              dateFormat="yyyy년 MM월 dd일"
+            />
+            <AbsIcon src={calenderGray}/>
+          </SDatePickerContainer>
+        </InputContainer>
+        <InputContainer>
+          <Title>시작 시간</Title>
+          {timeBlock(startTime, changeStartTime)}
+        </InputContainer>
+        <InputContainer>
+          <Title>종료 시간</Title>
+          {timeBlock(endTime, setEndTime)}
+        </InputContainer>
 
-          <ColumnContainer>
-            <Title>추천 기준</Title>
-            <SelectBox>
-              <Select onClick={selectOption(RECOMMEND_FEE)}>
-                <CircleIcon src={getSelectIcon(RECOMMEND_FEE)} /> 
-                최소 요금
-              </Select>
-              <Select onClick={selectOption(RECOMMEND_ROUTE)}>
-                <CircleIcon src={getSelectIcon(RECOMMEND_ROUTE)} /> 
-                최소 환승
-              </Select>
-            </SelectBox>
-          </ColumnContainer>
+        <ColumnContainer>
+          <Title>추천 기준</Title>
+          <SelectBox>
+            <Select onClick={selectOption(RECOMMEND_FEE)}>
+              <CircleIcon src={getSelectIcon(RECOMMEND_FEE)} /> 
+              최소 요금
+            </Select>
+            <Select onClick={selectOption(RECOMMEND_ROUTE)}>
+              <CircleIcon src={getSelectIcon(RECOMMEND_ROUTE)} /> 
+              최소 환승
+            </Select>
+          </SelectBox>
+        </ColumnContainer>
 
-          <ColumnContainer>
-            <Title>검색 기준 위치 찾기</Title>
-            <RelativeContainer>
-              <AddressInput
-                type="text"
-                onClick={Post}
-                value={address}
-                readOnly
-              ></AddressInput>
-              <AbsIconBox>{getLocationIcon()}</AbsIconBox>
-            </RelativeContainer>
-          </ColumnContainer>
-          <InputContainer>
-            <Title>검색 반경 설정 (m)</Title>
-            <ContentInput
-              type="number"
-              value={Number(radius)}
-              onChange={changeRadius}
-            ></ContentInput>
-          </InputContainer>
-        </SubContainer>
-        <MapContainer>
-          <KaKaoMap id="map" ref={container}></KaKaoMap>
-        </MapContainer>
-        <FixedDiv>
-          <Btn onClick={recommendStudySchedule}>
-            <BtnText>추천받기</BtnText>
-          </Btn>
-        </FixedDiv>
-      </Container>
-      {openModal()}
+        <ColumnContainer>
+          <Title>검색 기준 위치 찾기</Title>
+          <RelativeContainer>
+            <AddressInput
+              type="text"
+              onClick={Post}
+              value={address}
+              readOnly
+            ></AddressInput>
+            <AbsIconBox>{getLocationIcon()}</AbsIconBox>
+          </RelativeContainer>
+        </ColumnContainer>
+        <InputContainer>
+          <Title>검색 반경 설정 (m)</Title>
+          <ContentInput
+            type="number"
+            value={Number(radius)}
+            onChange={changeRadius}
+          ></ContentInput>
+        </InputContainer>
+      </SubContainer>
+      <MapContainer>
+        <KaKaoMap id="map" ref={container}></KaKaoMap>
+      </MapContainer>
+      <FixedDiv>
+        <Btn onClick={recommendStudySchedule}>
+          <BtnText>추천받기</BtnText>
+        </Btn>
+      </FixedDiv>
+    </Container>
+    {openModal()}
     </>
     
   );

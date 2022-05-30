@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getColor, extractRandomOne, getDateTime, getLastEl, defaultLine, separatorMoney } from '@/utils';
 import { clockIcon, getLocationIconText } from '@/img';
+import { createShceduleRecommendReservation } from '@/api';
 
 const { kakao } = window;
 
@@ -80,10 +81,15 @@ const colorTable = [
 ]
 
 const StudyRecommendSuccess = () => {
+  const { id: studyId } = useParams();
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   const [colorMap] = useState({});
   const [schedule, setSchedule] = useState([]);
+  const [nicknames, setNicknames] = useState([]);
+
+  const [isModal, setIsModal] = useState(false);
 
   const container = useRef(null);
 
@@ -217,9 +223,56 @@ const StudyRecommendSuccess = () => {
       </ColumnBox>
       <ScheduleLabelSmall>{schedule.pricePerHour}원</ScheduleLabelSmall>
     </ScheduleBox>
-  )
+  );
+
+  const toggle = (val, setVal) => {
+    return () => setVal(!val);
+  }
+
+  const goHome = () => navigate('/');
+
+  const openModal = ([first, ...failureUserList]) => {
+    if (!isModal) return;
+    if (!first) return (
+      <>
+      <Modal>
+        <ModalText>
+          결제가 완료 되었습니다.
+        </ModalText>
+        <ModalBtn onClick={goHome}>확인</ModalBtn>
+      </Modal>
+      <BackGround onClick={toggle(isModal, setIsModal)} />
+      </>
+    );
+    else return (
+      <>
+      <Modal>
+        <ModalText>
+          {failureUserList.reduce((acc, nickname) => (acc = `${acc}, ${nickname}`), first)}
+          님의 포인트가 부족합니다.<br/>
+          확인 후 다시 결제해주세요.
+        </ModalText>
+      </Modal>
+      <BackGround onClick={toggle(isModal, setIsModal)} />
+      </>
+    )
+  }
+
+  const clickReserve = async () => {
+    try {
+      await createShceduleRecommendReservation(studyId, {
+        studyRoomScheduleIds: state.schedule,
+        pricePerPerson: sumValInList(schedule, 'pricePerHour')
+      });
+      setNicknames([]);
+    } catch (e) {
+      setNicknames(e.response.data);
+    }
+    setIsModal(true);
+  }
 
   return (
+    <>
     <Container>
       <Timestap>{getTimestamp(schedule)}</Timestap>
       <ScheduleContainer>
@@ -234,11 +287,13 @@ const StudyRecommendSuccess = () => {
         <KaKaoMap id="map" ref={container}></KaKaoMap>
       </MapContainer>
       <FixedDiv>
-        <Btn>
+        <Btn onClick={clickReserve}>
           <BtnText>이 스케줄로 예약하기</BtnText>
         </Btn>
       </FixedDiv>
     </Container>
+    {openModal(nicknames)}
+    </>
   )
 }
 
@@ -374,6 +429,47 @@ const Btn = styled.button`
 `;
 const BtnText = styled.div`
   color: ${getColor('white')};
+`;
+
+const Modal = styled.div`
+  position: absolute;
+  width: 80%;
+  max-width: 350px;
+  background-color: ${getColor('white')};
+  z-index: 999;
+  top: 35%;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+`;
+
+const BackGround = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: ${getColor('gray')};
+  opacity: 0.7;
+  z-index: 500;
+`;
+
+const ModalText = styled.div`
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const ModalBtn = styled.button`
+  width: 100px;
+  height: 20px;
+  background-color: ${getColor('blue')};
+  color: ${getColor('white')};
+  border-radius: 10px;
+  border: none;
+  margin: 10px;
 `;
 
 export default StudyRecommendSuccess;
