@@ -67,8 +67,8 @@ const StudyRcommendCreate = () => {
     const data = {
       reservatingUserId: reservationPerson.id,
       // for test
-      latitude: 33.450701,
-      longitude: 126.570667,
+      latitude: 100,
+      longitude: 100,
       startTime: '2022-05-22T00:00:00+09',
       endTime: '2022-05-22T06:00:00+09',
       // latitude: lat,
@@ -83,9 +83,8 @@ const StudyRcommendCreate = () => {
     if (message == 'path exists') {
       navigate(`${curPath}/success`, { state: response });
     } else if (message == 'how about these') {
-      navigate(`${curPath}/substitute`, { state: data });
+      navigate(`${curPath}/substitute`, { state: { data, response } });
     } else setIsModal(true);
-    navigate(`${curPath}/substitute`, { state: data });
   };
 
   const initMap = async () => {

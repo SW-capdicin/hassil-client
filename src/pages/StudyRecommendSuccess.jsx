@@ -7,64 +7,6 @@ import { createShceduleRecommendReservation } from '@/api';
 
 const { kakao } = window;
 
-const mockData = {
-  latitude: 33.450701,
-  longitude: 126.570667,
-  radius: 500,
-  schedule: [
-    {
-      studyRoomId: 1000,
-      studyCafeId: 1000,
-      studyCafeName: '아주대 공간샘',
-      latitude: 33.451393,
-      longitude: 126.570738,
-      roomName: 'A 룸',
-      price: '3000',
-      datetime: '2022-05-22T00:00',
-    },
-    {
-      studyRoomId: 1002,
-      studyCafeId: 1001,
-      studyCafeName: '아주대 랭스터디',
-      latitude: 33.450936,
-      longitude: 126.569477,
-      roomName: 'B 룸',
-      price: '2000',
-      datetime: '2022-05-22T01:00',
-    },
-    {
-      studyRoomId: 1001,
-      studyCafeId: 1001,
-      studyCafeName: '아주대 랭스터디',
-      latitude: 33.450936,
-      longitude: 126.569477,
-      roomName: 'A 룸',
-      price: '2000',
-      datetime: '2022-05-22T02:00',
-    },
-    {
-      studyRoomId: 1000,
-      studyCafeId: 1000,
-      studyCafeName: '아주대 공간샘',
-      latitude: 33.451393,
-      longitude: 126.570738,
-      roomName: 'A 룸',
-      price: '3000',
-      datetime: '2022-05-22T03:00',
-    },
-    {
-      studyRoomId: 1003,
-      studyCafeId: 1000,
-      studyCafeName: '아주대 공간샘',
-      latitude: 33.451393,
-      longitude: 126.570738,
-      roomName: 'B 룸',
-      price: '3000',
-      datetime: '2022-05-22T04:00',
-    },
-  ]
-}
-
 const colorTable = [
   '#2164e8',
   '#70B3EC',
