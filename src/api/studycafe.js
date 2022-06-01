@@ -23,3 +23,8 @@ export const searchStudyCafe = async (keyword) => {
   const response = await api.get(`/api/study-cafes/search`, keyword);
   return response.data;
 };
+
+export const getStudyCafeByUserId = async () => {
+  const response = await api.get(`/api/study-cafes/mine`);
+  return response.data;
+};

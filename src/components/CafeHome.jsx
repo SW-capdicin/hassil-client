@@ -1,38 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PATH_STUDYCAFE_CREATE, PATH_STUDY_DETAIL } from '@/constants';
 import styled from 'styled-components';
 import { IoMdAddCircle } from 'react-icons/io';
 import emptyimg from '@/img/emptyimg.png';
 import { getColor, separatorMoney } from '@/utils';
+import { getStudyCafeByUserId } from '@/api';
 
 const UserHome = () => {
-  const [cafeList, setCafeList] = useState([
-    {
-      name: '아주대 공간샘 카페',
-      src: 'http://www.lightingnews.net/images/theme/cafe_01.png',
-    },
-    {
-      name: '아주대 공간샘 카페',
-      src: 'http://www.lightingnews.net/images/theme/cafe_01.png',
-    },
-    {
-      name: '아주대 공간샘 카페',
-      src: 'http://www.lightingnews.net/images/theme/cafe_01.png',
-    },
-    {
-      name: '아주대 공간샘 카페',
-      src: 'http://www.lightingnews.net/images/theme/cafe_01.png',
-    },
-    {
-      name: '아주대 공간샘 카페',
-      src: 'http://www.lightingnews.net/images/theme/cafe_01.png',
-    },
-    {
-      name: '아주대 공간샘 카페',
-      src: 'http://www.lightingnews.net/images/theme/cafe_01.png',
-    },
-  ]);
+  useEffect(() => {
+    getStudyCafeByUserId().then((cafeList) => setCafeList(cafeList));
+  }, []);
+  const [cafeList, setCafeList] = useState([]);
+
   const [reservationList, setReservationList] = useState([
     { name: '아주대 공간샘 A룸', price: 16000, date: '2022.04.13 20:00~22:00' },
     { name: '아주대 공간샘 A룸', price: 16000, date: '2022.04.13 20:00~22:00' },
@@ -69,7 +49,13 @@ const UserHome = () => {
           {cafeList.map((item, idx) => (
             <TabContent key={idx}>
               <Link to={{ pathname: PATH_STUDY_DETAIL + `/${item.id}` }}>
-                <Img src={item.src ? `${item.src}` : emptyimg} />
+                <Img
+                  src={
+                    item.StudyCafeImages[0].src
+                      ? `${item.StudyCafeImages[0].src}`
+                      : emptyimg
+                  }
+                />
                 <TextContainer>
                   <Text>{item.name}</Text>
                 </TextContainer>
