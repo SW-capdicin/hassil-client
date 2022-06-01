@@ -16,8 +16,8 @@ const StudyRecommendSubstitute = () => {
   useEffect(() => {
     const data = state.response;
     setRowData(data);
-    setDateSub(data.number1);
-    setRadiusSub(data.number2);
+    setRadiusSub(data.number1);
+    setDateSub(data.number2);
     setBothSub(data.number3);
   }, []);
 

@@ -21,13 +21,16 @@ const StudyReservationList = () => {
   const checkIsReserveStudyRoom = (reserve) =>
     reserve.StudyRoomSchedules.length > 0;
 
+  const rmTimezone = (datetime) => `${getDateTime(datetime).date}T${getDateTime(datetime).time}`
+  const formatHour = (hour) => `${String(hour).padStart(2, '0')}:00`
   const getTerm = (schedule) => {
     const sortedTime = schedule
       .sort(compareDate('datetime'))
       .map((a) => a.datetime);
+    
     return `${getDateTime(sortedTime[0]).date} (${
       getDateTime(sortedTime[0]).time
-    } ~ ${getDateTime(sortedTime[schedule.length - 1]).time})`;
+    } ~ ${formatHour(new Date(rmTimezone(sortedTime[schedule.length - 1])).getHours() + 1)})`;
   };
 
   const Reserve = (reserve, key) => {

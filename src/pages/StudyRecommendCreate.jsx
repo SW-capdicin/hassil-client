@@ -78,7 +78,7 @@ const StudyRcommendCreate = () => {
       radius,
       option,
       address,
-    };
+    }; 
     const { message, ...response } = await requestStudyRecommend(data);
     if (message == 'path exists') {
       navigate(`${curPath}/success`, { state: response });
@@ -106,9 +106,7 @@ const StudyRcommendCreate = () => {
   const mkMarker = (position) => {
     return new kakao.maps.Marker({
       map: kakaoMap,
-      // 이미지 생기면 넣을것
       image: null,
-      // 혹시 클릭하면 카페 이름 나오게 해야할거같아서 넣음
       clickable: true,
       position,
     });
