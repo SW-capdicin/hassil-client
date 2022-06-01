@@ -13,15 +13,16 @@ const JoinedStudyList = () => {
 
   const loadStudies = async () => {
     const data = await findJoinedStudy();
+    console.log(data);
     setStudies(() => data);
-  }
+  };
   useEffect(() => {
     loadStudies();
   }, []);
 
-  const showImage = src => {
+  const showImage = (src) => {
     return src && src.includes('http') ? src : emptyimg;
-  }
+  };
 
   const calcProgress = (startDate, endDate) => {
     const now = new Date();
@@ -33,14 +34,21 @@ const JoinedStudyList = () => {
 
     const rate = (end.getTime() - start.getTime()) / 100;
     return parseInt((now.getTime() - start.getTime()) / rate);
-  }
+  };
 
-  const goDetail = (id) => {
-    navigate(`${PATH_JOINED_STUDY_DETAIL}/${id}`);
-  }
+  const goDetail = (id, startDate, endDate) => {
+    const attendanceRateOfStudy = calcProgress(startDate, endDate);
+    console.log(attendanceRateOfStudy);
+    navigate(`${PATH_JOINED_STUDY_DETAIL}/${id}`, {
+      state: { attendanceRate: attendanceRateOfStudy },
+    });
+  };
 
   const Study = (study) => (
-    <StudyContainer key={study.id} onClick={() => goDetail(study.id)}>
+    <StudyContainer
+      key={study.id}
+      onClick={() => goDetail(study.id, study.startDate, study.endDate)}
+    >
       <Img src={showImage(study.src)}></Img>
       <Title>{study.name}</Title>
       <ProgressBarContainer>
@@ -52,16 +60,17 @@ const JoinedStudyList = () => {
           value={calcProgress(study.startDate, study.endDate)}
           max={100}
         />
+        <CurrentRate>
+          {'현재 참석률 : ' +
+            calcProgress(study.startDate, study.endDate) +
+            '%'}
+        </CurrentRate>
       </ProgressBarContainer>
     </StudyContainer>
   );
 
-  return (
-    <Container>
-      {studies.map(Study)}
-    </Container>
-  )
-}
+  return <Container>{studies.map(Study)}</Container>;
+};
 
 const outerContentsMargin = '50px';
 const innerContentsMargin = '7px';
@@ -135,5 +144,7 @@ const ProgressBar = styled.progress`
     background-color: white;
   }
 `;
-
+const CurrentRate = styled.div`
+  color: ${getColor('lightBlue')};
+`;
 export default JoinedStudyList;

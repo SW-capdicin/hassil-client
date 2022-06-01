@@ -28,7 +28,7 @@ const StudyReservationList = () => {
       .map((a) => a.datetime);
     return `${getDateTime(sortedTime[0]).date} (${
       getDateTime(sortedTime[0]).time
-    } ~ ${getDateTime(sortedTime[schedule.length - 1]).time})`;
+    })`;
   };
 
   const Reserve = (reserve, key) => {
