@@ -13,7 +13,6 @@ const JoinedStudyList = () => {
 
   const loadStudies = async () => {
     const data = await findJoinedStudy();
-    console.log(data);
     setStudies(() => data);
   };
   useEffect(() => {
@@ -38,7 +37,6 @@ const JoinedStudyList = () => {
 
   const goDetail = (id, startDate, endDate) => {
     const attendanceRateOfStudy = calcProgress(startDate, endDate);
-    console.log(attendanceRateOfStudy);
     navigate(`${PATH_JOINED_STUDY_DETAIL}/${id}`, {
       state: { attendanceRate: attendanceRateOfStudy },
     });
@@ -118,7 +116,7 @@ const ProgressLabelContainer = styled.div`
 `;
 const ProgressLabel = styled.label`
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
   color: ${getColor('gray')};
 `;
@@ -146,5 +144,7 @@ const ProgressBar = styled.progress`
 `;
 const CurrentRate = styled.div`
   color: ${getColor('lightBlue')};
+  font-size: 12px;
+  font-weight: 400;
 `;
 export default JoinedStudyList;
