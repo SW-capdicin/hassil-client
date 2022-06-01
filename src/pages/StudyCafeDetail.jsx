@@ -47,11 +47,11 @@ const StudyCafeDetail = () => {
         <Review onClick={toggleShowReview}>
           <ReviewImg src={review} width="20" />
           {Math.round(
-            studyCafe?.Reviews?.reduce((prev, cur) => prev + cur.rating, 0) /
-              studyCafe?.Reviews?.length,
+            (studyCafe?.Reviews?.reduce((prev, cur) => prev + cur.rating, 0) /
+            studyCafe?.Reviews?.length) || 0
           )}
-          ({studyCafe?.Reviews?.length})
-          <RightImg src={right} width="20" height="15" />
+          ({studyCafe?.Reviews?.length || 0})
+          <RightImg style={{ margin: 'auto', 'marginLeft': '5px' }} src={right} width="20" height="15" />
         </Review>
       </StudyCafeHeader>
       <StudyCafeBody>
@@ -74,6 +74,7 @@ const StudyCafeDetail = () => {
 };
 
 const ReviewImg = styled.img`
+  margin: auto;
   margin-right: 5px;
 `;
 
@@ -104,7 +105,9 @@ const StudyCafeName = styled.div`
   white-space: nowrap;
 `;
 const Review = styled.div`
+  display: flex;
   white-space: nowrap;
+  line-height: 30px;
 `;
 const StudyCafeBody = styled.div`
   overflow: auto;
@@ -112,7 +115,7 @@ const StudyCafeBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80vw;
+  width: 100vw;
   height: 400px;
   margin-bottom: 5rem;
   margin-top: 1rem;

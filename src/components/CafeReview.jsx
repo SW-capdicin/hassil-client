@@ -55,10 +55,10 @@ const DateText = styled.div`
 const Review = styled.div`
   display: flex;
   flex-direction: column;
-  border-style: solid none solid none;
+  border-style: solid none none none;
   border-color: ${getColor('gray')};
   border-width: 1px;
-  padding: 0.7rem 0 0.7rem 0;
+  padding: 0.7rem 1rem 0.7rem 1rem;
 `;
 
 export default CafeReview;
