@@ -51,7 +51,7 @@ const StudyCafeDetail = () => {
       </StudyCafeHeader>
       <StudyCafeBody>
         {showReview ? (
-          <CafeReview />
+          <CafeReview reviewList={studyCafe.Reviews} />
         ) : (
           <>
             <StudyCafeInfo>{studyCafe.info}</StudyCafeInfo>

@@ -1,47 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import StarRatings from 'react-star-ratings';
-import { getColor } from '@/utils';
+import { getColor, getDateTime } from '@/utils';
 
-const CafeReview = () => {
-  const reviewList = [
-    {
-      rating: 5,
-      date: '2022-05-31',
-      review:
-        '너무 좋아요 또 오고 싶어요 사장님이 너무 친절해요 그리고 여기 커피가 맛있어요 아메리카노 곡 시켜드세요',
-      nickname: 'Brown',
-    },
-    {
-      rating: 5,
-      date: '2022-05-31',
-      review:
-        '너무 좋아요 또 오고 싶어요 사장님이 너무 친절해요 그리고 여기 커피가 맛있어요 아메리카노 곡 시켜드세요',
-      nickname: 'Brown',
-    },
-    {
-      rating: 5,
-      date: '2022-05-31',
-      review:
-        '너무 좋아요 또 오고 싶어요 사장님이 너무 친절해요 그리고 여기 커피가 맛있어요 아메리카노 곡 시켜드세요',
-      nickname: 'Brown',
-    },
-    {
-      rating: 5,
-      date: '2022-05-31',
-      review:
-        '너무 좋아요 또 오고 싶어요 사장님이 너무 친절해요 그리고 여기 커피가 맛있어요 아메리카노 곡 시켜드세요',
-      nickname: 'Brown',
-    },
-    {
-      rating: 4.5,
-      date: '2022-05-31',
-      review:
-        '너무 좋아요 또 오고 싶어요 사장님이 너무 친절해요 그리고 여기 커피가 맛있어요 아메리카노 곡 시켜드세요',
-      nickname: 'Brown',
-    },
-  ];
-
+const CafeReview = ({ reviewList }) => {
   return (
     <Container>
       {reviewList.map((review, idx) => (
@@ -56,17 +18,19 @@ const CafeReview = () => {
               name="rating"
               starDimension={'25'}
             />
-            <DateText>{review.date}</DateText>
+            <DateText>{getDateTime(review.createdAt).date}</DateText>
           </ReviewHeader>
-          <ReviewText>{review.review}</ReviewText>
-          <Nickname>{review.nickname}</Nickname>
+          <ReviewText>{review.contents}</ReviewText>
+          <Nickname>{review.User.nickname}</Nickname>
         </Review>
       ))}
     </Container>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 
 const ReviewText = styled.div`
   font-size: smaller;
