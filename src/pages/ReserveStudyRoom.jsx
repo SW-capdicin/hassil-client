@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { emptyimg, review, right } from '@/img';
+import { emptyimg } from '@/img';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import {
   getOneStudyCafe,
@@ -10,7 +10,6 @@ import {
 } from '@/api';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
-import { CafeReview } from '@/components';
 
 const ReserveStudyRoom = () => {
   const params = useParams();
@@ -30,11 +29,6 @@ const ReserveStudyRoom = () => {
   const { id, maxPerson, name } = studyRoom;
   const [selectPersonnel, setSelectPersonnel] = useState([]);
   const [personnel, setPersonnel] = useState(0);
-
-  const [showReview, setShowReview] = useState(false);
-  const toggleShowReview = () => {
-    setShowReview((prevState) => !prevState);
-  };
 
   const studyId = location.state.studyId;
   const StudyCafeId = params.id;
@@ -133,16 +127,9 @@ const ReserveStudyRoom = () => {
       />
       <StudyCafeHeader>
         <StudyCafeName>{studyCafe.name}</StudyCafeName>
-        <Review onClick={toggleShowReview}>
-          <ReviewImg src={review} width="20" />
-          4.6 (17)
-          <RightImg src={right} width="20" height="15" />
-        </Review>
       </StudyCafeHeader>
       <StudyCafeBody>
-        {showReview ? (
-          <CafeReview />
-        ) : isStudyRoomSelected === false ? (
+        {isStudyRoomSelected === false ? (
           <>
             <StudyRooms>
               {studyRooms.map((item) => {
@@ -219,17 +206,10 @@ const ReserveStudyRoom = () => {
   );
 };
 
-const ReviewImg = styled.img`
-  margin-right: 5px;
-`;
-
-const RightImg = styled.img``;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* height: calc(100%-15rem); */
   width: 100%;
 `;
 
@@ -248,8 +228,11 @@ const StudyCafeHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 1rem;
 `;
-const StudyCafeName = styled.div``;
-const Review = styled.div``;
+const StudyCafeName = styled.div`
+  width: 100%;
+  text-align: center;
+`;
+
 const StudyCafeBody = styled.div`
   overflow: auto;
   overflow-x: hidden;
