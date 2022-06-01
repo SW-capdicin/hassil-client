@@ -82,7 +82,7 @@ const Container = styled.div`
 `;
 
 const Img = styled.img`
-  width: 80vw;
+  width: 90vw;
   height: 10rem;
   border-radius: 10px;
   align-self: center;
@@ -91,12 +91,16 @@ const Img = styled.img`
 `;
 const StudyCafeHeader = styled.div`
   display: flex;
-  width: 80vw;
+  width: 90vw;
   height: 2rem;
   justify-content: space-between;
 `;
-const StudyCafeName = styled.div``;
-const Review = styled.div``;
+const StudyCafeName = styled.div`
+  white-space: nowrap;
+`;
+const Review = styled.div`
+  white-space: nowrap;
+`;
 const StudyCafeBody = styled.div`
   overflow: auto;
   overflow-x: hidden;
@@ -106,6 +110,7 @@ const StudyCafeBody = styled.div`
   width: 80vw;
   height: 400px;
   margin-bottom: 5rem;
+  margin-top: 1rem;
 `;
 const StudyCafeInfo = styled.div`
   display: flex;
