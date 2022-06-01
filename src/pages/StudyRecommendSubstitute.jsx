@@ -4,217 +4,6 @@ import styled from 'styled-components';
 import { getColor, getDateTime, getLastEl } from '@/utils';
 import { right } from '@/img';
 
-const mockData = {
-  "latitude": "100",
-  "longitude": "100",
-  "radius": 500,
-  "message": "how about these",
-  "number1": [
-      {
-          "id": 851,
-          "studyRoomId": 1004,
-          "datetime": "2022-05-22T00:00:00.000Z",
-          "pricePerHour": 2000,
-          "studyCafeId": 1003,
-          "studyCafeName": "환승(100.007, 100.007) 2000원",
-          "studyRoomName": "A",
-          "latitude": "100.007",
-          "longitude": "100.007"
-      },
-      {
-          "id": 852,
-          "studyRoomId": 1004,
-          "datetime": "2022-05-22T01:00:00.000Z",
-          "pricePerHour": 2000,
-          "studyCafeId": 1003,
-          "studyCafeName": "환승(100.007, 100.007) 2000원",
-          "studyRoomName": "A",
-          "latitude": "100.007",
-          "longitude": "100.007"
-      },
-      {
-          "id": 853,
-          "studyRoomId": 1004,
-          "datetime": "2022-05-22T02:00:00.000Z",
-          "pricePerHour": 2000,
-          "studyCafeId": 1003,
-          "studyCafeName": "환승(100.007, 100.007) 2000원",
-          "studyRoomName": "A",
-          "latitude": "100.007",
-          "longitude": "100.007"
-      },
-      {
-          "id": 841,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T03:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 842,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T04:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 843,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T05:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      }
-  ],
-  "number2": [
-      {
-          "id": 840,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T01:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 845,
-          "studyRoomId": 1001,
-          "datetime": "2022-05-22T02:00:00.000Z",
-          "pricePerHour": 1250,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "B",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 841,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T03:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 842,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T04:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 843,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T05:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 844,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T06:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      }
-  ],
-  "number3": [
-      {
-          "id": 852,
-          "studyRoomId": 1004,
-          "datetime": "2022-05-22T01:00:00.000Z",
-          "pricePerHour": 2000,
-          "studyCafeId": 1003,
-          "studyCafeName": "환승(100.007, 100.007) 2000원",
-          "studyRoomName": "A",
-          "latitude": "100.007",
-          "longitude": "100.007"
-      },
-      {
-          "id": 853,
-          "studyRoomId": 1004,
-          "datetime": "2022-05-22T02:00:00.000Z",
-          "pricePerHour": 2000,
-          "studyCafeId": 1003,
-          "studyCafeName": "환승(100.007, 100.007) 2000원",
-          "studyRoomName": "A",
-          "latitude": "100.007",
-          "longitude": "100.007"
-      },
-      {
-          "id": 841,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T03:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 842,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T04:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 843,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T05:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      },
-      {
-          "id": 844,
-          "studyRoomId": 1000,
-          "datetime": "2022-05-22T06:00:00.000Z",
-          "pricePerHour": 1000,
-          "studyCafeId": 1000,
-          "studyCafeName": "환승(100,100) 1000원",
-          "studyRoomName": "A",
-          "latitude": "100",
-          "longitude": "100"
-      }
-  ]
-}
-
 const StudyRecommendSubstitute = () => {
   const { pathname, state } = useLocation();
   const navigate = useNavigate();
@@ -225,10 +14,10 @@ const StudyRecommendSubstitute = () => {
   const [bothSub, setBothSub] = useState([]);
 
   useEffect(() => {
-    const data = mockData;
+    const data = state.response;
     setRowData(data);
-    setDateSub(data.number1);
-    setRadiusSub(data.number2);
+    setRadiusSub(data.number1);
+    setDateSub(data.number2);
     setBothSub(data.number3);
   }, []);
 
@@ -241,7 +30,7 @@ const StudyRecommendSubstitute = () => {
     return `${start.date} ${start.time} ~ ${formatHour(end.getHours() + 1)}`;
   }
 
-  const getMainTitleText = () => getTimestamp([state.startTime, state.endTime].map(a => ({ datetime: a })));
+  const getMainTitleText = () => getTimestamp([state.data.startTime, state.data.endTime].map(a => ({ datetime: a })));
 
   const formatHour = (hour) => `${String(hour).padStart(2, '0')}:00`
 
@@ -270,7 +59,7 @@ const StudyRecommendSubstitute = () => {
   const mkBlock = (bool, text) => bool ? getBlockBoldLabel(text) : getBlockLabel(text);
 
   const mkBlockLabel = (schedule, radius, focus) => {
-    const date = getTimestamp(radiusSub);
+    const date = getTimestamp(schedule);
     if (!date || !radius) return (<NoneLabel>이용 가능한 스케줄이 없어요</NoneLabel>);
 
     const dateBlock = (date) => mkBlock(checkInclude(focus, 'date'), date);
@@ -292,7 +81,7 @@ const StudyRecommendSubstitute = () => {
 
   return (
     <Container>
-      {mkTitleLabel(getMainTitleText(), state.radius)}
+      {mkTitleLabel(getMainTitleText(), state.data.radius)}
       <ContentBox>
         <SubTitleBox>
           <BlueTitle>이런 조건은 어떠세요?</BlueTitle>
@@ -300,7 +89,7 @@ const StudyRecommendSubstitute = () => {
         <SubTitle>검색 반경을 변경</SubTitle>
         {mkBlockLabel(radiusSub, 1000, ['radius'])}
         <SubTitle>검색 시간을 변경</SubTitle>
-        {mkBlockLabel(dateSub, state.radius, ['date'])}
+        {mkBlockLabel(dateSub, state.data.radius, ['date'])}
         <SubTitle>검색 시간과 반경을 변경</SubTitle>
         {mkBlockLabel(bothSub, 1000, ['radius', 'date'])}
       </ContentBox>
