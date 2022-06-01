@@ -16,6 +16,7 @@ const StudyCafeDetail = () => {
   const StudyCafeId = params.id;
   const findOneStudyCafe = async () => {
     const Cafe = await getOneStudyCafe(StudyCafeId);
+    console.log(Cafe);
     setStudyCafe(Cafe);
   };
 
@@ -45,7 +46,11 @@ const StudyCafeDetail = () => {
         <StudyCafeName>{studyCafe.name}</StudyCafeName>
         <Review onClick={toggleShowReview}>
           <ReviewImg src={review} width="20" />
-          4.6 (17)
+          {Math.round(
+            studyCafe?.Reviews?.reduce((prev, cur) => prev + cur.rating, 0) /
+              studyCafe?.Reviews?.length,
+          )}
+          ({studyCafe?.Reviews?.length})
           <RightImg src={right} width="20" height="15" />
         </Review>
       </StudyCafeHeader>
