@@ -5,13 +5,11 @@ import emptyimg from '@/img/emptyimg.png';
 import { uploadOneImage, createStudyCafe } from '@/api';
 
 import { IoMdAddCircle } from 'react-icons/io';
-import { useSelector } from 'react-redux';
 import { Input } from '@/components';
 import { getColor } from '@/utils';
 const { kakao, daum } = window;
 
 const StudyCafeCreate = () => {
-  const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [src, setFiles] = useState(null);
   const [inputs, setInputs] = useState({
@@ -92,7 +90,7 @@ const StudyCafeCreate = () => {
     let geocoder = new kakao.maps.services.Geocoder();
     await new daum.Postcode({
       oncomplete: function (data) {
-        let addr = data.address; // 최종 주소 변수
+        let addr = data.address;
         let lng = null;
         let lat = null;
         let loc = null;
@@ -129,7 +127,6 @@ const StudyCafeCreate = () => {
   };
 
   const handleSubmit = async () => {
-    // studyCafe 등록하는 api 필요
     let image = null;
     if (src) {
       const fd = new FormData();
@@ -139,7 +136,6 @@ const StudyCafeCreate = () => {
     }
     const StudyCafe = {
       ...inputs,
-      // src: image || src,
       StudyCafeImages: [{ src: image }],
       studyRooms: [...studyRooms],
     };
@@ -183,14 +179,18 @@ const StudyCafeCreate = () => {
               onChange={handleChangeStudyRoom}
             />
           </InputContainer>
+
           <InputContainer>
-            <Mlabel>대표 이미지 등록</Mlabel>
             <MSelectImg onClick={() => studyRoomImgInput.current.click()}>
-              {/* <CuIoMdAddCircle /> */}
               {studyRoom.src ? (
                 <MImg src={URL.createObjectURL(studyRoom.src)}></MImg>
               ) : (
-                <CuIoMdAddCircle />
+                <>
+                  <Mlabel>대표 이미지 등록</Mlabel>
+                  <MAddBtnContainer>
+                    <CuIoMdAddCircle />
+                  </MAddBtnContainer>
+                </>
               )}
             </MSelectImg>
             <MInput
@@ -319,7 +319,8 @@ const SelectImg = styled.div``;
 const Img = styled.img`
   display: flex;
   width: 100%;
-  max-height: 45vh;
+  height: 230px;
+  object-fit: cover;
 `;
 const InputContainer = styled.div`
   display: flex;
@@ -327,9 +328,7 @@ const InputContainer = styled.div`
   justify-content: space-between;
   margin-bottom: ${bottomMargin};
 `;
-const InputWithLabel = styled.input`
-  ${bottomMargin}
-`;
+
 const Label = styled.label`
   color: ${({ theme }) => theme.color.gray};
   display: flex;
@@ -358,8 +357,6 @@ const TextArea = styled.textarea`
 const Modal = styled.div`
   position: absolute;
   width: 80%;
-  /* height: 60%; */
-  /* max-height: max-content; */
   max-width: 350px;
   color: ${getColor('black')};
   font-weight: bold;
@@ -371,19 +368,21 @@ const Modal = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   align-content: center;
-  padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+  padding: 1.5rem 1rem 1.5rem 1rem;
   justify-content: space-between;
 `;
 
 const Title = styled.div`
   font-size: large;
   font-weight: bold;
+  margin-bottom: 1rem;
 `;
 const Mlabel = styled.label`
   display: flex;
-  /* margin: auto; */
-  /* margin-left: 0px; */
+  align-items: center;
   font-size: 15px;
+  width: 50%;
+  height: 2rem;
   ${labelForVerticalCenter}
 `;
 const MInput = styled.input`
@@ -394,12 +393,19 @@ const MInput = styled.input`
 `;
 const MSelectImg = styled.div`
   display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+const MAddBtnContainer = styled.div`
+  display: flex;
+  width: 50%;
   justify-content: center;
 `;
 const MImg = styled.img`
   display: flex;
-  max-width: 80%;
+  max-width: 100%;
   max-height: 100%;
+  object-fit: cover;
 `;
 const BtnContainer = styled.div`
   display: flex;
@@ -440,7 +446,6 @@ const StudyRoomText = styled.div`
   width: 100%;
   font-weight: bold;
   margin-left: 10px;
-  /* display: flex; */
 `;
 const AddBtnContainer = styled.div`
   display: flex;

@@ -4,15 +4,13 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { calender } from '@/img';
-import {
-  findStudy,
-  getStudyAttend,
-} from '@/api';
+import { findStudy, getStudyAttend } from '@/api';
 import { getColor, defaultLine, separatorMoney } from '@/utils';
 
 const JoinedStudyDetail = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const location = useLocation();
 
   const [src, setFiles] = useState('');
   const [studyInfo, setInputs] = useState({});
@@ -55,22 +53,6 @@ const JoinedStudyDetail = () => {
     'NCS',
   ];
 
-  const makeReserve = async () => {
-    // 스터디룸 예약 하는 기능 구현
-    // const reservationPerson = await getUserInfo();
-    alert('예약 생성');
-    // const result = await createReservation(
-    //   params.id,
-    //   reservationPerson.name,
-    //   3, //status,
-    // longitude:
-    //       latitude:
-    //       address:
-    //       startTime:
-    // );
-    // console.log(result);
-  };
-
   const calcAbsent = (meetingCnt, lateCnt, attendCnt) => {
     if (!meetingCnt) return 0;
     return meetingCnt - lateCnt - attendCnt;
@@ -79,12 +61,19 @@ const JoinedStudyDetail = () => {
   const calcExpectedDeposit = () => {
     const deposit = studyInfo.depositPerPerson;
     const late = userAttend.lateCnt * studyInfo.lateFee;
-    const absent = calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt) * studyInfo.absentFee;
+    const absent =
+      calcAbsent(
+        studyInfo.meetingCnt,
+        userAttend.lateCnt,
+        userAttend.attendCnt,
+      ) * studyInfo.absentFee;
     return deposit + studyInfo.expectedReward - late - absent;
-  }
+  };
 
-  const getCurPath = useLocation().pathname;
+  const getCurPath = location.pathname;
+  const currentRate = location.state.attendanceRate;
   const moveReservation = () => navigate(`${getCurPath}/reservation`);
+  const movePointRefund = () => navigate('/refund');
 
   return (
     <Container>
@@ -107,7 +96,13 @@ const JoinedStudyDetail = () => {
           </Board>
           <Board>
             <BoardLabel>결석</BoardLabel>
-            <BoardLabel>{calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt)}</BoardLabel>
+            <BoardLabel>
+              {calcAbsent(
+                studyInfo.meetingCnt,
+                userAttend.lateCnt,
+                userAttend.attendCnt,
+              )}
+            </BoardLabel>
           </Board>
           <Board>
             <BoardLabel>인원</BoardLabel>
@@ -122,24 +117,25 @@ const JoinedStudyDetail = () => {
             </PointMainLabel>
           </PointLabelContainer>
           <PointSubLabel>
-            보증금({separatorMoney(studyInfo.depositPerPerson)}원) - 지각 {userAttend.lateCnt}회
-            - 결석 {calcAbsent(studyInfo.meetingCnt, userAttend.lateCnt, userAttend.attendCnt)}회
-            + 리워드 {separatorMoney((studyInfo.expectedReward))} 원
+            보증금({separatorMoney(studyInfo.depositPerPerson)}원) - 지각{' '}
+            {userAttend.lateCnt}회 - 결석{' '}
+            {calcAbsent(
+              studyInfo.meetingCnt,
+              userAttend.lateCnt,
+              userAttend.attendCnt,
+            )}
+            회 + 리워드 {separatorMoney(studyInfo.expectedReward)} 원
           </PointSubLabel>
         </PointContainer>
-        <ReserveBtnContainer>
-          <ReserveBtn onClick={makeReserve}>
-            <ReserveBtnText>스터디 카페 예약하기</ReserveBtnText>
-            <Icon />
-          </ReserveBtn>
-        </ReserveBtnContainer>
         <Line />
         <SubTitle>스터디 정보</SubTitle>
       </FullWidthContainer>
       <ContentsContainer>
         <InputContainer>
           <Label>인당 보증금</Label>
-          <LabelContents>{separatorMoney(studyInfo.depositPerPerson)}원</LabelContents>
+          <LabelContents>
+            {separatorMoney(studyInfo.depositPerPerson)}원
+          </LabelContents>
         </InputContainer>
         <InputContainer>
           <Label>기간</Label>
@@ -180,9 +176,19 @@ const JoinedStudyDetail = () => {
       </ContentsContainer>
 
       <FixedDiv>
-          <ReservationListBtn onClick={moveReservation}>
-            <label>예약 현황</label>
-          </ReservationListBtn>
+        {currentRate !== 100 ? (
+          <>
+            <ReservationListBtn onClick={moveReservation}>
+              <label>예약 현황</label>
+            </ReservationListBtn>
+          </>
+        ) : (
+          <>
+            <ReservationListBtn onClick={movePointRefund}>
+              <label>환급 하기</label>
+            </ReservationListBtn>
+          </>
+        )}
       </FixedDiv>
     </Container>
   );
@@ -335,7 +341,7 @@ const BoardLabel = styled.label`
 const PointContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 5%;
+  margin: 5% 5%;
 `;
 const PointLabelContainer = styled.div`
   display: flex;

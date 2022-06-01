@@ -6,6 +6,7 @@ import {
   getOneStudyCafe,
   getStudyRoomsInStudyCafe,
   createReservation,
+  getUserInfo,
 } from '@/api';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
@@ -42,6 +43,13 @@ const ReserveStudyRoom = () => {
     setStudyCafe(Cafe);
   };
 
+  const [reservationPersonName, setReservationPersonName] = useState();
+  const getUser = async () => {
+    const responseData = await getUserInfo();
+    setReservationPersonName(responseData.name);
+    // console.log(responseData);
+  };
+
   const getStudyRooms = async () => {
     const StudyRooms = await getStudyRoomsInStudyCafe(StudyCafeId);
     setStudyRooms(StudyRooms);
@@ -69,6 +77,7 @@ const ReserveStudyRoom = () => {
   useEffect(() => {
     findOneStudyCafe();
     getStudyRooms();
+    getUser();
   }, []);
   useEffect(() => {
     let temp_arr = [];
@@ -101,9 +110,11 @@ const ReserveStudyRoom = () => {
       ' ';
     startTime.toTimeString().split(' ')[1];
     const data = {
-      status: 1,
+      status: 0,
       studyRoomId: id,
       datetime: reservationTime,
+      personCnt: personnel,
+      reservationPersonName: reservationPersonName,
     };
 
     //error 발생 백엔드 api 수정 필요
