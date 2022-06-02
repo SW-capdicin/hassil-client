@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
@@ -6,7 +6,7 @@ import { uploadOneImage, createStudyCafe } from '@/api';
 
 import { IoMdAddCircle } from 'react-icons/io';
 import { Input } from '@/components';
-import { getColor } from '@/utils';
+import { getColor, separatorMoney } from '@/utils';
 const { kakao, daum } = window;
 
 const StudyCafeCreate = () => {
@@ -280,9 +280,20 @@ const StudyCafeCreate = () => {
           {studyRooms.map((item, idx) => {
             return (
               <StudyRoomContainer key={idx}>
-                <StudyRoomText>{item.studyRoomName}</StudyRoomText>
-                <StudyRoomText>{item.pricePerHour}</StudyRoomText>
-                <StudyRoomText>{item.maxPerson}</StudyRoomText>
+                <ImgContainer onClick={() => imgInput.current.click()}>
+                  <RoomImg src={item.src}></RoomImg>
+                </ImgContainer>
+                <RowBox>
+                  <StudyRoomText>{item.studyRoomName}룸</StudyRoomText>
+                  <StudyRoomText>
+                    <StudyRoomSub>시간당 가격 :</StudyRoomSub>
+                    {separatorMoney(item.pricePerHour)}원
+                  </StudyRoomText>
+                  <StudyRoomText>
+                    <StudyRoomSub>수용 인원 :</StudyRoomSub>
+                    {Number(item.maxPerson)}명
+                  </StudyRoomText>
+                </RowBox>
               </StudyRoomContainer>
             );
           })}
@@ -312,16 +323,33 @@ const Container = styled.div`
   padding-left: 10%;
   padding-right: 10%;
   overflow: auto;
-  justify-content: space-evenly;
 `;
 const SubContainer = styled.div``;
 const SelectImg = styled.div``;
+const ImgContainer = styled.div``;
 const Img = styled.img`
   display: flex;
   width: 100%;
   height: 230px;
   object-fit: cover;
 `;
+
+const RowBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+`;
+
+const RoomImg = styled.img`
+  display: flex;
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 10px;
+`;
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -340,7 +368,9 @@ const Label = styled.label`
 const AddressInput = styled.input`
   width: 12rem;
   border-style: none none solid none;
+  border-color: ${getColor('gray')};
   padding-left: 2px;
+  border-width: 1px;
   :focus {
     outline: none;
   }
@@ -353,6 +383,9 @@ const TextArea = styled.textarea`
   border-radius: 5px;
   padding: 5px;
   margin-bottom: ${bottomMargin};
+  &::placeholder {
+    color: ${getColor('gray')};
+  }
 `;
 const Modal = styled.div`
   position: absolute;
@@ -395,6 +428,7 @@ const MSelectImg = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  max-height: 150px;
 `;
 const MAddBtnContainer = styled.div`
   display: flex;
@@ -404,8 +438,8 @@ const MAddBtnContainer = styled.div`
 const MImg = styled.img`
   display: flex;
   max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  border-radius: 10px;
 `;
 const BtnContainer = styled.div`
   display: flex;
@@ -434,20 +468,30 @@ const BackGround = styled.div`
 `;
 const StudyRoomContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 
   border: 1px solid ${getColor('gray')};
-  height: 2rem;
+  border-radius: 10px;
   width: 100%;
   margin-bottom: ${bottomMargin};
 `;
+const StudyRoomSub = styled.div`
+  display: flex;
+  font-size: 10px;
+  font-weight: 400;
+  margin: auto;
+  margin-right: 5px;
+  color: ${getColor('gray')};
+`;
 const StudyRoomText = styled.div`
-  width: 100%;
-  font-weight: bold;
-  margin-left: 10px;
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  margin: auto;
 `;
 const AddBtnContainer = styled.div`
+  height: 40px;
   display: flex;
   justify-content: center;
   border: 1px solid ${getColor('gray')};
@@ -457,6 +501,7 @@ const CuIoMdAddCircle = styled(IoMdAddCircle)`
   width: 2rem;
   height: 2rem;
   color: ${getColor('gray')};
+  margin: auto;
 `;
 const FixedDiv = styled.div`
   position: fixed;

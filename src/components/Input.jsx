@@ -72,18 +72,26 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 15px;
 `;
 
 const Label = styled.label`
   color: ${getColor('gray')};
+  line-height: 25px;
 `;
 
 const InputField = styled.input`
   width: 12rem;
   border-style: none none solid none;
+  border-color: ${getColor('gray')};
+  border-width: 1px;
   padding-left: 2px;
+  line-height: 25px;
   :focus {
     outline: none;
+  }
+  &::placeholder {
+    color: ${getColor('gray')};
   }
 `;
 
