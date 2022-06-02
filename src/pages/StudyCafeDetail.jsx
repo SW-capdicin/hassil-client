@@ -147,6 +147,8 @@ const StudyCafeHeader = styled.div`
   width: 90vw;
   height: 2rem;
   justify-content: space-between;
+  margin-bottom: 5px;
+}
 `;
 const StudyCafeName = styled.div`
   white-space: nowrap;
@@ -175,7 +177,7 @@ const SubTitle = styled.div`
   margin-left: 0px;
   font-size: 14px;
   font-weight: 400;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 const StudyCafeInfo = styled.div`
   display: flex;
