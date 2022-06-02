@@ -8,7 +8,7 @@ const StudyRecommendSubstitute = () => {
   const { pathname, state } = useLocation();
   const navigate = useNavigate();
 
-  const [rowData, setRowData] = useState({}); 
+  const [rowData, setRowData] = useState({});
   const [dateSub, setDateSub] = useState([]);
   const [radiusSub, setRadiusSub] = useState([]);
   const [bothSub, setBothSub] = useState([]);
@@ -21,63 +21,84 @@ const StudyRecommendSubstitute = () => {
     setBothSub(data.number3);
   }, []);
 
-  const rmTimezone = (datetime) => `${getDateTime(datetime).date}T${getDateTime(datetime).time}`
+  const rmTimezone = (datetime) =>
+    `${getDateTime(datetime).date}T${getDateTime(datetime).time}`;
 
   const getTimestamp = (schedule) => {
     if (schedule.length == 0) return null;
     const start = getDateTime(schedule[0].datetime);
     const end = new Date(rmTimezone(getLastEl(schedule).datetime));
     return `${start.date} ${start.time} ~ ${formatHour(end.getHours() + 1)}`;
-  }
+  };
 
-  const getMainTitleText = () => getTimestamp([state.data.startTime, state.data.endTime].map(a => ({ datetime: a })));
+  const getMainTitleText = () =>
+    getTimestamp(
+      [state.data.startTime, state.data.endTime].map((a) => ({ datetime: a })),
+    );
 
-  const formatHour = (hour) => `${String(hour).padStart(2, '0')}:00`
+  const formatHour = (hour) => `${String(hour).padStart(2, '0')}:00`;
 
   const successPath = `${pathname.split('/substitute')[0]}/success`;
   const clickBlock = (data, schedule) => {
-      return () => navigate(successPath, {
+    return () =>
+      navigate(successPath, {
         state: {
           ...data,
-          schedule
-        }
-      })
-  }
+          schedule,
+        },
+      });
+  };
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const mkTitleLabel = (date, radius) => {
     return (
       <ContentBox>
-        <LabelLarge>{date}</LabelLarge> <MediumSmall>까지</MediumSmall><br/>
-        <LabelLarge>반경 {radius}m</LabelLarge> <MediumSmall>이내 이용 가능한 스터디 스케줄이 없어요!</MediumSmall>
+        <LabelLarge>{date}</LabelLarge> <MediumSmall>까지</MediumSmall>
+        <br />
+        <LabelLarge>반경 {radius}m</LabelLarge>{' '}
+        <MediumSmall>이내 이용 가능한 스터디 스케줄이 없어요!</MediumSmall>
       </ContentBox>
-    )
-  }
+    );
+  };
 
-  const getBlockLabel = (text) => (<BlockLabel>{text}</BlockLabel>)
-  const getBlockBoldLabel = (text) => (<BlockBoldLabel>{text}</BlockBoldLabel>)
-  const checkInclude = (list, val) => list.includes(val)
-  const mkBlock = (bool, text) => bool ? getBlockBoldLabel(text) : getBlockLabel(text);
+  const getBlockLabel = (text) => <BlockLabel>{text}</BlockLabel>;
+  const getBlockBoldLabel = (text) => <BlockBoldLabel>{text}</BlockBoldLabel>;
+  const checkInclude = (list, val) => list.includes(val);
+  const mkBlock = (bool, text) =>
+    bool ? getBlockBoldLabel(text) : getBlockLabel(text);
 
   const mkBlockLabel = (schedule, radius, focus) => {
     const date = getTimestamp(schedule);
-    if (!date || !radius) return (<NoneLabel>이용 가능한 스케줄이 없어요</NoneLabel>);
+    if (!date || !radius)
+      return <NoneLabel>이용 가능한 스케줄이 없어요</NoneLabel>;
 
     const dateBlock = (date) => mkBlock(checkInclude(focus, 'date'), date);
-    const radiusBlock = (radius) => mkBlock(checkInclude(focus, 'radius'), `반경 ${radius}m`);
+    const radiusBlock = (radius) =>
+      mkBlock(checkInclude(focus, 'radius'), `반경 ${radius}m`);
 
     return (
-      <BlcokContainer onClick={clickBlock({
-          ...rowData,
-          radius
-        }, schedule)}>
+      <BlcokContainer
+        onClick={clickBlock(
+          {
+            ...rowData,
+            radius,
+          },
+          schedule,
+        )}
+      >
         <LabelBox>
-          {dateBlock(date)} {radiusBlock(radius)} <BlockLabel>
-          <br/>이용 가능한 스터디 스케줄이 있어요!</BlockLabel>
+          {dateBlock(date)} {radiusBlock(radius)}{' '}
+          <BlockLabel>
+            <br />
+            이용 가능한 스터디 스케줄이 있어요!
+          </BlockLabel>
         </LabelBox>
         <Icon src={right} />
       </BlcokContainer>
-    )
-  }
+    );
+  };
 
   return (
     <Container>
@@ -94,13 +115,13 @@ const StudyRecommendSubstitute = () => {
         {mkBlockLabel(bothSub, 1000, ['radius', 'date'])}
       </ContentBox>
       <FixedDiv>
-        <Btn>
+        <Btn onClick={goBack}>
           <BtnText>조건 다시 설정하기</BtnText>
         </Btn>
       </FixedDiv>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   display: flex;

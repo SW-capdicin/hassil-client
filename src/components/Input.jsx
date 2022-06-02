@@ -47,6 +47,7 @@ const Input = forwardRef(
           return (
             <InputField
               type={type}
+              multiple
               accept="image/*"
               style={{ display: 'none' }}
               ref={ref}

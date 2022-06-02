@@ -3,18 +3,21 @@ import styled from 'styled-components';
 import { emptyimg } from '@/img';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import {
+  findStudy,
   getOneStudyCafe,
   getStudyRoomsInStudyCafe,
   createReservation,
-  getUserInfo,
+  getStudyRoomSchedulesOfDate,
 } from '@/api';
 import DatePicker from 'react-datepicker';
+import { subDays } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 
 const ReserveStudyRoom = () => {
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [study, setStudy] = useState({});
   const [studyCafe, setStudyCafe] = useState({});
   const [studyRooms, setStudyRooms] = useState([]);
   const [isStudyRoomSelected, setIsStudyRoomSelected] = useState(false);
@@ -26,31 +29,29 @@ const ReserveStudyRoom = () => {
     src: null,
     studyCafeId: null,
   });
-  const { id, maxPerson, name } = studyRoom;
+  const { id, maxPerson, name, pricePerHour } = studyRoom;
   const [selectPersonnel, setSelectPersonnel] = useState([]);
   const [personnel, setPersonnel] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
+  const [studyRoomSchedules, setStudyRoomSchedules] = useState([]);
 
   const studyId = location.state.studyId;
   const StudyCafeId = params.id;
+
   const findOneStudyCafe = async () => {
     const Cafe = await getOneStudyCafe(StudyCafeId);
     setStudyCafe(Cafe);
-  };
-
-  const [reservationPersonName, setReservationPersonName] = useState();
-  const getUser = async () => {
-    const responseData = await getUserInfo();
-    setReservationPersonName(responseData.name);
-    // console.log(responseData);
   };
 
   const getStudyRooms = async () => {
     const StudyRooms = await getStudyRoomsInStudyCafe(StudyCafeId);
     setStudyRooms(StudyRooms);
   };
+
   const toggleIsStudyRoomSelected = (InfoOfStudyRoom) => {
+    console.log('isStudyRoomSelected : ', isStudyRoomSelected);
     setIsStudyRoomSelected((prevInputs) => !prevInputs);
-    if (InfoOfStudyRoom) {
+    if (isStudyRoomSelected == false) {
       setStudyRoom(InfoOfStudyRoom);
     } else {
       setStudyRoom({
@@ -61,18 +62,86 @@ const ReserveStudyRoom = () => {
         src: null,
         studyCafeId: null,
       });
+      setStudyRoomSchedules([]);
     }
   };
 
   const handleChange = (event) => {
     setPersonnel(event.target.value);
   };
+  const getStudyInfo = async () => {
+    const StudyInfo = await findStudy(studyId);
+    setStudy(StudyInfo);
+  };
 
+  const getStudyRoomSchedules = async () => {
+    const date = startDate
+      .toLocaleDateString('ko', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+      .split('T')[0]
+      .replace(/(\s*)/g, '')
+      .replaceAll('.', '-')
+      .replace(/-$/, '');
+
+    const StudyRoomSchedules = await getStudyRoomSchedulesOfDate(
+      StudyCafeId,
+      id,
+      { date: date },
+    );
+    StudyRoomSchedules.forEach((currentElement) => {
+      currentElement.selected = false;
+    });
+    setStudyRoomSchedules(StudyRoomSchedules);
+    console.log('date : ', date);
+    console.log('startDate : ', startDate);
+    console.log('StudyRoomSchedules : ', StudyRoomSchedules);
+  };
+
+  const reserveStudyRoom = async () => {
+    const idOfstudyRoomSchedules = studyRoomSchedules
+      .filter((studyRoom) => studyRoom.selected == true)
+      .map((studyRoom) => studyRoom.id);
+
+    const Schedules = [];
+    idOfstudyRoomSchedules.forEach((element) => {
+      Schedules.push({ id: element });
+    });
+    const pricePerPerson = Schedules.length * pricePerHour;
+    const data = {
+      status: 0,
+      personCnt: personnel,
+      studyRoomSchedules: Schedules,
+      pricePerPerson: pricePerPerson,
+    };
+
+    console.log('data : ', data);
+    const responseSchedule = await createReservation(studyId, data);
+    // console.log(responseSchedule);
+    for (var key in responseSchedule) {
+      console.log('attr: ' + key + ', value: ' + responseSchedule[key]);
+    }
+    navigate('/');
+  };
+
+  const toggleIsTimeSelected = (item) => {
+    console.log('item.id : ', item.id);
+    setStudyRoomSchedules(
+      studyRoomSchedules.map((studyRoom) =>
+        studyRoom.id === item.id
+          ? { ...studyRoom, selected: !studyRoom.selected }
+          : studyRoom,
+      ),
+    );
+  };
   useEffect(() => {
+    getStudyInfo();
     findOneStudyCafe();
     getStudyRooms();
-    getUser();
   }, []);
+
   useEffect(() => {
     let temp_arr = [];
     if (isStudyRoomSelected) {
@@ -85,37 +154,11 @@ const ReserveStudyRoom = () => {
     }
   }, [isStudyRoomSelected]);
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const filterPassedTime = (time) => {
-    const currentTime = new Date();
-    const selectedDate = new Date(time);
-    if (startDate.getDate() == selectedDate.getDate()) {
-      return currentTime.getTime() < selectedDate.getTime();
-    } else {
-      return '00:00';
+  useEffect(() => {
+    if (studyRoom.id != null) {
+      getStudyRoomSchedules();
     }
-  };
-  const reserveStudyRoom = async () => {
-    const reservationTime =
-      startDate.toISOString().split('T')[0] +
-      ' ' +
-      startTime.toTimeString().split(' ')[0] +
-      ' ';
-    startTime.toTimeString().split(' ')[1];
-    const data = {
-      status: 0,
-      studyRoomId: id,
-      datetime: reservationTime,
-      personCnt: personnel,
-      reservationPersonName: reservationPersonName,
-    };
-
-    //error 발생 백엔드 api 수정 필요
-    const response = await createReservation(studyId, data);
-    console.log(response);
-    navigate('/');
-  };
+  }, [startDate]);
   return (
     <Container>
       <Img
@@ -156,21 +199,28 @@ const ReserveStudyRoom = () => {
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
                 startDate={startDate}
+                includeDateIntervals={[
+                  {
+                    start: subDays(new Date(study.startDate), 1),
+                    end: new Date(study.endDate),
+                  },
+                ]}
                 locale={ko}
                 minDate={new Date()}
                 dateFormat="yyyy년 MM월 dd일"
               />
-              <SDatePicker
-                selected={startTime}
-                onChange={(date) => setStartTime(date)}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={60}
-                timeCaption="Time"
-                locale={ko}
-                filterTime={filterPassedTime}
-                dateFormat="hh : mm aa"
-              />
+
+              <TimeContainer>
+                {studyRoomSchedules.map((item) => (
+                  <Time
+                    key={item.id}
+                    onClick={() => toggleIsTimeSelected(item)}
+                    isTimeSelected={item.selected}
+                  >
+                    {`${item.datetime.split('T')[1].split(':')[0]}시`}
+                  </Time>
+                ))}
+              </TimeContainer>
             </SDatePickerContainer>
             <SelectPersonnel>
               <Text>인원/수량을 선택하세요.</Text>
@@ -214,7 +264,7 @@ const Container = styled.div`
 `;
 
 const Img = styled.img`
-  width: 80vw;
+  width: 90vw;
   height: 10rem;
   border-radius: 10px;
   align-self: center;
@@ -223,7 +273,7 @@ const Img = styled.img`
 `;
 const StudyCafeHeader = styled.div`
   display: flex;
-  width: 80vw;
+  width: 90vw;
   height: 2rem;
   justify-content: space-between;
   margin-bottom: 1rem;
@@ -341,8 +391,6 @@ const SelectPersonnel = styled.div`
   justify-content: space-between;
 `;
 const Select = styled.select`
-  /* width: 65%; */
-
   padding-left: 5px;
   text-align: center;
   height: 2rem;
@@ -351,4 +399,32 @@ const Select = styled.select`
 `;
 
 const Text = styled.div``;
+const TimeContainer = styled.div`
+  display: flex;
+
+  overflow: auto;
+  white-space: nowrap;
+  width: 100%;
+  height: 3rem;
+  justify-content: space-between;
+`;
+const Time = styled.div`
+  display: flex;
+  align-items: center;
+  border: solid;
+  border-color: ${({ theme }) => theme.color.lightBlue};
+  border-radius: 10px;
+  padding: 1rem;
+  height: auto;
+  border-width: 0.5px;
+  margin-right: 1rem;
+  background-color: ${(props) =>
+    props.isTimeSelected == false
+      ? ({ theme }) => theme.color.offwhite
+      : ({ theme }) => theme.color.lightBlue};
+  color: ${(props) =>
+    props.isTimeSelected == false
+      ? ({ theme }) => theme.color.black
+      : ({ theme }) => theme.color.offwhite};
+`;
 export default ReserveStudyRoom;
