@@ -280,9 +280,7 @@ const StudyCafeCreate = () => {
           {studyRooms.map((item, idx) => {
             return (
               <StudyRoomContainer key={idx}>
-                <ImgContainer onClick={() => imgInput.current.click()}>
-                  <RoomImg src={item.src}></RoomImg>
-                </ImgContainer>
+                <RoomImg src={item.src} />
                 <RowBox>
                   <StudyRoomText>{item.studyRoomName}룸</StudyRoomText>
                   <StudyRoomText>
@@ -326,7 +324,6 @@ const Container = styled.div`
 `;
 const SubContainer = styled.div``;
 const SelectImg = styled.div``;
-const ImgContainer = styled.div``;
 const Img = styled.img`
   display: flex;
   width: 100%;
@@ -342,8 +339,12 @@ const RowBox = styled.div`
 `;
 
 const RoomImg = styled.img`
+  /* border 가리기 위한 css */
+  width: calc(100% + 2px);
+  margin-left: -1px;
+  margin-top: -1px;
+
   display: flex;
-  width: 100%;
   height: 130px;
   object-fit: cover;
   border-radius: 10px 10px 0 0;

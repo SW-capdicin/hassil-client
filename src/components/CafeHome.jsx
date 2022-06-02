@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PATH_STUDYCAFE_CREATE, PATH_STUDY_DETAIL } from '@/constants';
+import { PATH_STUDYCAFE_CREATE, PATH_STUDYCAFE_DETAIL } from '@/constants';
 import styled from 'styled-components';
 import { IoMdAddCircle } from 'react-icons/io';
 import emptyimg from '@/img/emptyimg.png';
@@ -23,6 +23,8 @@ const UserHome = () => {
   const tabClickHandler = (categoryId) => {
     setCurrentTab(categoryId);
   };
+
+  const applyPathId = (path, id) => `${path.split(':id')[0]}${id}`
 
   return (
     <Container>
@@ -48,7 +50,7 @@ const UserHome = () => {
         <TabContentContainer>
           {cafeList.map((item, idx) => (
             <TabContent key={idx}>
-              <Link to={{ pathname: PATH_STUDY_DETAIL + `/${item.id}` }}>
+              <Link to={{ pathname: applyPathId(PATH_STUDYCAFE_DETAIL, item.id)}}>
                 <Img
                   src={
                     item.StudyCafeImages[0].src
