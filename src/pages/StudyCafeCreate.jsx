@@ -496,6 +496,7 @@ const AddBtnContainer = styled.div`
   justify-content: center;
   border: 1px solid ${getColor('gray')};
   margin-bottom: 20px;
+  border-radius: 10px;
 `;
 const CuIoMdAddCircle = styled(IoMdAddCircle)`
   width: 2rem;
