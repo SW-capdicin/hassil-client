@@ -21,22 +21,17 @@ const StudyRecommendSubstitute = () => {
     setBothSub(data.number3);
   }, []);
 
-  const rmTimezone = (datetime) =>
-    `${getDateTime(datetime).date}T${getDateTime(datetime).time}`;
-
   const getTimestamp = (schedule) => {
     if (schedule.length == 0) return null;
     const start = getDateTime(schedule[0].datetime);
-    const end = new Date(rmTimezone(getLastEl(schedule).datetime));
-    return `${start.date} ${start.time} ~ ${formatHour(end.getHours() + 1)}`;
+    const end = getDateTime(getLastEl(schedule).datetime);
+    return `${start.date} ${start.time} ~ ${end.time}`;
   };
 
   const getMainTitleText = () =>
     getTimestamp(
       [state.data.startTime, state.data.endTime].map((a) => ({ datetime: a })),
     );
-
-  const formatHour = (hour) => `${String(hour).padStart(2, '0')}:00`;
 
   const successPath = `${pathname.split('/substitute')[0]}/success`;
   const clickBlock = (data, schedule) => {

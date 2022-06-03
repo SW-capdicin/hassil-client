@@ -30,3 +30,7 @@ export const extractOne = (list, idx) => list.splice(idx, 1)[0];
 
 // warning! list 값 변화됨
 export const extractRandomOne = (list) => extractOne(list, Math.floor(Math.random() * list.length));
+
+export const date2KST = (datetime) => new Date(new Date(datetime).getTime() + 540*60*1000);
+
+export const getDate2KST = (datetime) => date2KST(datetime).toISOString().split('T')[0]

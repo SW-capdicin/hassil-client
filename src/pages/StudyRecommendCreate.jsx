@@ -5,7 +5,7 @@ import { ko } from 'date-fns/esm/locale';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { getUserInfo, requestStudyRecommend } from '@/api';
 import { checkCircleEmptySelect, checkCircleEmpty, calenderGray, getLocationIcon } from '@/img';
-import { getColor, getLocation, getTimestampByDateAndTime } from '@/utils';
+import { date2KST, getColor, getDate2KST, getDateTime, getLocation, getTimestampByDateAndTime } from '@/utils';
 
 const { kakao, daum } = window;
 
@@ -57,11 +57,11 @@ const StudyRcommendCreate = () => {
     const reservationPerson = await getUserInfo();
     const curPath = location.pathname;
     const reservationStartTime = getTimestampByDateAndTime(
-      startDate.toISOString().split('T')[0],
+      getDate2KST(startDate),
       startTime.toTimeString().split(' ')[0]
     );
     const reservationEndTime = getTimestampByDateAndTime(
-      startDate.toISOString().split('T')[0],
+      getDate2KST(startDate),
       endTime.toTimeString().split(' ')[0]
     );
     const data = {
