@@ -103,7 +103,7 @@ const ReviewImg = styled.img`
 `;
 
 const RightImg = styled.img`
-  padding-top: 2px;
+  padding-top: 0px;
 `;
 
 const Container = styled.div`
@@ -161,7 +161,7 @@ const StudyCafeName = styled.div`
 const Review = styled.div`
   display: flex;
   white-space: nowrap;
-  line-height: 30px;
+  line-height: 34px;
 `;
 const StudyCafeBody = styled.div`
   overflow: auto;
