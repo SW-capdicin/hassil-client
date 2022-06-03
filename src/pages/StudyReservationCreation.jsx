@@ -45,7 +45,6 @@ const StudyReservationCreation = () => {
       address: address,
       datetime: reservationTime,
     };
-    alert('스터디 예약하기');
 
     const curPath = location.pathname.split('/requirement')[0];
     console.log(curPath);
