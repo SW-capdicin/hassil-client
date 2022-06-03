@@ -4,6 +4,7 @@ export const separatorMoney = (money) => {
 }
 
 export const getDateTime = (datetime) => {
+  if (!datetime) return null;
   const dt = datetime.split('T');
   return {
     date: dt[0],

@@ -43,6 +43,7 @@ const StudyReservationList = () => {
   };
 
   const Reserve = (reserve, key) => {
+    if (!checkIsReserveStudyRoom(reserve) && !reserve.Meeting) return null;
     const body = checkIsReserveStudyRoom(reserve) ? (
       <Log>
         <Text>{getTerm(reserve.StudyRoomSchedules)}</Text>

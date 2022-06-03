@@ -34,7 +34,7 @@ const StudyCafeDetail = () => {
     });
   };
   return (
-    <Container>
+    <Container studyId={studyId}>
       <Img
         src={
           studyCafe.StudyCafeImages
@@ -111,6 +111,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: ${(props) => props.studyId ? `calc(100vh - 9rem);` : `calc(100vh - 5rem);`}
 `;
 const RowBox = styled.div`
   width: 100%;
