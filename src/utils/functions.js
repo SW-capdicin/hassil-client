@@ -33,4 +33,4 @@ export const extractRandomOne = (list) => extractOne(list, Math.floor(Math.rando
 
 export const date2KST = (datetime) => new Date(new Date(datetime).getTime() + 540*60*1000);
 
-export const getDate2KST = (datetime) => date2KST(datetime).toISOString().split('T')[0]
+export const getDate2KST = (datetime) => getDateTime(date2KST(datetime).toISOString()).date;
