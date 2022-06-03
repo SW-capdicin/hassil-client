@@ -46,7 +46,11 @@ const StudyParticipation = () => {
         </AgreeStatement>
         <AgreeBtn>
           <CheckBox isAgreed={isAgreed} onClick={handleAgree}>
-            <BiCheckCircle />
+            <BiCheckCircle style={{
+              marginBottom: '-2px',
+              marginRight: '3px',
+              paddingTop: '1px'
+            }}  />
             동의합니다
           </CheckBox>
         </AgreeBtn>
@@ -75,6 +79,7 @@ const Container = styled.div`
   /* height: 100%; */
   /* width: 25rem; */
   align-content: center;
+  width: 90%;
 `;
 const SubContainer = styled.div`
   /* width: 25rem; */
