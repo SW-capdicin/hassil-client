@@ -47,6 +47,7 @@ const StudyCafeDetail = () => {
         <Review onClick={toggleShowReview}>
           <ReviewImg src={review} width="20" />
           {Math.round(
+
             (studyCafe?.Reviews?.reduce((prev, cur) => prev + cur.rating, 0) /
             studyCafe?.Reviews?.length) || 0
           )} ({studyCafe?.Reviews?.length || 0})
@@ -167,6 +168,7 @@ const StudyCafeBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   margin-bottom: 2rem;
   margin-top: 1rem;
 `;

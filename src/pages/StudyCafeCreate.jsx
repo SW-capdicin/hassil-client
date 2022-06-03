@@ -36,7 +36,7 @@ const StudyCafeCreate = () => {
   const studyRoomImgInput = useRef();
 
   const onLoadFile = (e) => {
-    console.log(e);
+    console.log(e.target.files);
     const file = e.target.files[0];
     setFiles(file);
   };

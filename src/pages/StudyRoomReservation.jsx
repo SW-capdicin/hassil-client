@@ -28,7 +28,10 @@ const StudyRoomReservation = () => {
   const getSearchStudyCafeList = () => {
     return searchList.map((item, idx) => (
       <TabContent key={idx}>
-        <Link to={{ pathname: `/cafes/${item.id}` }}>
+        <Link
+          to={{ pathname: `/cafes/${item.id}` }}
+          state={{ studyId: studyId }}
+        >
           <Img
             src={
               item.StudyCafeImages.length !== 0
