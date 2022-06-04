@@ -20,7 +20,6 @@ const UsedCafe = () => {
   useEffect(() => {
     getReservationHistory().then((history) => {
       setUsedCafeList(history);
-      toggleModal(-1);
     });
   }, []);
 

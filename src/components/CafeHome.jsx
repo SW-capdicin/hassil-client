@@ -20,7 +20,6 @@ const UserHome = () => {
   ]);
   useEffect(() => {
     getStudyCafeByUserId().then((cafeList) => {
-      console.log(cafeList);
       setCafeList(cafeList);
     });
   }, []);
