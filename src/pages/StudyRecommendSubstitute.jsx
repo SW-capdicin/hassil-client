@@ -21,16 +21,26 @@ const StudyRecommendSubstitute = () => {
     setBothSub(data.number3);
   }, []);
 
-  const getTimestamp = (schedule) => {
+  const formatHour = (hour) => `${String(hour).padStart(2, '0')}:00`
+  const rmTimezone = (datetime) => `${getDateTime(datetime).date}T${getDateTime(datetime).time}`
+
+  const getTimestamp = (schedule, isSchedule = true) => {
     if (schedule.length == 0) return null;
     const start = getDateTime(schedule[0].datetime);
-    const end = getDateTime(getLastEl(schedule).datetime);
-    return `${start.date} ${start.time} ~ ${end.time}`;
+    const end = getLastEl(schedule).datetime;
+    if (isSchedule) {
+      return `${start.date} ${start.time} ~ ${formatHour(new Date(rmTimezone(end)).getHours() + 1)}`;
+    }
+    else {
+      return `${start.date} ${start.time} ~ ${getDateTime(end).time}`;
+    }
+    
   };
 
   const getMainTitleText = () =>
     getTimestamp(
       [state.data.startTime, state.data.endTime].map((a) => ({ datetime: a })),
+      false
     );
 
   const successPath = `${pathname.split('/substitute')[0]}/success`;
