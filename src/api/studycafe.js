@@ -34,3 +34,8 @@ export const getStudyRoomSchedulesOfDate = async (id, rid, data) => {
   );
   return response.data;
 };
+
+export const postReview = async (id, data) => {
+  const response = await api.post(`/api/study-cafes/${id}/reviews`, data);
+  return response.data;
+};

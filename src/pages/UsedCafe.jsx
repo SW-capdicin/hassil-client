@@ -1,41 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getColor, separatorMoney } from '@/utils';
+import { getColor, separatorMoney, getDateTime } from '@/utils';
+import { getReservationHistory, postReview } from '@/api';
 import StarRatings from 'react-star-ratings';
 
 const UsedCafe = () => {
   const [openModal, setOpenModal] = useState(false);
-  const toggleModal = () => {
-    setOpenModal((prevState) => !prevState);
-  };
+  const [usedCafeList, setUsedCafeList] = useState([]);
+  const [currentId, setCurrentId] = useState(-1);
+  const [contents, setContents] = useState('');
   const [rating, setRating] = useState(0);
-  const usedCafeList = [
-    {
-      date: '2022.04.13 20:00~22:00',
-      name: '아주대 공간샘 A룸',
-      price: '16000',
-    },
-    {
-      date: '2022.04.13 20:00~22:00',
-      name: '아주대 공간샘 A룸',
-      price: '16000',
-    },
-    {
-      date: '2022.04.13 20:00~22:00',
-      name: '아주대 공간샘 A룸',
-      price: '16000',
-    },
-    {
-      date: '2022.04.13 20:00~22:00',
-      name: '아주대 공간샘 A룸',
-      price: '16000',
-    },
-    {
-      date: '2022.04.13 20:00~22:00',
-      name: '아주대 공간샘 A룸',
-      price: '16000',
-    },
-  ];
+
+  const toggleModal = (id) => {
+    setOpenModal((prevState) => !prevState);
+    setCurrentId(id);
+    setContents('');
+    setRating(0);
+  };
+  useEffect(() => {
+    getReservationHistory().then((history) => {
+      setUsedCafeList(history);
+      toggleModal(-1);
+    });
+  }, []);
+
+  const submit = async () => {
+    await postReview(currentId, { contents, rating });
+    toggleModal(-1);
+  };
+
+  const onChange = (event) => {
+    setContents(event.target.value);
+  };
+
   return (
     <>
       <Container>
@@ -47,11 +44,35 @@ const UsedCafe = () => {
           {usedCafeList.map((cafe, idx) => (
             <Item key={idx}>
               <TextContainer>
-                <Date>{cafe.date}</Date>
-                <Name>{cafe.name}</Name>
-                <Price>결제액 {separatorMoney(cafe.price)}원</Price>
+                <Date>
+                  {getDateTime(cafe.StudyRoomSchedules[0].datetime).date +
+                    ' ' +
+                    getDateTime(cafe.StudyRoomSchedules[0].datetime).time +
+                    ' ~ ' +
+                    getDateTime(
+                      cafe.StudyRoomSchedules[
+                        cafe.StudyRoomSchedules.length - 1
+                      ].datetime,
+                    )
+                      .time.split(':')
+                      .map((s, idx) => (idx === 0 ? Number(s) + 1 : s))
+                      .join(':')}
+                </Date>
+                <Name> {cafe.StudyRoomSchedules[0].StudyRoom.name}</Name>
+                <Price>
+                  결제액{' '}
+                  {separatorMoney(cafe.StudyRoomSchedules.length) *
+                    cafe.StudyRoomSchedules[0].StudyRoom.pricePerHour}
+                  원
+                </Price>
               </TextContainer>
-              <Button onClick={toggleModal}>리뷰쓰기</Button>
+              <Button
+                onClick={() =>
+                  toggleModal(cafe.StudyRoomSchedules[0].StudyRoom.StudyCafe.id)
+                }
+              >
+                리뷰쓰기
+              </Button>
             </Item>
           ))}
         </SubContainer>
@@ -73,8 +94,8 @@ const UsedCafe = () => {
                   starDimension={'30'}
                 />
               </StarContainer>
-              <TextArea />
-              <ModalButton onClick={toggleModal}>리뷰 작성하기</ModalButton>
+              <TextArea onChange={onChange} />
+              <ModalButton onClick={submit}>리뷰 작성하기</ModalButton>
             </ModalSubContainer>
           </Modal>
           <BackGround onClick={toggleModal} />
