@@ -97,7 +97,6 @@ const ReserveStudyRoom = () => {
     setStudyRoomSchedules(StudyRoomSchedules);
     console.log('date : ', date);
     console.log('startDate : ', startDate);
-    console.log('StudyRoomSchedules : ', StudyRoomSchedules);
   };
 
   const reserveStudyRoom = async () => {
@@ -119,10 +118,10 @@ const ReserveStudyRoom = () => {
 
     console.log('data : ', data);
     const responseSchedule = await createReservation(studyId, data);
-    // console.log(responseSchedule);
-    for (var key in responseSchedule) {
-      console.log('attr: ' + key + ', value: ' + responseSchedule[key]);
-    }
+    console.log(responseSchedule);
+    // for (var key in responseSchedule) {
+    //   console.log('attr: ' + key + ', value: ' + responseSchedule[key]);
+    // }
     navigate('/');
   };
 
@@ -141,6 +140,9 @@ const ReserveStudyRoom = () => {
     findOneStudyCafe();
     getStudyRooms();
   }, []);
+  useEffect(() => {
+    console.log('StudyRoomSchedules : ', studyRoomSchedules);
+  }, [studyRoomSchedules]);
 
   useEffect(() => {
     let temp_arr = [];

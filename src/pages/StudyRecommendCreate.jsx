@@ -5,7 +5,7 @@ import { ko } from 'date-fns/esm/locale';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { getUserInfo, requestStudyRecommend } from '@/api';
 import { checkCircleEmptySelect, checkCircleEmpty, calenderGray, getLocationIcon } from '@/img';
-import { getColor, getLocation, getTimestampByDateAndTime } from '@/utils';
+import { date2KST, getColor, getDate2KST, getDateTime, getLocation, getTimestampByDateAndTime } from '@/utils';
 
 const { kakao, daum } = window;
 
@@ -57,24 +57,24 @@ const StudyRcommendCreate = () => {
     const reservationPerson = await getUserInfo();
     const curPath = location.pathname;
     const reservationStartTime = getTimestampByDateAndTime(
-      startDate.toISOString().split('T')[0],
+      getDate2KST(startDate),
       startTime.toTimeString().split(' ')[0]
     );
     const reservationEndTime = getTimestampByDateAndTime(
-      startDate.toISOString().split('T')[0],
+      getDate2KST(startDate),
       endTime.toTimeString().split(' ')[0]
     );
     const data = {
       reservatingUserId: reservationPerson.id,
       // for test
-      latitude: 100,
-      longitude: 100,
-      startTime: '2022-05-22T00:00:00+09',
-      endTime: '2022-05-22T06:00:00+09',
+      latitude: 37.283071,
+      longitude: 127.044954,
+      // startTime: '2022-05-22T00:00:00+09',
+      // endTime: '2022-05-22T06:00:00+09',
       // latitude: lat,
       // longitude: lng,
-      // startTime: reservationStartTime,
-      // endTime: reservationEndTime,
+      startTime: reservationStartTime,
+      endTime: reservationEndTime,
       radius,
       option,
       address,

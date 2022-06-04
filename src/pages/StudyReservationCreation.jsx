@@ -5,6 +5,7 @@ import { ko } from 'date-fns/esm/locale';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { PATH_JOINED_STUDY_DETAIL } from '@/constants';
 import { getUserInfo, findStudy, createReservation } from '@/api';
+import { getDate2KST } from '@/utils';
 
 const { kakao, daum } = window;
 const StudyReservationCreation = () => {
@@ -32,7 +33,7 @@ const StudyReservationCreation = () => {
     const reservationPerson = await getUserInfo();
 
     const reservationTime =
-      startDate.toISOString().split('T')[0] +
+      getDate2KST(startDate) +
       ' ' +
       startTime.toTimeString().split(' ')[0] +
       ' ';
@@ -45,7 +46,6 @@ const StudyReservationCreation = () => {
       address: address,
       datetime: reservationTime,
     };
-    alert('스터디 예약하기');
 
     const curPath = location.pathname.split('/requirement')[0];
     console.log(curPath);
@@ -103,7 +103,7 @@ const StudyReservationCreation = () => {
           <SDatePickerContainer>
             <SDatePicker
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={setStartDate}
               startDate={startDate}
               locale={ko}
               minDate={new Date()}
