@@ -38,7 +38,7 @@ const StudyCafeDetail = () => {
       <Img
         src={
           studyCafe.StudyCafeImages
-            ? `${studyCafe.StudyCafeImages[0].src}`
+            ? `${studyCafe.StudyCafeImages[0]?.src}`
             : emptyimg
         }
       />
@@ -47,11 +47,16 @@ const StudyCafeDetail = () => {
         <Review onClick={toggleShowReview}>
           <ReviewImg src={review} width="20" />
           {Math.round(
-
-            (studyCafe?.Reviews?.reduce((prev, cur) => prev + cur.rating, 0) /
-            studyCafe?.Reviews?.length) || 0
-          )} ({studyCafe?.Reviews?.length || 0})
-          <RightImg style={{ margin: 'auto', 'marginLeft': '5px' }} src={right} width="20" height="15" />
+            studyCafe?.Reviews?.reduce((prev, cur) => prev + cur.rating, 0) /
+              studyCafe?.Reviews?.length || 0,
+          )}{' '}
+          ({studyCafe?.Reviews?.length || 0})
+          <RightImg
+            style={{ margin: 'auto', marginLeft: '5px' }}
+            src={right}
+            width="20"
+            height="15"
+          />
         </Review>
       </StudyCafeHeader>
       <StudyCafeBody>
@@ -65,20 +70,20 @@ const StudyCafeDetail = () => {
               <SubTitle>스터디 룸</SubTitle>
               {studyCafe?.StudyRooms?.map((item, idx) => {
                 return (
-                    <StudyRoomContainer key={idx}>
-                      <RoomImg src={item.src || emptyimg} />
-                      <RowBox>
-                        <StudyRoomText>{item.name}룸</StudyRoomText>
-                        <StudyRoomText>
-                          <StudyRoomSub>시간당 가격 :</StudyRoomSub>
-                          {separatorMoney(item.pricePerHour)}원
-                        </StudyRoomText>
-                        <StudyRoomText>
-                          <StudyRoomSub>수용 인원 :</StudyRoomSub>
-                          {Number(item.maxPerson)}명
-                        </StudyRoomText>
-                      </RowBox>
-                    </StudyRoomContainer>
+                  <StudyRoomContainer key={idx}>
+                    <RoomImg src={item?.src || emptyimg} />
+                    <RowBox>
+                      <StudyRoomText>{item.name}룸</StudyRoomText>
+                      <StudyRoomText>
+                        <StudyRoomSub>시간당 가격 :</StudyRoomSub>
+                        {separatorMoney(item.pricePerHour)}원
+                      </StudyRoomText>
+                      <StudyRoomText>
+                        <StudyRoomSub>수용 인원 :</StudyRoomSub>
+                        {Number(item.maxPerson)}명
+                      </StudyRoomText>
+                    </RowBox>
+                  </StudyRoomContainer>
                 );
               })}
             </>
@@ -111,7 +116,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: ${(props) => props.studyId ? `calc(100vh - 9rem);` : `calc(100vh - 5rem);`}
+  height: ${(props) =>
+    props.studyId ? `calc(100vh - 9rem);` : `calc(100vh - 5rem);`};
 `;
 const RowBox = styled.div`
   width: 100%;

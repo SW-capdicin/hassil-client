@@ -19,7 +19,10 @@ const UserHome = () => {
     { name: '아주대 공간샘 A룸', price: 16000, date: '2022.04.13 20:00~22:00' },
   ]);
   useEffect(() => {
-    getStudyCafeByUserId().then((cafeList) => setCafeList(cafeList));
+    getStudyCafeByUserId().then((cafeList) => {
+      console.log(cafeList);
+      setCafeList(cafeList);
+    });
   }, []);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const UserHome = () => {
               >
                 <Img
                   src={
-                    item.StudyCafeImages[0].src
+                    item.StudyCafeImages[0]?.src
                       ? `${item.StudyCafeImages[0].src}`
                       : emptyimg
                   }
