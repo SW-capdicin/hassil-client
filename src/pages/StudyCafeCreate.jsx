@@ -36,7 +36,6 @@ const StudyCafeCreate = () => {
   const studyRoomImgInput = useRef();
 
   const onLoadFile = (e) => {
-    console.log(e.target.files);
     const file = e.target.files[0];
     setFiles(file);
   };
@@ -139,8 +138,7 @@ const StudyCafeCreate = () => {
       StudyCafeImages: [{ src: image }],
       studyRooms: [...studyRooms],
     };
-    const response = await createStudyCafe(StudyCafe);
-    console.log(response);
+    await createStudyCafe(StudyCafe);
     navigate('/');
   };
 

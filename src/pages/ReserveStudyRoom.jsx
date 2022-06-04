@@ -49,7 +49,6 @@ const ReserveStudyRoom = () => {
   };
 
   const toggleIsStudyRoomSelected = (InfoOfStudyRoom) => {
-    console.log('isStudyRoomSelected : ', isStudyRoomSelected);
     setIsStudyRoomSelected((prevInputs) => !prevInputs);
     if (isStudyRoomSelected == false) {
       setStudyRoom(InfoOfStudyRoom);
@@ -95,8 +94,6 @@ const ReserveStudyRoom = () => {
       currentElement.selected = false;
     });
     setStudyRoomSchedules(StudyRoomSchedules);
-    console.log('date : ', date);
-    console.log('startDate : ', startDate);
   };
 
   const reserveStudyRoom = async () => {
@@ -115,18 +112,11 @@ const ReserveStudyRoom = () => {
       studyRoomSchedules: Schedules,
       pricePerPerson: pricePerPerson,
     };
-
-    console.log('data : ', data);
-    const responseSchedule = await createReservation(studyId, data);
-    console.log(responseSchedule);
-    // for (var key in responseSchedule) {
-    //   console.log('attr: ' + key + ', value: ' + responseSchedule[key]);
-    // }
+    await createReservation(studyId, data);
     navigate('/');
   };
 
   const toggleIsTimeSelected = (item) => {
-    console.log('item.id : ', item.id);
     setStudyRoomSchedules(
       studyRoomSchedules.map((studyRoom) =>
         studyRoom.id === item.id
@@ -140,9 +130,6 @@ const ReserveStudyRoom = () => {
     findOneStudyCafe();
     getStudyRooms();
   }, []);
-  useEffect(() => {
-    console.log('StudyRoomSchedules : ', studyRoomSchedules);
-  }, [studyRoomSchedules]);
 
   useEffect(() => {
     let temp_arr = [];

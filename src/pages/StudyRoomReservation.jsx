@@ -70,7 +70,6 @@ const StudyRoomReservation = () => {
     navigate(`${curPath}/recommend`);
   };
   const goStudyCafeDetail = (studyCafeId) => {
-    console.log(studyCafeId);
     navigate(`/cafes/${studyCafeId}`, {
       state: { studyId: studyId },
     });

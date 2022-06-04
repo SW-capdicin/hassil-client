@@ -28,7 +28,7 @@ const StudyParticipation = () => {
     try {
       await joinStudy(params.id);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     navigate(PATH_JOINED_STUDY_LIST);
   };
@@ -46,11 +46,13 @@ const StudyParticipation = () => {
         </AgreeStatement>
         <AgreeBtn>
           <CheckBox isAgreed={isAgreed} onClick={handleAgree}>
-            <BiCheckCircle style={{
-              marginBottom: '-2px',
-              marginRight: '3px',
-              paddingTop: '1px'
-            }}  />
+            <BiCheckCircle
+              style={{
+                marginBottom: '-2px',
+                marginRight: '3px',
+                paddingTop: '1px',
+              }}
+            />
             동의합니다
           </CheckBox>
         </AgreeBtn>

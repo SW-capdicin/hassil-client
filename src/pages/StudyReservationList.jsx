@@ -12,17 +12,10 @@ const StudyReservationList = () => {
   const curPath = location.pathname;
 
   useEffect(() => {
-    // 가장 나중에 생성한 순으로 정렬
     getReservation(params.id).then((reservationList) =>
       setReservationList(reservationList.sort(compareDate('createdAt', true))),
     );
   }, []);
-
-  ////temp
-  useEffect(() => {
-    const idList = reservationList.map((item) => item.id);
-    console.log('scheduleId : ', idList);
-  }, [reservationList]);
 
   const checkIsReserveStudyRoom = (reserve) =>
     reserve.StudyRoomSchedules.length > 0;

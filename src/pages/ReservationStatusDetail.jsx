@@ -5,7 +5,12 @@ import styled from 'styled-components';
 import emptyimg from '@/img/emptyimg.png';
 import { checkCircle, fail } from '@/img';
 import { findStudy, getStudyAttend, getOneReservationInfo } from '@/api';
-import { getColor, defaultLine, separatorMoney, getGeneratedLocation } from '@/utils';
+import {
+  getColor,
+  defaultLine,
+  separatorMoney,
+  getGeneratedLocation,
+} from '@/utils';
 import { updateLocation } from '@/api/reservation';
 
 const ReservationStatusDetail = () => {
@@ -72,8 +77,7 @@ const ReservationStatusDetail = () => {
     }
   };
   const clickGetLocationBtn = async () => {
-    const location =  await getGeneratedLocation();
-    console.log(location);
+    const location = await getGeneratedLocation();
     if (!location) return alert('GPS를 지원하지 않습니다');
     await attendStudy(location);
   };

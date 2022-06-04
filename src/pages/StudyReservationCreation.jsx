@@ -46,14 +46,12 @@ const StudyReservationCreation = () => {
       address: address,
       datetime: reservationTime,
     };
-
     const curPath = location.pathname.split('/requirement')[0];
-    console.log(curPath);
-    const resp = await createReservation(
+    await createReservation(
       params.id, // studyId
       data,
     );
-    await navigate(`${curPath}`);
+    navigate(`${curPath}`);
   };
 
   const Post = async () => {
@@ -74,17 +72,14 @@ const StudyReservationCreation = () => {
         setAddress(addr);
         geocoder.addressSearch(data.address, function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
-            let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            console.log('result : ', result[0]);
-
-            let infowindow = new kakao.maps.InfoWindow({
+            const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            const infowindow = new kakao.maps.InfoWindow({
               content:
                 '<div style="width:150px;text-align:center;padding:6px 0;">목적지</div>',
             });
             infowindow.open(map, marker);
             container.style.display = 'block';
             map.relayout();
-
             map.setCenter(coords);
             marker.setPosition(coords);
             setLng(result[0].x);
